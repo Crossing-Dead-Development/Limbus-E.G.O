@@ -3,3 +3,10 @@
 # Built-in: zh_TW, en_US
 # You can also drop custom lang/<code>.yml files into the plugin data folder.
 language: zh_TW
+
+# 飾品提取箱（/gachachest）設定
+gacha:
+  # 每次抽取消耗的狂氣數量
+  lunacy-cost: 32
+  # 抽中 Tier IV 的機率（0.0 ~ 1.0），其餘機率由 Tier I~III 均分
+  tier4-chance: 0.10

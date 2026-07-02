@@ -46,34 +46,42 @@ public class LimbusEGO extends JavaPlugin implements Listener {
     private me.yisang.limbusego.lang.LangManager lang;
     private me.yisang.limbusego.gift.GiftsModule gifts;
 
-    private static final String PACK_URL  = "https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack/releases/download/v.2.17/Limbus_E.G.O_Weapons_plugin_ResourcePack.v.2.17.zip";
-    private static final String PACK_HASH = "060302e85c12d23127b7c4eb3b7050c82615e20d";
-    private static final String PACK_FILENAME = "resourcepack.zip";
+    private static final String PACK_URL_WEAPONS  = "https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack/releases/download/v.2.17/Limbus_E.G.O_Weapons_plugin_ResourcePack.v.2.17.zip";
+    private static final String PACK_HASH_WEAPONS = "060302e85c12d23127b7c4eb3b7050c82615e20d";
+    private static final String PACK_URL_GIFTS    = "https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack/releases/download/v2.6/Limbus_E.G.O_Gifts_plugin_ResourcePack.v2.6.zip";
+    private static final String PACK_HASH_GIFTS   = "91576ab33630f5f2869c3e30516824a4bf992999";
 
     /**
-     * 同步資源包到本插件 data folder（plugins/LimbusEGO/resourcepack.zip）。
-     * 已存在且 SHA-1 與 PACK_HASH 相符就跳過下載。
+     * 同步兩份資源包（武器＋飾品）到本插件 data folder。
      * 不主動推送給玩家——交由外部 ResourcePackManager 合併分發。
      */
-    private void syncResourcePackToDataFolder() {
+    private void syncResourcePacks() {
+        syncPack(PACK_URL_WEAPONS, PACK_HASH_WEAPONS, "resourcepack-weapons.zip");
+        syncPack(PACK_URL_GIFTS,   PACK_HASH_GIFTS,   "resourcepack-gifts.zip");
+    }
+
+    /**
+     * 同步單一資源包到本插件 data folder。已存在且 SHA-1 與 hash 相符就跳過下載。
+     */
+    private void syncPack(String url, String hash, String filename) {
         getDataFolder().mkdirs();
-        java.io.File dest = new java.io.File(getDataFolder(), PACK_FILENAME);
-        if (dest.isFile() && PACK_HASH.equalsIgnoreCase(sha1Of(dest))) {
-            getLogger().info("[ResourcePack] 已存在符合 hash 的本地檔，跳過下載。");
+        java.io.File dest = new java.io.File(getDataFolder(), filename);
+        if (dest.isFile() && hash.equalsIgnoreCase(sha1Of(dest))) {
+            getLogger().info("[ResourcePack] " + filename + " 已存在且 hash 相符，跳過下載。");
             return;
         }
-        getLogger().info("[ResourcePack] 下載 " + PACK_URL + " → " + dest.getAbsolutePath());
-        try (java.io.InputStream in = java.net.URI.create(PACK_URL).toURL().openStream();
+        getLogger().info("[ResourcePack] 下載 " + url + " → " + dest.getAbsolutePath());
+        try (java.io.InputStream in = java.net.URI.create(url).toURL().openStream();
              java.io.FileOutputStream out = new java.io.FileOutputStream(dest)) {
             in.transferTo(out);
             String got = sha1Of(dest);
-            if (!PACK_HASH.equalsIgnoreCase(got)) {
-                getLogger().warning("[ResourcePack] 下載完成但 hash 不符（預期 " + PACK_HASH + "，實際 " + got + "）。");
+            if (!hash.equalsIgnoreCase(got)) {
+                getLogger().warning("[ResourcePack] " + filename + " hash 不符（預期 " + hash + "，實際 " + got + "）。");
             } else {
-                getLogger().info("[ResourcePack] 下載完成，hash 一致。");
+                getLogger().info("[ResourcePack] " + filename + " 下載完成，hash 一致。");
             }
         } catch (Exception e) {
-            getLogger().severe("[ResourcePack] 下載失敗：" + e.getMessage());
+            getLogger().severe("[ResourcePack] " + filename + " 下載失敗：" + e.getMessage());
         }
     }
 
@@ -189,8 +197,16 @@ public class LimbusEGO extends JavaPlugin implements Listener {
 
         getServer().getPluginManager().registerEvents(this, this);
 
+        // 飾品模組（原 LimbusEGOGift 插件）
+        this.gifts = new me.yisang.limbusego.gift.GiftsModule(this);
+        this.gifts.enable();
+
+        CommandRouter router = new CommandRouter(this);
+        org.bukkit.command.PluginCommand root = getCommand("limbusego");
+        if (root != null) { root.setExecutor(router); root.setTabCompleter(router); }
+
         // 同步資源包到本插件 data folder，供 ResourcePackManager 合併分發
-        getServer().getScheduler().runTaskAsynchronously(this, this::syncResourcePackToDataFolder);
+        getServer().getScheduler().runTaskAsynchronously(this, this::syncResourcePacks);
 
         // 原版弓箭聲音攔截（需 ProtocolLib）
         if (getServer().getPluginManager().isPluginEnabled("ProtocolLib")) {
@@ -214,6 +230,7 @@ public class LimbusEGO extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         if (sanityManager != null) sanityManager.shutdown();
+        if (gifts != null) gifts.disable();
     }
 
     // ── 聖宣盾牌 Tick ─────────────────────────────────────────────────────────

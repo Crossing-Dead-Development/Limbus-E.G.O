@@ -3,9 +3,7 @@ package me.yisang.limbusego;
 import org.bukkit.*;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +22,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
+public class LimbusEGO extends JavaPlugin implements Listener {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
@@ -46,6 +44,7 @@ public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
     private me.yisang.limbusego.status.StatusManager statusManager;
     private me.yisang.limbusego.status.SanityManager sanityManager;
     private me.yisang.limbusego.lang.LangManager lang;
+    private me.yisang.limbusego.gift.GiftsModule gifts;
 
     private static final String PACK_URL  = "https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack/releases/download/v.2.17/Limbus_E.G.O_Weapons_plugin_ResourcePack.v.2.17.zip";
     private static final String PACK_HASH = "060302e85c12d23127b7c4eb3b7050c82615e20d";
@@ -103,6 +102,7 @@ public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
     public me.yisang.limbusego.status.StatusManager getStatusManager() { return statusManager; }
     public me.yisang.limbusego.status.SanityManager getSanityManager() { return sanityManager; }
     public me.yisang.limbusego.lang.LangManager getLang() { return lang; }
+    public me.yisang.limbusego.gift.GiftsModule getGifts() { return gifts; }
 
     /** 讀語言 key 並轉換顏色代碼。 */
     public String msg(String key) {
@@ -204,11 +204,6 @@ public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
             }
         } else {
             getLogger().info("未偵測到 ProtocolLib，跳過原版弓箭聲音攔截。");
-        }
-
-        if (getCommand("getego") != null) {
-            getCommand("getego").setExecutor(this);
-            getCommand("getego").setTabCompleter(this);
         }
     }
 
@@ -375,63 +370,38 @@ public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
         if (tab >= 0 && tab != gui.getCurrentTab()) gui.switchTab(player, tab);
     }
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) return true;
+    /** /limbusego weapon <give|catalog|admin|id...> 分派。args[0] 為子指令。 */
+    public void handleWeaponCommand(CommandSender sender, String[] args) {
+        if (args.length == 0) { sender.sendMessage(msg("cmd.usage_root")); return; }
         String first = args[0].toLowerCase();
 
-        if ("reload".equals(first)) {
-            if (!sender.hasPermission("limbus.admin") && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) return true;
-            lang.reload();
-            sender.sendMessage(msg("cmd.reload_success"));
-            return true;
-        }
-
-        if ("language".equals(first) || "lang".equals(first)) {
-            if (!sender.hasPermission("limbus.admin") && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) return true;
-            if (args.length < 2) {
-                sender.sendMessage(msg("cmd.language_current", lang.getCurrentLang()));
-                sender.sendMessage(msg("cmd.usage_language"));
-                return true;
-            }
-            String code = args[1];
-            if (!lang.hasLang(code)) {
-                sender.sendMessage(msg("cmd.language_invalid", code, String.join(", ", lang.getAvailableLangs())));
-                return true;
-            }
-            lang.setLanguage(code);
-            sender.sendMessage(msg("cmd.language_set", code));
-            return true;
-        }
-
         if ("give".equals(first)) {
-            if (!sender.hasPermission("limbus.admin") && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) return true;
-            if (args.length < 3) { sender.sendMessage(msg("cmd.usage_give")); return true; }
+            if (!sender.hasPermission("limbus.admin") && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) return;
+            if (args.length < 3) { sender.sendMessage(msg("cmd.usage_give")); return; }
             Player target = Bukkit.getPlayerExact(args[1]);
-            if (target == null) { sender.sendMessage(msg("cmd.player_not_found", args[1])); return true; }
+            if (target == null) { sender.sendMessage(msg("cmd.player_not_found", args[1])); return; }
             String weaponId = args[2].toLowerCase();
             int amount = 1;
             if (args.length >= 4) {
                 try { amount = Math.max(1, Integer.parseInt(args[3])); } catch (NumberFormatException ignored) {}
             }
             giveWeaponItem(target, weaponId, amount);
-            return true;
+            return;
         }
 
-        if (!(sender instanceof Player player)) return true;
+        if (!(sender instanceof Player player)) return;
         if ("admin".equals(first)) {
-            if (!player.hasPermission("limbus.admin") && !player.isOp()) return true;
+            if (!player.hasPermission("limbus.admin") && !player.isOp()) return;
             player.openInventory(new WeaponAdminGUI(this).getInventory());
-            return true;
+            return;
         }
         if ("catalog".equals(first)) {
             player.openInventory(new WeaponCatalogGUI(this, WeaponCatalogGUI.TAB_ALL).getInventory());
-            return true;
+            return;
         }
         // 其餘子指令（直接給玩家自己物品）需要管理權限
-        if (!player.hasPermission("limbus.admin") && !player.isOp()) return true;
+        if (!player.hasPermission("limbus.admin") && !player.isOp()) return;
         giveWeaponItem(player, first, 1);
-        return true;
     }
 
     /** 依 id 給予武器/彈藥/莊嚴哀悼系列物品。give 指令的兩個分支共用。 */
@@ -453,23 +423,13 @@ public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
         return false;
     }
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (args.length == 1) {
-            // 由註冊表推導，新武器/彈藥不必再手動同步這份清單
-            List<String> completions = new ArrayList<>(weaponModules.keySet());
-            completions.addAll(specialItems.keySet());
-            completions.addAll(SOLEMN_TYPES);
-            completions.addAll(List.of("admin", "catalog", "reload", "language", "give"));
-            Collections.sort(completions);
-            return completions.stream().filter(s -> s.startsWith(args[0].toLowerCase())).toList();
-        }
-        if (args.length == 2 && ("language".equalsIgnoreCase(args[0]) || "lang".equalsIgnoreCase(args[0]))) {
-            String prefix = args[1].toLowerCase();
-            return lang.getAvailableLangs().stream()
-                    .filter(s -> s.toLowerCase().startsWith(prefix)).toList();
-        }
-        return Collections.emptyList();
+    /** 武器 give 可用 id（武器 + 特殊物品 + 莊嚴哀悼系列），供 Tab 補完。 */
+    public java.util.List<String> getWeaponGiveIds() {
+        java.util.List<String> ids = new java.util.ArrayList<>(weaponModules.keySet());
+        ids.addAll(specialItems.keySet());
+        ids.addAll(SOLEMN_TYPES);
+        java.util.Collections.sort(ids);
+        return ids;
     }
 
     // ── 顏色代碼工具 ─────────────────────────────────────────────────────────

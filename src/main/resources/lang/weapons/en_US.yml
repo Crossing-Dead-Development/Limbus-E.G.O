@@ -96,6 +96,7 @@ gui:
     close: "&#FF5555Close"
 
 cmd:
+  usage_root: "&7Usage: /limbusego <weapon|gift|chest|reload|language>"
   usage_give: "Usage: /getego give <player> <weaponId>"
   usage_language: "Usage: /getego language <code>"
   player_not_found: "Player not found: {0}"

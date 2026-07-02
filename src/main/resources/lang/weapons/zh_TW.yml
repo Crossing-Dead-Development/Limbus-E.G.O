@@ -96,6 +96,7 @@ gui:
     close: "&#FF5555關閉"
 
 cmd:
+  usage_root: "&7用法：/limbusego <weapon|gift|chest|reload|language>"
   usage_give: "用法：/getego give <玩家> <武器ID>"
   usage_language: "用法：/getego language <代碼>"
   player_not_found: "找不到玩家：{0}"

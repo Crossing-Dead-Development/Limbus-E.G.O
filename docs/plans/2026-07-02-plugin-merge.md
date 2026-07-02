@@ -81,9 +81,26 @@ build/
 *.iml
 ```
 
-- [ ] **Step 2: 建立合併 plugin.yml**
+- [ ] **Step 2: 建立統一指令 plugin.yml**
 
-`src/main/resources/plugin.yml`（兩邊指令聯集，描述照抄舊檔）：
+指令統一為 `/limbusego <weapon|gift|chest|reload|language> …` 單一指令樹（Task 6 實作 CommandRouter 與 Tab 補完）；`/accessories` 保留為玩家日常捷徑。
+
+舊指令 → 新指令映射（README 與煙霧測試共用此表）：
+
+| 舊 | 新 |
+|---|---|
+| `/getego give <p> <id> [n]` | `/limbusego weapon give <p> <id> [n]` |
+| `/getego catalog` / `admin` / `<id>` | `/limbusego weapon catalog` / `admin` / `<id>` |
+| `/accessories` | `/limbusego gift menu`（`/accessories` 捷徑保留） |
+| `/getgift <id> [n]` | `/limbusego gift give <id> [n]` |
+| `/egogift category` | `/limbusego gift category` |
+| `/gachachest <set\|remove>` | `/limbusego chest gacha <set\|remove>` |
+| `/threadchest <set …\|remove>` | `/limbusego chest thread <set …\|remove>` |
+| `/shopchest <set …\|remove>` | `/limbusego chest shop <set …\|remove>` |
+| `/getego reload`＋`/egogift reload` | `/limbusego reload`（同時重載兩體系語言） |
+| `/getego language <code>` | `/limbusego language <code>` |
+
+`src/main/resources/plugin.yml`：
 ```yaml
 name: LimbusEGO
 version: 1.0.0
@@ -92,31 +109,13 @@ description: Limbus Company E.G.O weapons & gifts unified plugin. Face the sin, 
 api-version: "1.21.4"
 softdepend: [ProtocolLib]
 commands:
-  getego:
-    description: "E.G.O weapons: give / catalog / language / reload"
-    usage: /getego <give|catalog|reload|language|...>
+  limbusego:
+    description: Limbus E.G.O 主指令 / unified root command
+    usage: /limbusego <weapon|gift|chest|reload|language> ...
+    aliases: [lego]
   accessories:
-    description: 開啟飾品欄位 / open accessory slots
+    description: 開啟飾品欄位（/limbusego gift menu 捷徑）
     usage: /accessories
-  getgift:
-    description: 取得飾品 / grant an accessory
-    usage: /getgift <id> [amount]
-    permission: limbus.admin
-  gachachest:
-    description: 設定或移除抽取箱 / register or remove a gacha chest
-    usage: /gachachest <set|remove>
-    permission: limbus.admin
-  threadchest:
-    description: 設定或移除自訂抽獎箱（支援紡錘/狂氣貨幣）
-    usage: /threadchest <set <cost> [thread|lunacy] <name...>|remove>
-    permission: limbus.admin
-  shopchest:
-    description: 設定或移除購買商店箱
-    usage: /shopchest <set <cost> [thread|lunacy] <display name...>|remove>
-    permission: limbus.admin
-  egogift:
-    description: 飾品系統指令 / accessory system commands
-    usage: /egogift <category|reload|language>
 ```
 
 - [ ] **Step 3: 驗證空專案可建置**
@@ -289,8 +288,15 @@ public class GiftsModule implements Listener, TabCompleter {
 
 並且：
 1. `@Override public void onEnable()` → `public void enable()`；`onDisable()` → `public void disable()`（拿掉 @Override）
-2. 移除 `syncResourcePackToDataFolder`、`sha1Of`、`PACK_URL/PACK_HASH/PACK_FILENAME` 與 enable 內的資源包同步呼叫（Task 6 由主類統一處理雙資源包）
+2. 移除 `syncResourcePackToDataFolder`、`sha1Of`、`PACK_URL/PACK_HASH/PACK_FILENAME` 與 enable 內的資源包同步呼叫（Task 7 由主類統一處理雙資源包）
 3. `/egogift reload` 子指令中 `pm.disablePlugin(this); pm.enablePlugin(this)` 整段改為 `lang.reload(); sender.sendMessage(msg("msg.reload.done"));`（模組無法自我重載插件）
+4. **指令處理器改為 public** 供 CommandRouter（Task 6）呼叫：`onGetGift`、`onGachaChest`、`onThreadChest`、`onEgoGift`、`onShopChest` 由 private 改 public，簽名不變
+5. enable() 內的指令註冊只保留 `accessories`（plugin.yml 僅存的捷徑指令）：
+```java
+Objects.requireNonNull(getCommand("accessories")).setExecutor(
+        (sender, cmd, label, args) -> { if (sender instanceof Player p) openMenu(p); return true; });
+```
+其餘 `getgift/gachachest/threadchest/egogift/shopchest` 的 getCommand 註冊區塊整段刪除（這些指令已不存在於 plugin.yml，改由 `/limbusego` 樹分派）
 
 - [ ] **Step 3: 編譯錯誤驅動修復 Plugin 參數呼叫點**
 
@@ -358,7 +364,227 @@ git add -A; git commit -m "fix: 飾品側 NamespacedKey 固定為 limbusegogift 
 
 ---
 
-### Task 6: 主類接線（GiftsModule 啟動＋指令＋雙資源包）
+### Task 6: 統一指令 `/limbusego` 與 Tab 補完
+
+**Files:**
+- Create: `src/main/java/me/yisang/limbusego/CommandRouter.java`
+- Modify: `src/main/java/me/yisang/limbusego/LimbusEGO.java`
+- Modify: `src/main/resources/lang/weapons/zh_TW.yml`、`lang/weapons/en_US.yml`
+
+**Interfaces:**
+- Consumes: `GiftsModule` 的 public 指令處理器（Task 4 Step 2 第 4 點）、`LimbusEGO.getGifts()`（Task 7 提供，本 task 先加欄位 stub 也可，實作順序上與 Task 7 同批執行）
+- Produces: `CommandRouter implements TabExecutor`；`LimbusEGO.handleWeaponCommand(CommandSender, String[])`、`LimbusEGO.getWeaponGiveIds()`
+
+- [ ] **Step 1: LimbusEGO 抽出武器指令處理器**
+
+把舊 `onCommand` 的 body 改寫為 public 方法（`reload`/`language` 分支**刪除**——升級為 `/limbusego` 根層級，由 Router 統一處理兩體系）：
+
+```java
+/** /limbusego weapon <give|catalog|admin|id...> 分派。args[0] 為子指令。 */
+public void handleWeaponCommand(CommandSender sender, String[] args) {
+    if (args.length == 0) { sender.sendMessage(msg("cmd.usage_root")); return; }
+    String first = args[0].toLowerCase();
+
+    if ("give".equals(first)) {
+        if (!sender.hasPermission("limbus.admin") && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) return;
+        if (args.length < 3) { sender.sendMessage(msg("cmd.usage_give")); return; }
+        Player target = Bukkit.getPlayerExact(args[1]);
+        if (target == null) { sender.sendMessage(msg("cmd.player_not_found", args[1])); return; }
+        String weaponId = args[2].toLowerCase();
+        int amount = 1;
+        if (args.length >= 4) {
+            try { amount = Math.max(1, Integer.parseInt(args[3])); } catch (NumberFormatException ignored) {}
+        }
+        giveWeaponItem(target, weaponId, amount);
+        return;
+    }
+
+    if (!(sender instanceof Player player)) return;
+    if ("admin".equals(first)) {
+        if (!player.hasPermission("limbus.admin") && !player.isOp()) return;
+        player.openInventory(new WeaponAdminGUI(this).getInventory());
+        return;
+    }
+    if ("catalog".equals(first)) {
+        player.openInventory(new WeaponCatalogGUI(this, WeaponCatalogGUI.TAB_ALL).getInventory());
+        return;
+    }
+    // 其餘子指令（直接給玩家自己物品）需要管理權限
+    if (!player.hasPermission("limbus.admin") && !player.isOp()) return;
+    giveWeaponItem(player, first, 1);
+}
+```
+
+同時：移除 `implements TabCompleter` 與 `onCommand`/`onTabComplete` @Override 方法、移除 onEnable 中 `getego` 的註冊區塊，並新增 Tab 補完資料來源：
+
+```java
+/** 武器 give 可用 id（武器 + 特殊物品 + 莊嚴哀悼系列），供 Tab 補完。 */
+public java.util.List<String> getWeaponGiveIds() {
+    java.util.List<String> ids = new java.util.ArrayList<>(weaponModules.keySet());
+    ids.addAll(specialItems.keySet());
+    ids.addAll(SOLEMN_TYPES);
+    java.util.Collections.sort(ids);
+    return ids;
+}
+```
+
+- [ ] **Step 2: 建立 CommandRouter**
+
+`src/main/java/me/yisang/limbusego/CommandRouter.java`（完整檔）：
+
+```java
+package me.yisang.limbusego;
+
+import me.yisang.limbusego.gift.GiftsModule;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/** /limbusego 統一指令樹：weapon | gift | chest | reload | language，含全層 Tab 補完。 */
+public class CommandRouter implements TabExecutor {
+
+    private final LimbusEGO plugin;
+
+    private static final List<String> ROOT = List.of("weapon", "gift", "chest", "reload", "language");
+    private static final List<String> WEAPON_SUB = List.of("give", "catalog", "admin");
+    private static final List<String> GIFT_SUB = List.of("menu", "give", "category");
+    private static final List<String> CHEST_SUB = List.of("gacha", "thread", "shop");
+    private static final List<String> SET_REMOVE = List.of("set", "remove");
+    private static final List<String> CURRENCIES = List.of("thread", "lunacy");
+
+    public CommandRouter(LimbusEGO plugin) { this.plugin = plugin; }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        GiftsModule gifts = plugin.getGifts();
+        if (args.length == 0) { sender.sendMessage(plugin.msg("cmd.usage_root")); return true; }
+        String[] rest = Arrays.copyOfRange(args, 1, args.length);
+        switch (args[0].toLowerCase()) {
+            case "weapon" -> plugin.handleWeaponCommand(sender, rest);
+            case "gift" -> {
+                if (rest.length == 0) { sender.sendMessage(plugin.msg("cmd.usage_root")); return true; }
+                String[] rest2 = Arrays.copyOfRange(rest, 1, rest.length);
+                switch (rest[0].toLowerCase()) {
+                    case "menu" -> { if (sender instanceof Player p) gifts.openMenu(p); }
+                    case "give" -> gifts.onGetGift(sender, cmd, label, rest2);
+                    case "category" -> gifts.onEgoGift(sender, cmd, label, new String[]{"category"});
+                    default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
+                }
+            }
+            case "chest" -> {
+                if (rest.length == 0) { sender.sendMessage(plugin.msg("cmd.usage_root")); return true; }
+                String[] rest2 = Arrays.copyOfRange(rest, 1, rest.length);
+                switch (rest[0].toLowerCase()) {
+                    case "gacha" -> gifts.onGachaChest(sender, cmd, label, rest2);
+                    case "thread" -> gifts.onThreadChest(sender, cmd, label, rest2);
+                    case "shop" -> gifts.onShopChest(sender, cmd, label, rest2);
+                    default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
+                }
+            }
+            case "reload" -> {
+                if (!sender.hasPermission("limbus.admin") && !(sender instanceof ConsoleCommandSender)) return true;
+                plugin.getLang().reload();
+                gifts.getLang().reload();
+                sender.sendMessage(plugin.msg("cmd.reload_success"));
+            }
+            case "language", "lang" -> {
+                if (!sender.hasPermission("limbus.admin") && !(sender instanceof ConsoleCommandSender)) return true;
+                if (rest.length == 0) {
+                    sender.sendMessage(plugin.msg("cmd.language_current", plugin.getLang().getCurrentLang()));
+                    return true;
+                }
+                String code = rest[0];
+                if (!plugin.getLang().hasLang(code)) {
+                    sender.sendMessage(plugin.msg("cmd.language_invalid", code, String.join(", ", plugin.getLang().getAvailableLangs())));
+                    return true;
+                }
+                plugin.getLang().setLanguage(code);
+                gifts.getLang().setLanguage(code);
+                sender.sendMessage(plugin.msg("cmd.language_set", code));
+            }
+            default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
+        }
+        return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        GiftsModule gifts = plugin.getGifts();
+        if (args.length == 1) return filter(ROOT, args[0]);
+        switch (args[0].toLowerCase()) {
+            case "weapon" -> {
+                if (args.length == 2) {
+                    List<String> opts = new ArrayList<>(WEAPON_SUB);
+                    opts.addAll(plugin.getWeaponGiveIds());
+                    return filter(opts, args[1]);
+                }
+                if ("give".equalsIgnoreCase(args[1])) {
+                    if (args.length == 3) return null; // null = 交給 Bukkit 補完線上玩家名
+                    if (args.length == 4) return filter(plugin.getWeaponGiveIds(), args[3]);
+                }
+            }
+            case "gift" -> {
+                if (args.length == 2) return filter(GIFT_SUB, args[1]);
+                if (args.length == 3 && "give".equalsIgnoreCase(args[1])) return filter(giftIds(gifts), args[2]);
+            }
+            case "chest" -> {
+                if (args.length == 2) return filter(CHEST_SUB, args[1]);
+                if (args.length == 3) return filter(SET_REMOVE, args[2]);
+                if (args.length == 5 && "set".equalsIgnoreCase(args[2])
+                        && ("thread".equalsIgnoreCase(args[1]) || "shop".equalsIgnoreCase(args[1]))) {
+                    return filter(CURRENCIES, args[4]);
+                }
+            }
+            case "language", "lang" -> {
+                if (args.length == 2) return filter(plugin.getLang().getAvailableLangs(), args[1]);
+            }
+        }
+        return List.of();
+    }
+
+    private static List<String> giftIds(GiftsModule gifts) {
+        List<String> ids = new ArrayList<>();
+        for (var acc : gifts.getAllAccessories()) ids.add(acc.getId());
+        return ids;
+    }
+
+    private static List<String> filter(List<String> options, String prefix) {
+        String p = prefix.toLowerCase();
+        return options.stream().filter(s -> s.toLowerCase().startsWith(p)).sorted().toList();
+    }
+}
+```
+
+- [ ] **Step 3: lang 檔補 `cmd.usage_root`**
+
+`lang/weapons/zh_TW.yml` 加：
+```yaml
+cmd:
+  usage_root: "&7用法：/limbusego <weapon|gift|chest|reload|language>"
+```
+`lang/weapons/en_US.yml` 加：
+```yaml
+cmd:
+  usage_root: "&7Usage: /limbusego <weapon|gift|chest|reload|language>"
+```
+（併入既有 `cmd:` 區塊，不要重複頂層 key。）
+
+- [ ] **Step 4: 編譯 + Commit**
+
+Run: `.\gradlew.bat jar` → `BUILD SUCCESSFUL`（若 `getGifts()` 尚未存在，與 Task 7 Step 1 併批補上後再編譯）
+```powershell
+git add -A; git commit -m "feat: /limbusego 統一指令樹與全層 Tab 補完"
+```
+
+---
+
+### Task 7: 主類接線（GiftsModule 啟動＋指令＋雙資源包）
 
 **Files:**
 - Modify: `LimbusEGO.java`、`src/main/resources/config.yml`
@@ -384,7 +610,13 @@ this.gifts.enable();
 ```java
 if (gifts != null) gifts.disable();
 ```
-註：GiftsModule.enable() 內原本的 getCommand 註冊碼經 Task 4 委派後直接生效，指令不需在主類重複註冊。
+並在 gifts.enable() 之後註冊統一指令（Task 6 的 Router）：
+```java
+CommandRouter router = new CommandRouter(this);
+org.bukkit.command.PluginCommand root = getCommand("limbusego");
+if (root != null) { root.setExecutor(router); root.setTabCompleter(router); }
+```
+註：`/accessories` 捷徑由 GiftsModule.enable() 自行註冊（Task 4 Step 2 第 5 點）。
 
 - [ ] **Step 2: 雙資源包同步**
 
@@ -439,7 +671,7 @@ git add -A; git commit -m "feat: 主類接線 GiftsModule 與雙資源包同步"
 
 ---
 
-### Task 7: 部署測試伺服器與煙霧測試
+### Task 8: 部署測試伺服器與煙霧測試
 
 **Files:**
 - 無程式碼變更；伺服器操作
@@ -467,13 +699,14 @@ Copy-Item "build\libs\LimbusEGO-1.0.0.jar" $srv -Force
 | # | 測項 | 預期 |
 |---|---|---|
 | 1 | 伺服器啟動 log | `LimbusEGO 1.0.0` 啟用、無 stacktrace、兩個資源包下載/驗證訊息 |
-| 2 | `/getego give <me> mimicry` 攻擊怪 | 武器效果與屬性 ActionBar 正常 |
+| 2 | `/limbusego weapon give <me> mimicry` 攻擊怪 | 武器效果與屬性 ActionBar 正常 |
 | 3 | **舊背包裡的武器**攻擊 | 仍被識別（PDC 相容驗證） |
-| 4 | `/accessories` 開選單、裝備飾品 | 選單正常、被動生效 |
+| 4 | `/accessories` 與 `/limbusego gift menu` 開選單、裝備飾品 | 選單正常、被動生效 |
 | 5 | **舊飾品物品**放入欄位 | 仍被識別、**升級等級保留**（玩家 PDC） |
-| 6 | 抽取箱／紡錘箱／商店箱 | 遷移資料後照常運作 |
-| 7 | `/egogift reload`、`/getego reload` | 語言重載無錯誤 |
-| 8 | `/getego language en_US` | 兩體系文案各自切換正常 |
+| 6 | `/limbusego chest gacha/thread/shop` 與既有箱子 | 遷移資料後照常運作 |
+| 7 | `/limbusego reload` | 兩體系語言重載無錯誤 |
+| 8 | `/limbusego language en_US` | 兩體系文案同時切換 |
+| 9 | Tab 補完逐層測試（root→weapon give→玩家→id；gift give→id；chest thread set→貨幣） | 每層候選正確 |
 
 - [ ] **Step 3: 修復發現的問題並 commit**
 
@@ -485,14 +718,14 @@ git add -A; git commit -m "fix: 煙霧測試修正"
 
 ---
 
-### Task 8: README 與推送
+### Task 9: README 與推送
 
 **Files:**
 - Create: `README.md`
 
 - [ ] **Step 1: 撰寫 README**
 
-內容必含：插件簡介（合併自兩舊插件）、版本 1.0.0、指令表（7 指令）、12 屬性體系簡表、安裝說明（取代舊兩插件＋資料遷移步驟）、舊 repo 連結與棄用聲明、資源包說明（Phase 3 前仍用兩個舊資源包）。
+內容必含：插件簡介（合併自兩舊插件）、版本 1.0.0、`/limbusego` 指令樹全表（含 Task 1 的新舊指令映射表）、12 屬性體系簡表、安裝說明（取代舊兩插件＋資料遷移步驟）、舊 repo 連結與棄用聲明、資源包說明（Phase 3 前仍用兩個舊資源包）。
 
 - [ ] **Step 2: Commit + push**
 

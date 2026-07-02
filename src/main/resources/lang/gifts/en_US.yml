@@ -1,0 +1,378 @@
+# Limbus E.G.O Gift — English language file
+# Placeholders: {0}, {1}, {2} … are substituted at runtime.
+# Color codes accept both & and &#RRGGBB.
+
+msg:
+  menu_opener_name: "&#FFD700✦ &fAccessory Slots"
+  menu_opener_lore: "&#AAAAAARight-click to open the accessory menu"
+  admin_given: "&#FFD700Item granted."
+  upgrade_success: "&#FFD700Accessory upgraded! &#AAAAAALevel: &#FFFFFF▲ Lv.{0}"
+  upgrade_maxed: "&#FF5555This accessory is already at max level (Lv.3)."
+  upgrade_lore: "&#FFD700▲ Upgrade Lv.{0}"
+
+  gacha:
+    look_at_chest: "&#FF5555Look at a chest (within 10 blocks)."
+    set_success: "&#FFD700Registered this chest as a gacha chest."
+    set_duplicate: "&#AAAAAAThis chest is already a gacha chest."
+    remove_success: "&#FFD700Removed this chest's gacha status."
+    remove_missing: "&#AAAAAAThis chest is not a gacha chest."
+
+  thread:
+    look_at_chest: "&#FF5555Look at a chest (within 10 blocks)."
+    usage: "&#FF5555Usage: /threadchest set <cost> [thread|lunacy] <name...>"
+    cost_not_integer: "&#FF5555Cost must be an integer. Usage: /threadchest set <cost> [thread|lunacy] <name...>"
+    cost_too_low: "&#FF5555Cost per draw must be at least 1."
+    need_name: "&#FF5555Please specify a name. Usage: /threadchest set <cost> [thread|lunacy] <name...>"
+    set_success: "&#FFE5A0Registered this chest as gacha \"{0}\", costing {1} {2} per draw."
+    set_hint: "&#AAAAAAAdmins sneak+right-click to edit the pool; players right-click to draw."
+    set_duplicate: "&#AAAAAAThis chest is already a gacha chest. Remove it first before re-registering."
+    remove_success: "&#FFE5A0Removed this chest's gacha status."
+    remove_missing: "&#AAAAAAThis chest is not a gacha chest."
+
+  shop:
+    look_at_chest: "&#FF5555Look at a chest (within 10 blocks)."
+    usage: "&#FF5555Usage: /shopchest set <cost> [thread|lunacy] <display name...>"
+    cost_not_integer: "&#FF5555Cost must be an integer. Usage: /shopchest set <cost> [thread|lunacy] <display name...>"
+    cost_too_low: "&#FF5555Cost must be at least 1."
+    need_name: "&#FF5555Please specify a display name. Usage: /shopchest set <cost> [thread|lunacy] <display name...>"
+    set_success: "&#9BE1FFRegistered this chest as shop \"{0}\", costing {1} {2} per purchase."
+    set_hint: "&#AAAAAAAdmins sneak+right-click to edit contents; players right-click to buy a copy of all items."
+    set_duplicate: "&#AAAAAAThis chest is already a shop. Remove it first before re-registering."
+    remove_success: "&#9BE1FFRemoved this chest's shop status."
+    remove_missing: "&#AAAAAAThis chest is not a shop."
+
+  reload:
+    starting: "&#FFD700[GiftsModule] &#AAAAAAFull reload starting…"
+    done: "&#FFD700[GiftsModule] &#AAAAAAReload done."
+    failed: "&#FF5555[GiftsModule] Reload failed: {0}"
+    lang_done: "&#FFD700[GiftsModule] &#AAAAAALanguage files reloaded."
+
+currency:
+  thread: "Thread"
+  lunacy: "Lunacy"
+
+gui:
+  menu_title: "§6✦ Accessory Slots"
+  catalog_title: "&#FFFFFFAccessory Catalog"
+  admin_title: "&#FFD700✦ &fAccessory Admin"
+  tab_tier: "Tier {0}"
+  close: "&#FF5555Close"
+  prev_page: "&f◀ &7Previous"
+  next_page: "&fNext &7▶"
+  page_indicator: "&fPage {0}/{1}"
+
+cmd:
+  no_permission: "&#FF5555You do not have permission to use this command."
+  usage_getgift_give: "Usage: /getgift give <player> <accessoryId|menu>"
+  player_not_found: "Player not found: {0}"
+  language_current: "&#FFD700Current language: &f{0}"
+  language_usage: "Usage: /egogift language <code>"
+  language_set: "&#FFD700Language switched to &f{0}"
+  language_invalid: "&#FF5555Unknown language: {0}. Available: {1}"
+
+# ── Gifts / 飾品 ──────────────────────────────────────────────────────────────
+gift:
+  ardent_flower:
+    name: "Ardent Flower"
+    description: ["&#FF7000A dream of infernal flame butterflies."]
+    effect: "Passive: Immune to fire damage"
+  artistic_sense:
+    name: "Artistic Sense"
+    effect: "Emits a sense prompt when players or named creatures are nearby"
+  ashes_to_ashes:
+    name: "Ashes to Ashes"
+    description: ["&#9A9A9AInto the mist we go."]
+    effect: "On kill: restore 4 HP"
+  black_sheet_music:
+    name: "Black Sheet Music"
+    description: ["&#FFFFFFThis movement shall pierce your very soul."]
+    effect: "Passive: Haste I"
+  bloodflame_sword:
+    name: "Bloodflame Sword"
+    effect: "Melee attacks set the target on fire for 3s"
+  bloody_gadget:
+    name: "Bloody Gadget"
+    effect: "Attacks deal +2 damage, but you take 0.5 HP self-damage"
+  blue_zippo_lighter:
+    name: "Blue Zippo Lighter"
+    description: ["&#44D8DBA supply issued to employees by Wings."]
+    effect: "On attack: 25% chance to ignite the target for 3s"
+  brilliant_vestige:
+    name: "Brilliant Vestige"
+    effect: "Upgrade material for a Tier IV accessory"
+  broken_compass:
+    name: "Broken Compass"
+    description: ["&#0772ABThe cries of the disoriented do not cease."]
+    effect: "On attack: 10% chance to inflict Nausea for 3s"
+  cqc_manual:
+    name: "CQC Manual"
+    effect: "Passive: Strength I"
+  carmilla:
+    name: "Carmilla"
+    effect: "On attack: steal 3 HP; loses 1 HP/s in sunlight"
+  cask_spirits:
+    name: "Cask of Spirits"
+    description: ["&#A8BE78I never imagined life without a drink."]
+    effect: "On hit: Strength II for 3s"
+  chief_butlers_secret_arts:
+    name: "Chief Butler's Secret Arts"
+    effect: "Passive: Resistance I, Slow Falling"
+  child_within_a_flask:
+    name: "Child Within a Flask"
+    effect: "Once per 2 minutes, survives a lethal blow"
+  clear_mirror_calm_water:
+    name: "Clear Mirror, Calm Water"
+    description: ["&#56BBDBOne reflects not in flowing water, but in still."]
+    effect: "On hit: 20% chance to reduce damage by 50%"
+  cold_illusion:
+    name: "Cold Illusion"
+    description: ["&#33CF4FThe blooming Council of Nine."]
+    effect: "On attack: apply Slowness II for 3s"
+  crystallized_blood:
+    name: "Crystallized Blood"
+    description: ["&#FF0000An endless parade."]
+    effect: "On hit: gain Strength I for 3s"
+  dark_vestige:
+    name: "Dark Vestige"
+    effect: "Upgrade material for a Tier I accessory"
+  distant_star:
+    name: "Distant Star"
+    description: ["&#00DAFFFollowing the stars."]
+    effect: "Passive: Luck I"
+  dreaming_electric_sheep:
+    name: "Dreaming Electric Sheep"
+    description: ["&#9863E7What color is yours?"]
+    effect: "Passive: Slow Falling, Slowness I"
+  dry_to_the_bone_breast:
+    name: "Dry-to-the-Bone Breast"
+    description: ["&#D77F00Chicken is chicken."]
+    effect: "Passive: Hunger doesn't drain; Strength I while sated"
+  dueling_manual_book_3:
+    name: "Dueling Manual, Book 3"
+    effect: "On hit: 30% chance to block 50% of the damage"
+  dust_to_dust:
+    name: "Dust to Dust"
+    description: ["&#9A9A9AThat wasn't fog."]
+    effect: "On kill: 30% chance to gain Absorption I for 5s"
+  e_type_dimensional_dagger:
+    name: "E-type Dimensional Dagger"
+    effect: "On attack: 25% chance to teleport behind target and deal bonus damage"
+  ebony_brooch:
+    name: "Ebony Brooch"
+    description: ["&#5B1365The Queen's apple."]
+    effect: "Passive: Night Vision; Speed I at night"
+  emerald_elytra:
+    name: "Emerald Elytra"
+    description: ["&#16B569Under the umbrella, waiting out the rain."]
+    effect: "Passive: Slow Falling, Jump Boost I"
+  endless_hunger:
+    name: "Endless Hunger"
+    effect: "No weakness when starving; attack scales with hunger bar"
+  faint_vestige:
+    name: "Faint Vestige"
+    effect: "Upgrade material for a Tier II accessory"
+  finifugality:
+    name: "Finifugality"
+    effect: "On hit: below 30% HP grants Speed II for 5s"
+  flower_in_the_mirror:
+    name: "Flower in the Mirror"
+    effect: "On lethal hit: 40% chance to survive and gain Invisibility + Speed"
+  flower_mound:
+    name: "Flower Mound"
+    description:
+      - "&#F1B1B1Today I bury the flowers; who knows when I shall be buried?"
+      - "&#F1B1B1They laugh at me for burying petals; who will bury me one day?"
+    effect: "Passive: Regeneration I"
+  frozen_cries:
+    name: "Frozen Cries"
+    description: ["&#4498DBUnwilling to be ordinary."]
+    effect: "On attack: apply Slowness III for 2s"
+  glimpse_of_flames:
+    name: "Glimpse of Flames"
+    effect: "When attacked, ignite the attacker for 3s and emit flame particles"
+  golden_urn:
+    name: "Golden Urn"
+    description: ["&#DA8F24To embrace is itself to accept another."]
+    effect: "On kill: drop an extra gold nugget"
+  green_spirit:
+    name: "Green Spirit"
+    effect: "Right-click: Speed II + Strength I for 5s, then dizziness (30s CD)"
+  handheld_mirror:
+    name: "Handheld Mirror"
+    effect: "Reflects 30% of incoming melee damage back to the attacker"
+  hardship:
+    name: "Hardship"
+    description: ["&#9E9E41In this unholy place, one cannot even be sure this counts as prayer."]
+    effect: "Passive: Resistance I"
+  harestride:
+    name: "Harestride"
+    description: ["&#AAD179A revelation of the parting clouds."]
+    effect: "Passive: Speed II, Jump Boost I"
+  homeward:
+    name: "Homeward"
+    description: ["&#8EC58E\"Take it with you before I take your home away. Quickly.\""]
+    effect: "Passive: Regeneration II while above 80% HP"
+  hot_n_juicy_drumstick:
+    name: "Hot 'n' Juicy Drumstick"
+    description: ["&#D77F00Chicken is chicken."]
+    effect: "Passive: Hunger does not drain"
+  illusory_hunt:
+    name: "Illusory Hunt"
+    description: ["&#C6CDEFYou are special."]
+    effect: "On attack: 20% chance to inflict Blindness for 3s"
+  jin_gang_bolus:
+    name: "Jin Gang Bolus"
+    description: ["&#9F8B07A pill of admirable color."]
+    effect: "Passive: Absorption I"
+  keenbranch:
+    name: "Keenbranch"
+    effect: "On attack: 15% chance to increase damage by 50%"
+  la_manchaland_all_day_pass:
+    name: "La Manchaland All-Day Pass"
+    description: ["&#FCD05CIn my stead, chase the dream alongside that child."]
+    effect: "Passive: Speed I, Jump Boost I"
+  la_manchaland_standard_pass:
+    name: "La Manchaland Standard Pass"
+    description: ["&#FCD05CA great fixer's tale of chasing dreams."]
+    effect: "Passive: Speed I"
+  late_bloomers_tattoo:
+    name: "Late Bloomer's Tattoo"
+    effect: "The lower your HP, the higher your attack and defense"
+  lithograph:
+    name: "Lithograph"
+    description: ["&#169876Judgement… Condemnation… Chastisement…"]
+    effect: "Passive: All incoming damage reduced by 10%"
+  mask_of_the_parade:
+    name: "Mask of the Parade"
+    description: ["&#9928BB\"For a mere drop of blood, this moment can be preserved forever!\""]
+    effect: "Passive: Continuous Invisibility while sneaking"
+  mental_corruption_boosting_gas:
+    name: "Mental Corruption Boosting Gas"
+    effect: "On attack: 30% chance to inflict Nausea on target and nearby players"
+  millarca:
+    name: "Millarca"
+    effect: "On attack: steal 3 HP (potent lifesteal)"
+  moon_in_the_water:
+    name: "Moon in the Water"
+    description: ["&#8EC5F0Frowning in vain."]
+    effect: "Passive: Night Vision"
+  nebulizer:
+    name: "Nebulizer"
+    effect: "Passive: Continuously poisons enemies within 4 blocks"
+  nixie_divergence:
+    name: "Nixie Divergence"
+    effect: "On attack: 15% chance to gain a random potion effect"
+  oracle:
+    name: "Oracle"
+    description: ["&#B3F2F9Laughing at the blade, crying at the waterfall like the scent of falling leaves."]
+    effect: "Passive: Below 40% HP, reveals mobs within 10 blocks"
+  pain_of_stifled_rage:
+    name: "Pain of Stifled Rage"
+    description: ["&#DA3D24The bull roars in despair…"]
+    effect: "On hit: gain Strength I for 5s"
+  phantom_pain:
+    name: "Phantom Pain"
+    description:
+      - "&#656565He tried to grasp the outstretched hand,"
+      - "&#656565but failed."
+    effect: "On hit: 25% chance to reduce damage by 70%"
+  piece_of_a_torn_summer:
+    name: "Piece of a Torn Summer"
+    description: ["&#5FE2C5\"Trying to understand fickle weather seems meaningless to me.\""]
+    effect: "On fire/lava damage: gain Strength I for 5s"
+  piece_of_crumbled_egg:
+    name: "Piece of a Crumbled Egg"
+    description: ["&#33CF4FThe blooming Council of Nine."]
+    effect: "On death: strike the killer with lightning"
+  piece_of_relationship:
+    name: "Piece of Relationship"
+    description: ["&#444444Three lives of fate, three thousand worlds, three-life karma."]
+    effect: "Passive: Grants Regeneration I to players within 5 blocks"
+  plume_of_proof:
+    name: "Plume of Proof"
+    description: ["&#4498DBA salute to you."]
+    effect: "On kill: gain Speed II for 5s"
+  prejudice:
+    name: "Prejudice"
+    effect: "Deal +50% damage to undead and spider-type mobs"
+  rags:
+    name: "Rags"
+    description: ["&#755E42They can no longer keep out the falling rain."]
+    effect: "On hit: reflect 30% of the damage back to the attacker"
+  rest:
+    name: "Rest"
+    description: ["&#FFFFFF\"A single coffin lies here alone.\""]
+    effect: "Passive: Regeneration I while standing still"
+  royal_jelly_perfume:
+    name: "Royal Jelly Perfume"
+    effect: "Passive: Regeneration I; nearby bees do not attack"
+  ruin:
+    name: "Ruin"
+    effect: "On attack: deal +4 damage but lose 1 HP"
+  rusty_commemorative_coin:
+    name: "Rusty Commemorative Coin"
+    effect: "On kill: 35% chance to drop an extra gold nugget"
+  sanguine_blossom_bolus:
+    name: "Sanguine Blossom Bolus"
+    effect: "Regenerate HP slowly while out of combat"
+  smoking_gunpowder:
+    name: "Smoking Gunpowder"
+    effect: "On death: deal 8 damage to enemies within 4 blocks"
+  someones_device:
+    name: "Someone's Device"
+    effect: "Passive: shows nearby mob count on the ActionBar"
+  sour_liquor_aroma:
+    name: "Sour Liquor Aroma"
+    description: ["&#00BC6B\"So it wasn't a customer, but an unwelcome one.\""]
+    effect: "Passive: Enemies within 5 blocks continuously receive Weakness I"
+  sownpour:
+    name: "Sownpour"
+    effect: "On attack: 30% chance to chain-strike nearby enemies (50% damage)"
+  special_contract:
+    name: "Special Contract"
+    effect: "Passive: Strength II but Slowness II"
+  spicebush_branch:
+    name: "Spicebush Branch"
+    description:
+      - "&#FFF29BI can't see the flowers, but I smell them."
+      - "&#FFF29BThe scent blooms; there I begin to dig a grave."
+    effect: "Passive: Converts Poison ticks into healing"
+  strange_glyph_inscriptions:
+    name: "Strange Glyph Inscriptions"
+    effect: "On attack: 20% chance to trigger a random positive or negative effect"
+  strange_glyph_talisman:
+    name: "Strange Glyph Talisman"
+    description: ["&#8E5608Tian Jiu Xing — the Unrestrained."]
+    effect: "Passive: All incoming damage reduced by 15%"
+  sunshower:
+    name: "Sunshower"
+    effect: "Heal in the rain; Speed boost when clear"
+  tangled_bones:
+    name: "Tangled Bones"
+    description: ["&#969696The fragments are a jumbled mess; the original form is unrecognizable."]
+    effect: "On attack: double damage to skeletons; 20% chance to ignite"
+  tenacity_bolus:
+    name: "Tenacity Bolus"
+    description: ["&#0C440CThe day the Kong family was slaughtered."]
+    effect: "Passive: Resistance I, Health Boost I"
+  the_book_of_vengeance:
+    name: "The Book of Vengeance"
+    description: ["&#B900FFPaid back twofold!"]
+    effect: "Passive: Regeneration I; every 30s applies Slowness I for 1s"
+  thunderbranch:
+    name: "Thunderbranch"
+    effect: "On attack: 10% chance to summon a lightning bolt"
+  tranquil_lotus_bolus:
+    name: "Tranquil Lotus Bolus"
+    description: ["&#E07F9AA vain sigh."]
+    effect: "Passive: Resistance I, Slowness I"
+  trauma_shield:
+    name: "Trauma Shield"
+    description: ["&#CBCBCBAn anti-psychic force field shield."]
+    effect: "On hit: absorbs one instance of damage every 60s"
+  trial_plan_guide:
+    name: "Trial Plan Guide"
+    effect: "On kill: gain +50% extra experience"
+  twinkling_vestige:
+    name: "Twinkling Vestige"
+    effect: "Upgrade material for a Tier III accessory"

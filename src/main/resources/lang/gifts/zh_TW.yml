@@ -1,0 +1,75 @@
+# Limbus E.G.O Gift — 繁體中文語言檔
+# 佔位符：{0}, {1}, {2} 依訊息不同代入 (玩家名 / 金額 / 貨幣 …)
+# 顏色代碼支援 & 與 &#RRGGBB
+#
+# 說明：本插件的 84 個飾品其 name / description / effect 已由各飾品 class 建構子
+# 給出繁體中文預設值；若要覆蓋其中任何一項，把 key 加到 gift.<id>.name / .description / .effect 即可。
+# 未定義的 key 會回退到程式內建的繁中預設。
+
+msg:
+  menu_opener_name: "&#FFD700✦ &f飾品欄位"
+  menu_opener_lore: "&#AAAAAA右鍵開啟飾品欄位"
+  admin_given: "&#FFD700已給予物品。"
+  upgrade_success: "&#FFD700飾品升級成功！&#AAAAAA等級：&#FFFFFF▲ Lv.{0}"
+  upgrade_maxed: "&#FF5555此飾品已達最高等級（Lv.3）。"
+  upgrade_lore: "&#FFD700▲ 升級 Lv.{0}"
+
+  gacha:
+    look_at_chest: "&#FF5555請看向一個箱子（10格內）。"
+    set_success: "&#FFD700已設定此箱子為抽取箱。"
+    set_duplicate: "&#AAAAAA此箱子已是抽取箱。"
+    remove_success: "&#FFD700已移除此箱子的抽取箱狀態。"
+    remove_missing: "&#AAAAAA此箱子不是抽取箱。"
+
+  thread:
+    look_at_chest: "&#FF5555請看向一個箱子（10格內）。"
+    usage: "&#FF5555用法：/threadchest set <消耗數> [thread|lunacy] <名稱...>"
+    cost_not_integer: "&#FF5555成本需為整數。用法：/threadchest set <消耗數> [thread|lunacy] <名稱...>"
+    cost_too_low: "&#FF5555每抽消耗至少為 1。"
+    need_name: "&#FF5555請指定抽獎箱名稱。用法：/threadchest set <消耗數> [thread|lunacy] <名稱...>"
+    set_success: "&#FFE5A0已設定此箱子為抽獎箱「{0}」，每抽消耗 {1} {2}。"
+    set_hint: "&#AAAAAA管理員潛行右鍵可開箱編輯獎池；一般玩家右鍵即抽取。"
+    set_duplicate: "&#AAAAAA此箱子已是抽獎箱。請先 remove 再重設。"
+    remove_success: "&#FFE5A0已移除此箱子的抽獎箱狀態。"
+    remove_missing: "&#AAAAAA此箱子不是抽獎箱。"
+
+  shop:
+    look_at_chest: "&#FF5555請看向一個箱子(10 格內)。"
+    usage: "&#FF5555用法:/shopchest set <消耗數> [thread|lunacy] <顯示名稱...>"
+    cost_not_integer: "&#FF5555消耗數需為整數。用法:/shopchest set <消耗數> [thread|lunacy] <顯示名稱...>"
+    cost_too_low: "&#FF5555每次消耗至少為 1。"
+    need_name: "&#FF5555請指定商店顯示名稱。用法:/shopchest set <消耗數> [thread|lunacy] <顯示名稱...>"
+    set_success: "&#9BE1FF已設定此箱子為商店「{0}」,每次消耗 {1} {2}。"
+    set_hint: "&#AAAAAA管理員潛行右鍵可開箱編輯商品內容;玩家右鍵即付費購買箱內全部商品的複本。"
+    set_duplicate: "&#AAAAAA此箱子已是商店。請先 remove 再重設。"
+    remove_success: "&#9BE1FF已移除此箱子的商店狀態。"
+    remove_missing: "&#AAAAAA此箱子不是商店。"
+
+  reload:
+    starting: "&#FFD700[GiftsModule] &#AAAAAA完整重新載入中…"
+    done: "&#FFD700[GiftsModule] &#AAAAAA重新載入完成。"
+    failed: "&#FF5555[GiftsModule] 重新載入失敗:{0}"
+    lang_done: "&#FFD700[GiftsModule] &#AAAAAA語言檔已重新載入。"
+
+currency:
+  thread: "紡錘"
+  lunacy: "狂氣"
+
+gui:
+  menu_title: "§6✦ 飾品欄位"
+  catalog_title: "&#FFFFFF飾品圖鑑"
+  admin_title: "&#FFD700✦ &f飾品管理"
+  tab_tier: "Tier {0}"
+  close: "&#FF5555關閉"
+  prev_page: "&f◀ &7上一頁"
+  next_page: "&f下一頁 &7▶"
+  page_indicator: "&f頁 {0}/{1}"
+
+cmd:
+  no_permission: "&#FF5555你沒有權限使用此指令。"
+  usage_getgift_give: "用法：/getgift give <玩家> <飾品ID|menu>"
+  player_not_found: "找不到玩家：{0}"
+  language_current: "&#FFD700目前語言：&f{0}"
+  language_usage: "用法：/egogift language <代碼>"
+  language_set: "&#FFD700語言已切換為 &f{0}"
+  language_invalid: "&#FF5555未知語言：{0}。可用：{1}"

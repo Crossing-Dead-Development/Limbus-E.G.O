@@ -138,10 +138,10 @@ public class GiftsModule implements Listener, TabCompleter {
         this.lang = new me.yisang.limbusego.gift.lang.LangManager(this);
         this.lang.load();
 
-        ITEM_ID_KEY          = new NamespacedKey(getPlugin(), "accessory_id");
-        MENU_OPENER_KEY      = new NamespacedKey(getPlugin(), "menu_opener");
+        ITEM_ID_KEY          = new NamespacedKey("limbusegogift", "accessory_id");
+        MENU_OPENER_KEY      = new NamespacedKey("limbusegogift", "menu_opener");
         SLOT_KEYS = new NamespacedKey[5];
-        for (int i = 0; i < 5; i++) SLOT_KEYS[i] = new NamespacedKey(getPlugin(), "slot_" + i);
+        for (int i = 0; i < 5; i++) SLOT_KEYS[i] = new NamespacedKey("limbusegogift", "slot_" + i);
 
         // ── 現有飾品 ─────────────────────────────────────────────────────
         registerAccessory(new ArdentFlower(this));
@@ -300,7 +300,7 @@ public class GiftsModule implements Listener, TabCompleter {
     // ── 升級系統 ────────────────────────────────────────────────────────────
 
     private NamespacedKey upgradeKey(String accessoryId) {
-        return upgradeKeys.computeIfAbsent(accessoryId, id -> new NamespacedKey(getPlugin(), "upgrade_" + id));
+        return upgradeKeys.computeIfAbsent(accessoryId, id -> new NamespacedKey("limbusegogift", "upgrade_" + id));
     }
 
     public int getUpgradeLevel(Player player, String accessoryId) {

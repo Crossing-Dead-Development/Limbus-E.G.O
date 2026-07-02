@@ -36,8 +36,8 @@ public class GachaListener implements Listener {
         this.chestMgr = chestMgr;
         this.threadMgr = threadMgr;
         this.shopMgr = shopMgr;
-        this.LUNACY_KEY = new NamespacedKey(plugin.getPlugin(), "lunacy");
-        this.THREAD_KEY = new NamespacedKey(plugin.getPlugin(), "thread");
+        this.LUNACY_KEY = new NamespacedKey("limbusegogift", "lunacy");
+        this.THREAD_KEY = new NamespacedKey("limbusegogift", "thread");
         this.lunacyCost = plugin.getConfig().getInt("gacha.lunacy-cost", 32);
         this.tier4Chance = plugin.getConfig().getDouble("gacha.tier4-chance", 0.10);
     }

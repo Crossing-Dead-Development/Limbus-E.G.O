@@ -1,0 +1,14 @@
+name: LimbusEGO
+version: 1.0.0
+main: me.yisang.limbusego.LimbusEGO
+description: Limbus Company E.G.O weapons & gifts unified plugin. Face the sin, Save the E.G.O.
+api-version: "1.21.4"
+softdepend: [ProtocolLib]
+commands:
+  limbusego:
+    description: Limbus E.G.O 主指令 / unified root command
+    usage: /limbusego <weapon|gift|chest|reload|language> ...
+    aliases: [lego]
+  accessories:
+    description: 開啟飾品欄位（/limbusego gift menu 捷徑）
+    usage: /accessories

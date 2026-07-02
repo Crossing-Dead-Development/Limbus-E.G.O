@@ -1,0 +1,5 @@
+# Limbus E.G.O Weapons configuration
+# 語言設定 / Language setting
+# Built-in: zh_TW, en_US
+# You can also drop custom lang/<code>.yml files into the plugin data folder.
+language: zh_TW

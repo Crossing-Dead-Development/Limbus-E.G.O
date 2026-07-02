@@ -1,0 +1,131 @@
+# Limbus E.G.O Weapons — English language file
+# Placeholders: {0}, {1}, {2} ... are replaced by the plugin at runtime.
+# Color codes support both & and &#RRGGBB.
+
+weapon:
+  brush:
+    name: "&#FFFFFFRing-Bearing Brush"
+    lore: "&#FF9500Failing grade."
+  mimicry:
+    name: "&#FF0000Mimicry"
+    lore: "&#FF0000And there, many voices cried the same word in unison — \"Manager\""
+  dacapo:
+    name: "&#FFFFFFDaCapo"
+    lore: "&#FFFFFFFrom the ruins, the most magnificent performance is about to begin!"
+  solemn:
+    lore: "&#FFFFFFWhere do the dead go?"
+    black:
+      name: "&#333333&lSolemn Lament"
+    white:
+      name: "&#FFFFFF&lSolemn Lament"
+    butterflies:
+      name: "&#FFFFFFButterflies of &#8A8A8ALife and Death"
+    shield:
+      name: "&#FFFFFF&lSanctification"
+  tiantui:
+    name: "&#E67E22Tiantui Star Blade"
+    lore:
+      - "&7Load a Tiger Round, gather momentum, and burst forth like a running tiger."
+      - "&8Right-click: Tiger dash  Sneak + right-click: Savage tiger dash"
+    tiger_mark:
+      name: "&#E67E22Tiger Round"
+      lore: "&7Propellant powder."
+    savage:
+      name: "&#C0392BSavage Tiger Round"
+      lore: "&7A fiercer propellant powder."
+    chatuhu:
+      name: "&#E67E22Winged Tiger"
+      lore:
+        - "&7Tiantui Star Blade + 10 Savage Rounds + 20 Tiger Rounds"
+        - "&8Right-click to open (requires 4 empty slots, consumed on open)"
+  twilight:
+    name: "&#FFD700Twilight"
+    lore:
+      - "&7The end draws near; dusk takes up the blade."
+      - "&8Closer to death, deadlier the strike; part of the damage ignores defense."
+      - "&8Sneak + right-click: charge the Twilight Slash (fan-shaped wave)"
+    apocalypse:
+      name: "&#FFD700Apocalypse Bird"
+      lore:
+        - "&7Judgement at dusk; the end has come."
+        - "&8Right-click to receive Twilight (requires 1 empty slot, consumed on open)"
+  tibia:
+    name: "&#8B0000Tibia"
+    lore: "&7Can you hear it? The melody played by Tibia's pair of humeri and twenty-four ribs!"
+  w_corp_knife:
+    name: "&#66E1FFW Corp. Dagger"
+    lore: "&#B3F0FFIn the end, this is the path."
+  bladesinger:
+    name: "&#AEDBFFShadow-Vested Bladesinger"
+    lore: "&#D0E7FFMoon-gazing decapitation — expire, here and now."
+
+msg:
+  admin:
+    given: "&#FFD700Item granted."
+  tiantui:
+    no_ammo_tiger: "&#FF5555No Tiger Round"
+    no_ammo_savage: "&#FF5555No Savage Tiger Round"
+    charge_prefix_tiger: "&#E67E22Tiger Round "
+    charge_prefix_savage: "&#C0392BSavage Round "
+    cancelled: "&#FF5555Charge interrupted"
+    chatuhu_need_space: "&#FF5555Need 4 empty slots to open Winged Tiger"
+    chatuhu_opened: "&#E67E22Winged Tiger &7opened &8(Star Blade + 10 Savage + 20 Tiger)"
+  twilight:
+    cooldown: "&#8E7CC3Twilight Slash cooldown… {0}s"
+    apocalypse_need_space: "&#FF5555Need 1 empty slot to open"
+    apocalypse_received: "&#6C5B9ETwilight &7received"
+  tibia:
+    cooldown: "&#8B0000Anatomize cooldown… {0}s"
+    melody: "&#8B0000Tibia's Melody &#FFFFFF+{0}% &7│ &#FF5555Bleed &#FFFFFF{1}"
+    charging: "&#8B0000◆ Anatomize charging {0}"
+    slash_missed: "&#8B0000◆ Anatomize &7missed"
+    slash_hit: "&#8B0000◆ Anatomize &#FFFFFFhit {0} &7│ &#FF5555Bleed +{1} &7│ &#FFAA00trigger x{2}"
+  bladesinger:
+    cooldown: "&#AEDBFFFlesh-Cutting Bone-Breaking cooldown… {0}s"
+    trigger: "&#AEDBFF&l✦ Flesh-Cutting Bone-Breaking"
+  wcorp:
+    overload: "&#66E1FF&l⚡ Overload &7» &f+1 stack / +1 tier"
+
+gui:
+  admin:
+    title: "§6✦ Weapon Admin"
+  catalog:
+    title: "&#FFFFFFWeapon Catalog"
+    tab_all: "All Weapons"
+    tab_lce: "LCE R&D Only"
+    close: "&#FF5555Close"
+
+cmd:
+  usage_give: "Usage: /getego give <player> <weaponId>"
+  usage_language: "Usage: /getego language <code>"
+  player_not_found: "Player not found: {0}"
+  reload_success: "&#FFD700Config and language files reloaded."
+  language_set: "&#FFD700Language switched to &f{0}"
+  language_invalid: "&#FF5555Unknown language: {0}. Available: {1}"
+  language_current: "&#FFD700Current language: &f{0}"
+
+status:
+  bleed: "Bleed"
+  burn: "Burn"
+  fragile: "Fragile"
+  power: "Power"
+  sinking: "Sinking"
+  rupture: "Rupture"
+  tremor: "Tremor"
+  protection: "Protection"
+  haste: "Haste"
+  bind: "Bind"
+  poise: "Poise"
+  charge: "Charge"
+  depression: "Depression"
+  applied: "{0}▲ {1} §f{2} §7/ §f{3}"
+  damage_target: "§c-{0} {1}"
+  damage_source: "{0} §7» §f{1}"
+  poise_crit: "§3§l✦ Poise Crit §7» §f×{0}"
+  tremor_burst: "§b§l⚡ Tremor Burst §f{0} §7→ §6Burn derived"
+
+sanity:
+  bar_title: "§fSanity {0}{1} §7/ §f{2}"
+  warn_drop: "§5§l⚠ Sanity §7» §d{0} §8/ §7{1}"
+  panic: "§5§l▼ Panic §cYour eyes and limbs no longer obey"
+  bottom: "§4§l▼ Rock Bottom §cYou have fallen into Depression"

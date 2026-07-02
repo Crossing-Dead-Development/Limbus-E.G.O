@@ -1,0 +1,65 @@
+package me.yisang.limbusego;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
+
+public class WeaponAdminGUI implements InventoryHolder {
+
+    private final Inventory inventory;
+
+    // Slot layout (36-slot / 4 rows):
+    // Row 0: all filler
+    // Row 1: [filler, brush, mimicry, dacapo, filler, black, white, butterflies, shield]
+    // Row 2: [filler, tiantui, tiger_mark, savage_tiger_mark, chatuhu, twilight, apocalypse_bird, tibia]
+    // Row 3: [filler, w_corp_knife, bladesinger, ...filler]
+    static final int[] ITEM_SLOTS = {10, 11, 12, 14, 15, 16, 17, 19, 20, 21, 22, 23, 24, 25, 28, 29};
+
+    public WeaponAdminGUI(LimbusEGO plugin) {
+        inventory = Bukkit.createInventory(this, 36, plugin.msg("gui.admin.title"));
+
+        ItemStack filler = new ItemStack(Material.GRAY_STAINED_GLASS_PANE);
+        ItemMeta fm = filler.getItemMeta();
+        fm.setDisplayName(" ");
+        filler.setItemMeta(fm);
+        for (int i = 0; i < 36; i++) inventory.setItem(i, filler.clone());
+
+        solemnlament solemn = plugin.getSolemn();
+        TiantuiStar tiantui = plugin.getTiantui();
+
+        inventory.setItem(10, plugin.getWeaponModule("brush").createItem());
+        inventory.setItem(11, plugin.getWeaponModule("mimicry").createItem());
+        inventory.setItem(12, plugin.getWeaponModule("dacapo").createItem());
+        // slot 13 stays as filler separator
+        inventory.setItem(14, solemn.createItem("black"));
+        inventory.setItem(15, solemn.createItem("white"));
+        inventory.setItem(16, solemn.createItem("butterflies"));
+        inventory.setItem(17, solemn.createItem("shield"));
+
+        // Row 2 — 天退星系列 + 薄暝 + 提比婭
+        inventory.setItem(19, tiantui.createItem());
+        inventory.setItem(20, tiantui.createTigerMark(1));
+        inventory.setItem(21, tiantui.createSavageTigerMark(1));
+        inventory.setItem(22, tiantui.createChatuhuPack(1));
+        inventory.setItem(23, plugin.getTwilight().createItem());
+        inventory.setItem(24, plugin.getTwilight().createApocalypseBirdPack(1));
+        inventory.setItem(25, plugin.getTibia().createItem());
+
+        // Row 3 — W公司 / 著影
+        inventory.setItem(28, plugin.getWeaponModule("w_corp_knife").createItem());
+        inventory.setItem(29, plugin.getWeaponModule("bladesinger").createItem());
+    }
+
+    @Override
+    public Inventory getInventory() { return inventory; }
+
+    public boolean isItemSlot(int slot) {
+        for (int s : ITEM_SLOTS) if (s == slot) return true;
+        return false;
+    }
+}

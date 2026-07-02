@@ -1,0 +1,131 @@
+# Limbus E.G.O Weapons — 繁體中文語言檔
+# 佔位符：{0}, {1}, {2} 等會被程式替換
+# 顏色代碼支援 & 與 &#RRGGBB
+
+weapon:
+  brush:
+    name: "&#FFFFFF環指筆刷"
+    lore: "&#FF9500不及格。"
+  mimicry:
+    name: "&#FF0000擬態"
+    lore: "&x&F&F&0&0&0&0而那裡有許多聲音齊聲哭喊著同一個字──「主管」"
+  dacapo:
+    name: "&#FFFFFFDaCapo"
+    lore: "&x&F&F&F&F&F&F來自廢墟的最華麗的演出，即將拉開帷幕！"
+  solemn:
+    lore: "&x&F&F&F&F&F&F人&x&D&1&D&1&D&1死&x&A&3&A&3&A&3後&x&7&4&7&4&7&4會&x&4&6&4&6&4&6去&x&7&4&7&4&7&4往&x&A&3&A&3&A&3何&x&D&1&D&1&D&1方&x&F&F&F&F&F&F？"
+    black:
+      name: "&#333333&l莊嚴哀悼"
+    white:
+      name: "&#FFFFFF&l莊嚴哀悼"
+    butterflies:
+      name: "&#FFFFFF生&#D8D8D8蝶&#B1B1B1、&#8A8A8A亡&#636363蝶"
+    shield:
+      name: "&#FFFFFF&l聖宣"
+  tiantui:
+    name: "&#E67E22天退星刀"
+    lore:
+      - "&7填入虎標彈，蓄勢，化作奔虎。"
+      - "&8右鍵：虎標彈衝刺　潛行右鍵：猛虎標彈衝刺"
+    tiger_mark:
+      name: "&#E67E22虎標彈"
+      lore: "&7助推填充火藥。"
+    savage:
+      name: "&#C0392B猛虎標彈"
+      lore: "&7更猛烈的助推火藥。"
+    chatuhu:
+      name: "&#E67E22插翅虎"
+      lore:
+        - "&7天退星刀 + 10 猛虎標彈 + 20 虎標彈"
+        - "&8右鍵開啟（需 4 格空位，開後消失）"
+  twilight:
+    name: "&#FFD700薄暝"
+    lore:
+      - "&7終末將至，黃昏執刃。"
+      - "&8越接近死亡，斬擊越致命；部分傷害無視防禦。"
+      - "&8潛行右鍵：蓄力暮光斬（前方扇形波）"
+    apocalypse:
+      name: "&#FFD700終末鳥"
+      lore:
+        - "&7黃昏審判，終末降臨。"
+        - "&8右鍵開啟以領受薄暝（需 1 格空位，開後消失）"
+  tibia:
+    name: "&#8B0000提比婭"
+    lore: "&7聽見了嗎？那由提比婭的一對肱骨與二十四根肋骨奏響的旋律！"
+  w_corp_knife:
+    name: "&#66E1FFW公司 匕首"
+    lore: "&#B3F0FF至終，此為通路。"
+  bladesinger:
+    name: "&#AEDBFF著影揮刀"
+    lore: "&#D0E7FF望月斬首──就此，氣絕吧。"
+
+msg:
+  admin:
+    given: "&#FFD700已給予物品。"
+  tiantui:
+    no_ammo_tiger: "&#FF5555缺少虎標彈"
+    no_ammo_savage: "&#FF5555缺少猛虎標彈"
+    charge_prefix_tiger: "&#E67E22虎標彈 "
+    charge_prefix_savage: "&#C0392B猛虎標彈 "
+    cancelled: "&#FF5555蓄力中斷"
+    chatuhu_need_space: "&#FF5555背包需 4 格空位才能開啟插翅虎"
+    chatuhu_opened: "&#E67E22插翅虎 &7已開啟 &8(天退星刀 + 10 猛 + 20 普)"
+  twilight:
+    cooldown: "&#8E7CC3暮光斬冷卻中…{0}s"
+    apocalypse_need_space: "&#FF5555背包需 1 格空位才能開啟"
+    apocalypse_received: "&#6C5B9E薄暝 &7已領受"
+  tibia:
+    cooldown: "&#8B0000解剖斬冷卻中…{0}s"
+    melody: "&#8B0000提比婭之旋律 &#FFFFFF+{0}% &7│ &#FF5555流血 &#FFFFFF{1}"
+    charging: "&#8B0000◆ 解剖斬蓄力 {0}"
+    slash_missed: "&#8B0000◆ 解剖斬 &7未命中"
+    slash_hit: "&#8B0000◆ 解剖斬 &#FFFFFF命中 {0} &7│ &#FF5555流血 +{1} &7│ &#FFAA00引爆 {2} 次"
+  bladesinger:
+    cooldown: "&#AEDBFF肉斬骨斷冷卻中…{0}s"
+    trigger: "&#AEDBFF&l✦ 肉斬骨斷"
+  wcorp:
+    overload: "&#66E1FF&l⚡ 過載 &7» &f+1 層 / +1 級"
+
+gui:
+  admin:
+    title: "§6✦ 武器管理"
+  catalog:
+    title: "&#FFFFFF武器圖鑑"
+    tab_all: "全部武器"
+    tab_lce: "LCE 研發限定"
+    close: "&#FF5555關閉"
+
+cmd:
+  usage_give: "用法：/getego give <玩家> <武器ID>"
+  usage_language: "用法：/getego language <代碼>"
+  player_not_found: "找不到玩家：{0}"
+  reload_success: "&#FFD700設定與語言檔已重新載入。"
+  language_set: "&#FFD700語言已切換為 &f{0}"
+  language_invalid: "&#FF5555未知語言：{0}。可用：{1}"
+  language_current: "&#FFD700目前語言：&f{0}"
+
+status:
+  bleed: "流血"
+  burn: "燒傷"
+  fragile: "易損"
+  power: "強壯"
+  sinking: "沉淪"
+  rupture: "破裂"
+  tremor: "震顫"
+  protection: "守護"
+  haste: "迅捷"
+  bind: "束縛"
+  poise: "呼吸法"
+  charge: "充能"
+  depression: "憂鬱"
+  applied: "{0}▲ {1} §f{2} §7/ §f{3}"
+  damage_target: "§c-{0} {1}"
+  damage_source: "{0} §7» §f{1}"
+  poise_crit: "§3§l✦ 呼吸法爆擊 §7» §f×{0}"
+  tremor_burst: "§b§l⚡ 震顫爆發 §f{0} §7→ §6灼熱派生"
+
+sanity:
+  bar_title: "§f理智值 {0}{1} §7/ §f{2}"
+  warn_drop: "§5§l⚠ 理智值 §7» §d{0} §8/ §7{1}"
+  panic: "§5§l▼ 陷入恐慌 §c你的雙眼與四肢已不再聽從指揮"
+  bottom: "§4§l▼ 理智觸底 §c你已陷入憂鬱"

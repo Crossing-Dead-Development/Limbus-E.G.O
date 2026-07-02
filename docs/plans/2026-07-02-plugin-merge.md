@@ -193,7 +193,7 @@ git add -A; git commit -m "feat: 搬移武器側原始碼，主類改名 LimbusE
 **Interfaces:**
 - Produces: 所有武器側 PDC/AttributeModifier key 落在 `limbusegoweapons:` namespace，與舊插件產生的物品、玩家屬性 modifier 完全相容
 
-- [ ] **Step 1: 逐一改寫 19 個呼叫點**
+- [ ] **Step 1: 逐一改寫 18 個呼叫點**
 
 改寫規則：`new NamespacedKey(this, X)` / `new NamespacedKey(plugin, X)` → `new NamespacedKey("limbusegoweapons", X)`。完整清單（行號為舊檔位置，實作時以 grep 定位）：
 

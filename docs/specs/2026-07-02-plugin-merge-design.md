@@ -29,13 +29,17 @@ me.yisang.limbusego
 | 項目 | 處理 |
 |---|---|
 | 主類 | 兩個 onEnable 合併；指令（/accessories /getgift /egogift /gachachest…＋武器側指令）全數保留 |
-| 資源包 | MC 1.21.4 伺服器單資源包限制 → 兩個資源包合併為一個 `Limbus-E.G.O-ResourcePack`（assets/weapons + assets/gifts 命名空間互不衝突，可直接合併），單一 PACK_URL/HASH |
+| 資源包 | MC 1.21.4 伺服器單資源包限制 → 兩個資源包合併為一個，**另開獨立 repo `Limbus-E.G.O-ResourcePack`**（沿用舊模式：zip 上傳 Release、直連下載）；assets/weapons + assets/gifts 命名空間互不衝突可直接合併；插件內單一 PACK_URL/HASH |
 | lang | zh_TW / en_US 各自合併，key 前綴已天然分流（`status.*`、`gift.*`、武器 key） |
 | config.yml | 兩份合併，衝突 key 重新命名 |
 | PDC key | 沿用各自的 NamespacedKey 字串，舊物品無痛相容（需驗證兩邊 plugin name 變更後 NamespacedKey namespace 是否受影響 → 建構時顯式用舊 namespace 字串） |
 | 版本號 | 重置為 1.0.0 |
 | 舊 repo | 完成遷移後 archive（Weapons / Gifts 兩個插件 repo；資源包 repo 併為一個新 repo） |
 | Fabric 版 | `LimbusEGOWeapons-Fabric` 暫不動，之後另行同步 |
+
+## 更新工作流程（用戶指定）
+
+每次推送更新時，除了編譯部署到測試伺服器（`D:\mcss_win-x86-64_v13.9.1\servers\LSMP Admin\plugins`），**必須同步更新 README**（版本號、更新內容、飾品/武器清單變動），再 commit/push。
 
 ## 風險與待驗證
 

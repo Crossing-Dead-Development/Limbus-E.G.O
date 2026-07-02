@@ -98,7 +98,7 @@ gui:
 cmd:
   usage_root: "&7用法：/limbusego <weapon|gift|chest|reload|language>"
   usage_give: "用法：/getego give <玩家> <武器ID>"
-  usage_language: "用法：/getego language <代碼>"
+  usage_language: "用法：/limbusego language <代碼>"
   player_not_found: "找不到玩家：{0}"
   reload_success: "&#FFD700設定與語言檔已重新載入。"
   language_set: "&#FFD700語言已切換為 &f{0}"

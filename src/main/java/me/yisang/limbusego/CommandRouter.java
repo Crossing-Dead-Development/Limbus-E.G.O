@@ -86,7 +86,7 @@ public class CommandRouter implements TabExecutor {
                     return true;
                 }
                 plugin.getLang().setLanguage(code);
-                gifts.getLang().setLanguage(code);
+                if (gifts != null && gifts.getLang() != null) gifts.getLang().setLanguage(code);
                 sender.sendMessage(plugin.msg("cmd.language_set", code));
             }
             default -> sender.sendMessage(plugin.msg("cmd.usage_root"));

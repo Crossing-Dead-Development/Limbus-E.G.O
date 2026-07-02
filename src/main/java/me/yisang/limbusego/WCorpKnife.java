@@ -47,10 +47,10 @@ public class WCorpKnife implements EGOWeapon, Listener {
             meta.setItemModel(NamespacedKey.fromString("w_corp_knife:w_corp_knife"));
             // 匕首手感：低基礎傷、快攻速
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "wcorp_dmg"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "wcorp_dmg"),
                             4.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ATTACK_SPEED,
-                    new AttributeModifier(new NamespacedKey(plugin, "wcorp_spd"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "wcorp_spd"),
                             -1.6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
             meta.getPersistentDataContainer().set(

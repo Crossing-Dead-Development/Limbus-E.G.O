@@ -138,7 +138,7 @@ public class LimbusEGO extends JavaPlugin implements Listener, TabCompleter {
 
     @Override
     public void onEnable() {
-        this.ITEM_ID_KEY = new NamespacedKey(this, "item_id");
+        this.ITEM_ID_KEY = new NamespacedKey("limbusegoweapons", "item_id");
         this.lang = new me.yisang.limbusego.lang.LangManager(this);
         this.lang.load();
 

@@ -81,7 +81,7 @@ public class StatusManager implements Listener {
     public StatusManager(LimbusEGO plugin, SanityManager sanity) {
         this.plugin = plugin;
         this.sanity = sanity;
-        this.sinkingSpeedKey = new NamespacedKey(plugin, SINKING_SPEED_MOD_KEY);
+        this.sinkingSpeedKey = new NamespacedKey("limbusegoweapons", SINKING_SPEED_MOD_KEY);
     }
 
     public void start() {

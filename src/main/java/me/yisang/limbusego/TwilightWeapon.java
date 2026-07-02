@@ -65,13 +65,13 @@ public class TwilightWeapon implements EGOWeapon, Listener {
             meta.setUnbreakable(true);
             meta.setItemModel(NamespacedKey.fromString("twilight:twilight"));
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "twilight_dmg"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "twilight_dmg"),
                             9.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ATTACK_SPEED,
-                    new AttributeModifier(new NamespacedKey(plugin, "twilight_spd"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "twilight_spd"),
                             -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ENTITY_INTERACTION_RANGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "twilight_reach"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "twilight_reach"),
                             1.5, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
             meta.getPersistentDataContainer().set(

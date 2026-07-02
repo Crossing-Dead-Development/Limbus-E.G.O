@@ -83,13 +83,13 @@ public class TibiaWeapon implements EGOWeapon, Listener {
             meta.setUnbreakable(true);
             meta.setItemModel(NamespacedKey.fromString("tibia:tibia"));
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "tibia_dmg"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "tibia_dmg"),
                             10.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ATTACK_SPEED,
-                    new AttributeModifier(new NamespacedKey(plugin, "tibia_spd"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "tibia_spd"),
                             -2.8, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ENTITY_INTERACTION_RANGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "tibia_reach"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "tibia_reach"),
                             1.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
             meta.getPersistentDataContainer().set(

@@ -68,10 +68,10 @@ public class TiantuiStar implements EGOWeapon, Listener {
             meta.setUnbreakable(true);
             meta.setItemModel(NamespacedKey.fromString("tiantui_star:tiantui_star"));
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "tiantui_dmg"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "tiantui_dmg"),
                             8.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ATTACK_SPEED,
-                    new AttributeModifier(new NamespacedKey(plugin, "tiantui_spd"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "tiantui_spd"),
                             -2.4, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
             meta.getPersistentDataContainer().set(

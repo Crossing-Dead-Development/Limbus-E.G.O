@@ -70,10 +70,10 @@ public class ShadowBladesinger implements EGOWeapon, Listener {
             meta.setItemModel(NamespacedKey.fromString("shadow_vested_bladesinger:shadow_vested_bladesinger"));
             // 居合手感：高基礎傷、慢攻速
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "bladesinger_dmg"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "bladesinger_dmg"),
                             9.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ATTACK_SPEED,
-                    new AttributeModifier(new NamespacedKey(plugin, "bladesinger_spd"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "bladesinger_spd"),
                             -2.6, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
             meta.getPersistentDataContainer().set(

@@ -31,10 +31,10 @@ public class mimicry implements EGOWeapon, Listener {
             meta.setUnbreakable(true);
             meta.setItemModel(NamespacedKey.fromString("mimicry:mimicry"));
             meta.addAttributeModifier(Attribute.ATTACK_DAMAGE,
-                    new AttributeModifier(new NamespacedKey(plugin, "mimicry_dmg"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "mimicry_dmg"),
                             12.0, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addAttributeModifier(Attribute.ATTACK_SPEED,
-                    new AttributeModifier(new NamespacedKey(plugin, "mimicry_spd"),
+                    new AttributeModifier(new NamespacedKey("limbusegoweapons", "mimicry_spd"),
                             -3.2, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlotGroup.MAINHAND));
             meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_UNBREAKABLE);
             meta.getPersistentDataContainer().set(

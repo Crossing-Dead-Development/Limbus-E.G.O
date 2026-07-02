@@ -56,8 +56,8 @@ public class SanityManager {
 
     public SanityManager(LimbusEGO plugin) {
         this.plugin = plugin;
-        this.atkModKey = new NamespacedKey(plugin, ATK_MOD_KEY);
-        this.spdModKey = new NamespacedKey(plugin, SPD_MOD_KEY);
+        this.atkModKey = new NamespacedKey("limbusegoweapons", ATK_MOD_KEY);
+        this.spdModKey = new NamespacedKey("limbusegoweapons", SPD_MOD_KEY);
     }
 
     public void start() {

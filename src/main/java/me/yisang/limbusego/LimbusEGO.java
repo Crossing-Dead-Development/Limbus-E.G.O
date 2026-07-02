@@ -150,6 +150,19 @@ public class LimbusEGO extends JavaPlugin implements Listener {
         this.lang = new me.yisang.limbusego.lang.LangManager(this);
         this.lang.load();
 
+        // I1：舊世界兩插件按檔名字典序 enable（Gift 先、Weapons 後），同優先度事件才會是
+        // gift handler 先跑。合併後在此提前 enable 飾品模組以重現該順序；gifts 不依賴武器側狀態，安全。
+        this.gifts = new me.yisang.limbusego.gift.GiftsModule(this);
+        try {
+            this.gifts.enable();
+        } catch (Throwable t) {
+            getLogger().severe("GiftsModule 啟動失敗，飾品系統停用：" + t);
+        }
+
+        CommandRouter router = new CommandRouter(this);
+        org.bukkit.command.PluginCommand root = getCommand("limbusego");
+        if (root != null) { root.setExecutor(router); root.setTabCompleter(router); }
+
         this.solemn = new solemnlament(this);
         mimicry    m  = new mimicry(this);
         dacapo     d  = new dacapo(this);
@@ -196,14 +209,6 @@ public class LimbusEGO extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(new me.yisang.limbusego.status.SanityListener(sanityManager), this);
 
         getServer().getPluginManager().registerEvents(this, this);
-
-        // 飾品模組（原 LimbusEGOGift 插件）
-        this.gifts = new me.yisang.limbusego.gift.GiftsModule(this);
-        this.gifts.enable();
-
-        CommandRouter router = new CommandRouter(this);
-        org.bukkit.command.PluginCommand root = getCommand("limbusego");
-        if (root != null) { root.setExecutor(router); root.setTabCompleter(router); }
 
         // 同步資源包到本插件 data folder，供 ResourcePackManager 合併分發
         getServer().getScheduler().runTaskAsynchronously(this, this::syncResourcePacks);

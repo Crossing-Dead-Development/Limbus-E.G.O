@@ -39,6 +39,9 @@ public class CommandRouter implements TabExecutor {
                 switch (rest[0].toLowerCase()) {
                     case "menu" -> { if (sender instanceof Player p) gifts.openMenu(p); }
                     case "give" -> {
+                        // C1：/getgift 舊版靠 plugin.yml permission 整條擋，新版 limbusego 無宣告，
+                        // 內層分支（menu / 自給飾品 id）本身沒有權限檢查，需在此補一道閘門。
+                        if (!hasGiftGivePermission(sender)) return true;
                         // 相容舊 /getgift 兩種語法：/gift give <玩家> <id|menu|thread|lunacy> [n]（給人，需 args[0]=="give"）
                         // 與 /gift give <id>（自給）。用 rest2[0] 是否為線上玩家名判斷要不要補回 "give" 前綴。
                         if (rest2.length >= 2 && Bukkit.getPlayerExact(rest2[0]) != null) {
@@ -67,7 +70,7 @@ public class CommandRouter implements TabExecutor {
             case "reload" -> {
                 if (!sender.hasPermission("limbus.admin") && !(sender instanceof ConsoleCommandSender)) return true;
                 plugin.getLang().reload();
-                gifts.getLang().reload();
+                if (gifts != null && gifts.getLang() != null) gifts.getLang().reload();
                 sender.sendMessage(plugin.msg("cmd.reload_success"));
             }
             case "language", "lang" -> {
@@ -108,7 +111,13 @@ public class CommandRouter implements TabExecutor {
                 }
             }
             case "gift" -> {
-                if (args.length == 2) return filter(GIFT_SUB, args[1]);
+                // C1：gift give 需要 limbus.admin，無權限者的補完不應洩漏候選清單
+                if (args.length == 2) {
+                    List<String> opts = hasGiftGivePermission(sender)
+                            ? GIFT_SUB : List.of("menu", "category");
+                    return filter(opts, args[1]);
+                }
+                if (!hasGiftGivePermission(sender)) return List.of();
                 if (args.length == 3 && "give".equalsIgnoreCase(args[1])) {
                     // 第 3 參可能是「自給的飾品 id」或「給人語法的玩家名」，兩種候選合併補完
                     List<String> opts = new ArrayList<>(giftIds(gifts));
@@ -135,6 +144,12 @@ public class CommandRouter implements TabExecutor {
             }
         }
         return List.of();
+    }
+
+    /** C1：/limbusego gift give 的權限判斷，指令分派與 Tab 補完共用同一條件。 */
+    private static boolean hasGiftGivePermission(CommandSender sender) {
+        return sender.hasPermission("limbus.admin") || sender instanceof ConsoleCommandSender
+                || (sender instanceof Player pp && pp.isOp());
     }
 
     private static List<String> giftIds(GiftsModule gifts) {

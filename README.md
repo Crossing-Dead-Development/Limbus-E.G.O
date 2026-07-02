@@ -31,7 +31,7 @@
 | `/limbusego weapon catalog` | 開啟玩家武器圖鑑 | 所有人 |
 | `/limbusego weapon admin` | 開啟武器管理員 GUI | `limbus.admin` / OP |
 | `/limbusego weapon <id>` | 直接給自己一把指定武器 | `limbus.admin` / OP |
-| `/limbusego gift menu` | 取得飾品欄位開啟物品（下界之星） | 所有人 |
+| `/limbusego gift menu` | 開啟飾品選單（與 `/accessories` 相同；給物品請用 `/limbusego gift give menu`） | 所有人 |
 | `/limbusego gift give <id> [數量]` | 給自己一件指定飾品 | `limbus.admin` / OP |
 | `/limbusego gift give <玩家> <id\|menu\|thread\|lunacy> [數量]` | 給指定玩家飾品／道具（相容舊 `/getgift give` 語法） | `limbus.admin` |
 | `/limbusego gift category` | 開啟飾品圖鑑（依 Tier 分頁瀏覽） | 所有人 |

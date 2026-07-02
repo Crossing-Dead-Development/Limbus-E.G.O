@@ -97,7 +97,7 @@ gui:
 
 cmd:
   usage_root: "&7Usage: /limbusego <weapon|gift|chest|reload|language>"
-  usage_give: "Usage: /getego give <player> <weaponId>"
+  usage_give: "Usage: /limbusego weapon give <player> <weaponId>"
   usage_language: "Usage: /limbusego language <code>"
   player_not_found: "Player not found: {0}"
   reload_success: "&#FFD700Config and language files reloaded."

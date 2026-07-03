@@ -136,6 +136,74 @@ public class GiftsModule implements Listener {
         ));
     }
 
+    // ── 體系分組表（80 飾品重構設計表的九組；圖鑑「依體系排序」用）──────────
+
+    /** 九個體系的 key，順序即圖鑑分頁順序；lang 鍵為 gui.group_<key>。 */
+    public static final String[] GROUP_KEYS = {
+        "burn", "bleed", "sinking", "rupture", "tremor",
+        "poise", "support", "qol", "original"
+    };
+
+    private static final Map<String, Integer> GROUP_MAP = new HashMap<>();
+
+    static {
+        String[][] groups = {
+            // 燒傷
+            {"ardent_flower", "ashes_to_ashes", "bloodflame_sword", "dust_to_dust",
+             "glimpse_of_flames", "hot_n_juicy_drumstick", "pain_of_stifled_rage", "royal_jelly_perfume"},
+            // 流血
+            {"crystallized_blood", "la_manchaland_all_day_pass", "la_manchaland_standard_pass",
+             "mask_of_the_parade", "millarca", "sanguine_blossom_bolus"},
+            // 沉淪
+            {"artistic_sense", "black_sheet_music", "broken_compass", "cold_illusion", "distant_star",
+             "frozen_cries", "mental_corruption_boosting_gas", "rags", "rest", "tangled_bones"},
+            // 破裂（含束縛掛靠）
+            {"dry_to_the_bone_breast", "ebony_brooch", "flower_in_the_mirror", "harestride",
+             "moon_in_the_water", "ruin", "smoking_gunpowder", "strange_glyph_inscriptions",
+             "strange_glyph_talisman", "thunderbranch", "chief_butlers_secret_arts"},
+            // 震顫
+            {"green_spirit", "nixie_divergence", "sour_liquor_aroma", "sownpour",
+             "piece_of_crumbled_egg", "handheld_mirror"},
+            // 呼吸法
+            {"cask_spirits", "clear_mirror_calm_water", "emerald_elytra", "finifugality",
+             "keenbranch", "nebulizer", "cqc_manual"},
+            // 輔助
+            {"bloody_gadget", "dreaming_electric_sheep", "dueling_manual_book_3", "illusory_hunt",
+             "late_bloomers_tattoo", "hardship", "phantom_pain", "tenacity_bolus",
+             "the_book_of_vengeance", "special_contract", "plume_of_proof", "spicebush_branch",
+             "carmilla", "e_type_dimensional_dagger", "trauma_shield"},
+            // 便利
+            {"blue_zippo_lighter", "child_within_a_flask", "golden_urn", "homeward", "lithograph",
+             "oracle", "prejudice", "piece_of_relationship", "rusty_commemorative_coin",
+             "someones_device", "sunshower", "trial_plan_guide"},
+            // 原創
+            {"endless_hunger", "flower_mound", "jin_gang_bolus", "piece_of_a_torn_summer",
+             "tranquil_lotus_bolus"}
+        };
+        for (int g = 0; g < groups.length; g++)
+            for (String id : groups[g]) GROUP_MAP.put(id, g);
+    }
+
+    /** 飾品所屬體系索引（對應 GROUP_KEYS；未知 id 落到原創組）。 */
+    public int getGroup(String id) {
+        return GROUP_MAP.getOrDefault(id, GROUP_KEYS.length - 1);
+    }
+
+    // ── 等級顯示 helper ─────────────────────────────────────────────────────
+
+    private static final String[] TIER_ROMAN = {"", "I", "II", "III", "IV"};
+    private static final String[] TIER_COLORS = {"", "&#AAAAAA", "&#55FF55", "&#55AAFF", "&#FFD700"};
+
+    /** 等級的羅馬數字顯示（1→I … 4→IV）。 */
+    public static String roman(int tier) {
+        return (tier >= 1 && tier < TIER_ROMAN.length) ? TIER_ROMAN[tier] : String.valueOf(tier);
+    }
+
+    /** 等級代表色（與圖鑑分頁一致）。 */
+    public static String tierColor(int tier) {
+        return (tier >= 1 && tier < TIER_COLORS.length) ? TIER_COLORS[tier] : "&#AAAAAA";
+    }
+
     // ── 初始化 ──────────────────────────────────────────────────────────────
 
     public void enable() {
@@ -388,11 +456,20 @@ public class GiftsModule implements Listener {
                 return;
             }
             event.setCancelled(true);
-            int tier = catalog.getTierForSlot(slot);
-            if (tier != -1 && tier != catalog.getCurrentTier()) {
-                catalog.switchTier(player, tier);
+            if (catalog.isSortSlot(slot)) {
+                catalog.toggleSortMode(player);
             } else if (catalog.isCloseSlot(slot)) {
                 player.closeInventory();
+            } else if (catalog.isByGroup()) {
+                int group = catalog.getGroupForSlot(slot);
+                if (group != -1 && group != catalog.getCurrentGroup()) {
+                    catalog.switchGroup(player, group);
+                }
+            } else {
+                int tier = catalog.getTierForSlot(slot);
+                if (tier != -1 && tier != catalog.getCurrentTier()) {
+                    catalog.switchTier(player, tier);
+                }
             }
             return;
         }

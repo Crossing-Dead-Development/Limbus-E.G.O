@@ -174,6 +174,11 @@ public abstract class BaseAccessory implements Accessory {
         meta.setDisplayName(plugin.color("&#FFFFFF" + localizedName()));
 
         List<String> lore = new ArrayList<>();
+        if (!plugin.isVestige(id)) {
+            int tier = plugin.getTier(id);
+            lore.add(plugin.color(GiftsModule.tierColor(tier)
+                    + plugin.getLang().get("gui.tier_line", GiftsModule.roman(tier))));
+        }
         for (String line : localizedDescriptionLines()) lore.add(plugin.color(line));
         // 效果行預設灰字；lang 檔若自帶顏色，就別再前綴
         String effect = localizedEffect();

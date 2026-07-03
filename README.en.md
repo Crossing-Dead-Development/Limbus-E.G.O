@@ -4,7 +4,7 @@
 
 A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (accessories) of Limbus Company into Minecraft.
 
-- **Version**: 1.1.0
+- **Version**: 1.2.0
 - **Minecraft version**: 1.21.4
 - **Platform**: Paper
 - **Java**: 21
@@ -12,7 +12,7 @@ A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (access
 
 ## What is this
 
-`LimbusEGO-1.1.0.jar` is a single plugin merged from two legacy plugins:
+`LimbusEGO-1.2.0.jar` is a single plugin merged from two legacy plugins:
 
 - **Limbus E.G.O Weapons v3.2.0** → the 12-status system, the Sanity (SAN) system, and 8 E.G.O weapons
 - **Limbus E.G.O Gifts v2.5.0** → 80 E.G.O gifts + 4 vestige upgrade materials, plus gacha / thread lottery / shop chests
@@ -91,7 +91,7 @@ Each entity carries `(potency, count)` two-axis statuses: potency is strength, c
 ## Installation & data migration (upgrading from the two legacy plugins)
 
 1. **Remove the old plugins**: move `LimbusEGOWeapons-*.jar` and `LimbusEGOGift-*.jar` out of `plugins/` (back them up rather than deleting).
-2. **Drop in the new plugin**: put `LimbusEGO-1.1.0.jar` into `plugins/`.
+2. **Drop in the new plugin**: put `LimbusEGO-1.2.0.jar` into `plugins/`.
 3. **Migrate data**: copy `gacha_chests.yml`, `thread_chests.yml`, `shop_chests.yml`, and `config.yml` from the old `plugins/LimbusEGOGift/` folder into the new `plugins/LimbusEGO/` (if the old `plugins/LimbusEGOWeapons/config.yml` had a custom language setting, merge the `language` field carefully so it isn't overwritten).
 4. **Start the server** — legacy items and player upgrade data are automatically compatible: weapon-side PDC stays in the `limbusegoweapons:` namespace and gift-side PDC in the `limbusegogift:` namespace (identical to what the old plugins produced), so old weapons / gifts in inventories and upgraded gift levels keep working without any conversion.
 
@@ -111,6 +111,12 @@ Phase 1 (still true for this version) **keeps using the two legacy resource pack
 ---
 
 ## Changelog
+
+### 1.2.0 (2026-07-03) — Catalog sort modes & tier display
+
+- The gift catalog gains a sort-mode toggle button (bottom-left): **By Tier** (Tier I–IV tabs, the original mode) / **By Status Group** (nine group tabs: Burn, Bleed, Sinking, Rupture, Tremor, Poise, Support, Utility, Original), with gifts sorted by tier within each group
+- Every gift's lore now starts with a tier line (tier color + Roman numeral)
+- All tier displays now use Roman numerals (I / II / III / IV)
 
 ### 1.1.0 (2026-07-03) — Phase 2: 80 gifts wired into the 12-status system
 

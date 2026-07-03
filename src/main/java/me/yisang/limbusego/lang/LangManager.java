@@ -23,6 +23,9 @@ public class LangManager {
     private String currentLang = DEFAULT_LANG;
     private YamlConfiguration messages = new YamlConfiguration();
     private YamlConfiguration fallback = new YamlConfiguration();
+    // 內建 jar 資源版：data folder 舊檔缺新鍵時的最終回退（插件更新後不必手動補鍵）
+    private YamlConfiguration bundled = new YamlConfiguration();
+    private YamlConfiguration bundledFallback = new YamlConfiguration();
 
     public LangManager(LimbusEGO plugin) {
         this.plugin = plugin;
@@ -74,10 +77,21 @@ public class LangManager {
 
     private void loadLang(String lang) {
         this.fallback = readLang(DEFAULT_LANG);
+        this.bundledFallback = readBundled(DEFAULT_LANG);
         if (lang == null || lang.isEmpty()) lang = DEFAULT_LANG;
         this.messages = readLang(lang);
+        this.bundled = readBundled(lang);
         this.currentLang = lang;
         plugin.getLogger().info("[Lang] Loaded language: " + lang);
+    }
+
+    private YamlConfiguration readBundled(String lang) {
+        try (InputStream in = plugin.getResource("lang/weapons/" + lang + ".yml")) {
+            if (in != null) {
+                return YamlConfiguration.loadConfiguration(new InputStreamReader(in, StandardCharsets.UTF_8));
+            }
+        } catch (IOException ignored) {}
+        return new YamlConfiguration();
     }
 
     private YamlConfiguration readLang(String lang) {
@@ -119,6 +133,8 @@ public class LangManager {
     public String get(String key) {
         String v = messages.getString(key);
         if (v == null) v = fallback.getString(key);
+        if (v == null) v = bundled.getString(key);
+        if (v == null) v = bundledFallback.getString(key);
         return v == null ? key : v;
     }
 
@@ -133,6 +149,8 @@ public class LangManager {
     public List<String> getList(String key) {
         List<String> v = messages.getStringList(key);
         if (v == null || v.isEmpty()) v = fallback.getStringList(key);
+        if (v == null || v.isEmpty()) v = bundled.getStringList(key);
+        if (v == null || v.isEmpty()) v = bundledFallback.getStringList(key);
         if (v == null) return Collections.emptyList();
         return v;
     }

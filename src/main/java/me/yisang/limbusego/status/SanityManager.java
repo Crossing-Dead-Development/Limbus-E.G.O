@@ -187,6 +187,13 @@ public class SanityManager {
         setSan(p, getSan(p) + amount);
     }
 
+    /** 死亡重生後理智歸零：SAN 回 0、命中/受擊計數與戰鬥計時一併重置。 */
+    public void resetOnRespawn(Player p) {
+        counters.remove(p.getUniqueId());
+        lastCombat.remove(p.getUniqueId());
+        setSan(p, 0);
+    }
+
     /** 是否處於憂鬱狀態（SAN 觸底）。 */
     public boolean isDepressed(LivingEntity e) {
         if (!(e instanceof Player p)) return false;

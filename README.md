@@ -4,7 +4,7 @@
 
 將邊獄公司（Limbus Company）的 E.G.O 武器與 E.G.O 飾品一併帶進 Minecraft 的單一 Paper 插件。
 
-- **版本**：1.2.0
+- **版本**：1.2.1
 - **Minecraft 版本**：1.21.4
 - **平台**：Paper
 - **Java**：21
@@ -12,7 +12,7 @@
 
 ## 這是什麼
 
-`LimbusEGO-1.2.0.jar` 是由兩個舊插件合併而成的單一插件：
+`LimbusEGO-1.2.1.jar` 是由兩個舊插件合併而成的單一插件：
 
 - **Limbus E.G.O Weapons v3.2.0** → 12 屬性體系、理智值（SAN）系統、8 種 E.G.O 武器
 - **Limbus E.G.O Gifts v2.5.0** → 80 件 E.G.O 飾品＋4 種殘影升級材料、抽取箱／紡錘抽獎箱／購買商店箱
@@ -91,7 +91,7 @@
 ## 安裝與資料遷移（從舊兩插件升級）
 
 1. **移除舊插件**：從 `plugins/` 移出 `LimbusEGOWeapons-*.jar` 與 `LimbusEGOGift-*.jar`（建議備份而非直接刪除）。
-2. **放入新插件**：把 `LimbusEGO-1.2.0.jar` 放進 `plugins/`。
+2. **放入新插件**：把 `LimbusEGO-1.2.1.jar` 放進 `plugins/`。
 3. **資料遷移**：把舊 `plugins/LimbusEGOGift/` 資料夾內的 `gacha_chests.yml`、`thread_chests.yml`、`shop_chests.yml`、`config.yml` 複製到新的 `plugins/LimbusEGO/`（若舊 `plugins/LimbusEGOWeapons/config.yml` 有自訂語言設定，注意合併 `language` 欄位，避免被覆蓋）。
 4. **啟動伺服器**——舊物品與玩家升級資料自動相容：武器側 PDC 固定落在 `limbusegoweapons:` namespace、飾品側固定落在 `limbusegogift:` namespace（與舊兩插件產生的資料完全一致），玩家背包裡的舊武器／舊飾品、飾品欄位裡已升級的等級都無需任何轉檔即可繼續使用。
 
@@ -111,6 +111,11 @@ Phase 1（本版本）**仍沿用兩個舊資源包**，插件啟動時分別非
 ---
 
 ## 更新紀錄
+
+### 1.2.1（2026-07-03）— 語言檔缺鍵修復與理智重生歸零
+
+- 修復：伺服器 data folder 的舊語言檔缺少新版鍵時，GUI 與 lore 會顯示原始鍵名（如 `gui.sort_mode`、`gui.tier_line`）——兩側 LangManager 加入「內建 jar 資源」最終回退，插件更新後無需手動補語言檔
+- 新增：**死亡復活後理智值（SAN）歸零**，命中／受擊計數與戰鬥計時一併重置
 
 ### 1.2.0（2026-07-03）— 圖鑑排序模式與等級顯示
 

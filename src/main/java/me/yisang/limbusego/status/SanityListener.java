@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class SanityListener implements Listener {
     private final SanityManager sanity;
@@ -22,6 +23,12 @@ public class SanityListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         sanity.onQuit(event.getPlayer());
+    }
+
+    /** 死亡復活後理智歸零。 */
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        sanity.resetOnRespawn(event.getPlayer());
     }
 
     /**

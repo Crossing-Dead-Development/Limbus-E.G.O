@@ -72,7 +72,7 @@ gift:
   ashes_to_ashes:
     name: "Ashes to Ashes"
     description: ["&#9A9A9AInto the mist we go."]
-    effect: "On kill: restore 4 HP | On hit vs burning target: stack Burn 2·1"
+    effect: "On hit vs burning target: stack Burn 2·1"
   black_sheet_music:
     name: "Black Sheet Music"
     description: ["&#FFFFFFThis movement shall pierce your very soul."]
@@ -179,7 +179,7 @@ gift:
     effect: "On attack: apply Slowness III for 2s"
   glimpse_of_flames:
     name: "Glimpse of Flames"
-    effect: "When attacked, ignite the attacker for 3s and emit flame particles | On hit vs burning target: Detonate Burn for true damage and inflict Fragile 1·2"
+    effect: "On hit vs burning target: Detonate Burn for true damage and inflict Fragile 1·2"
   golden_urn:
     name: "Golden Urn"
     description: ["&#DA8F24To embrace is itself to accept another."]
@@ -259,7 +259,7 @@ gift:
   pain_of_stifled_rage:
     name: "Pain of Stifled Rage"
     description: ["&#DA3D24The bull roars in despair…"]
-    effect: "On hit: gain Strength I for 5s | On hit vs burning target: gain Power 2·1; otherwise Inflict Burn 2·2"
+    effect: "On hit vs burning target: gain Power 2·1; otherwise Inflict Burn 2·2"
   phantom_pain:
     name: "Phantom Pain"
     description:
@@ -295,7 +295,7 @@ gift:
     effect: "Passive: Regeneration I while standing still"
   royal_jelly_perfume:
     name: "Royal Jelly Perfume"
-    effect: "Passive: Regeneration I; nearby bees do not attack | When hurt: -15% damage from burning attacker | When hurt: Inflict Burn 2·2 on attacker"
+    effect: "Passive: nearby bees do not attack | When hurt: -15% damage from burning attacker | When hurt: Inflict Burn 2·2 on attacker"
   ruin:
     name: "Ruin"
     effect: "On attack: deal +4 damage but lose 1 HP"

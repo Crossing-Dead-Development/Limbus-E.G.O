@@ -1,17 +1,16 @@
 package me.yisang.limbusego.gift.gifts;
 import me.yisang.limbusego.gift.BaseAccessory;
 import me.yisang.limbusego.gift.GiftsModule;
+import me.yisang.limbusego.status.StatusEffect;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class TenacityBolus extends BaseAccessory {
     public TenacityBolus(GiftsModule plugin) {
         super(plugin, "tenacity_bolus", "強韌丸",
                 "&#0C440C", "孔家滅門之日。",
-                "被動：抗性提升 I，生命提升 I");
+                "受擊：獲得守護 2·2");
     }
-    @Override public void onPassiveTick(Player player) {
-        player.addPotionEffect(new PotionEffect(PotionEffectType.RESISTANCE, 30, 0, true, false));
-        player.addPotionEffect(new PotionEffect(PotionEffectType.HEALTH_BOOST, 30, 0, true, false));
+    @Override public void onDamaged(EntityDamageByEntityEvent event, Player victim) {
+        applyScaled(victim, StatusEffect.PROTECTION, 2, 2, victim);
     }
 }

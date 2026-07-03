@@ -7,11 +7,10 @@ public class PhantomPain extends BaseAccessory {
     public PhantomPain(GiftsModule plugin) {
         super(plugin, "phantom_pain", "幻痛",
                 "&#656565", "他試圖抓住伸去的手，\n但沒能抓住。",
-                "受傷時：25% 機率減少 70% 傷害");
+                "攻擊：+15% 傷害");
     }
-    @Override public void onDamaged(EntityDamageByEntityEvent event, Player victim) {
-        if (Math.random() < 0.25) {
-            event.setDamage(event.getDamage() * 0.3);
-        }
+    @Override public void onAttack(EntityDamageByEntityEvent event, Player attacker) {
+        double m = plugin.getUpgradeMultiplier(attacker, getId());
+        event.setDamage(event.getDamage() * (1.0 + Math.min(0.30, 0.15 * m)));
     }
 }

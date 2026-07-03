@@ -82,7 +82,7 @@ gift:
     effect: "On hit: Inflict Burn 3·2 | Gain 1 SAN"
   bloody_gadget:
     name: "Bloody Gadget"
-    effect: "Attacks deal +2 damage, but you take 0.5 HP self-damage"
+    effect: "Passive: Gain Power 2·2 every 5s"
   blue_zippo_lighter:
     name: "Blue Zippo Lighter"
     description: ["&#44D8DBA supply issued to employees by Wings."]
@@ -99,7 +99,7 @@ gift:
     effect: "On melee hit: Gain Poise 2·2"
   carmilla:
     name: "Carmilla"
-    effect: "On attack: steal 3 HP; loses 1 HP/s in sunlight"
+    effect: "On hit vs full-health target: +20% damage"
   cask_spirits:
     name: "Cask of Spirits"
     description: ["&#A8BE78I never imagined life without a drink."]
@@ -132,21 +132,21 @@ gift:
   dreaming_electric_sheep:
     name: "Dreaming Electric Sheep"
     description: ["&#9863E7What color is yours?"]
-    effect: "Passive: Slow Falling, Slowness I"
+    effect: "Passive: Slow Falling | On kill: Gain Power 2·3"
   dry_to_the_bone_breast:
     name: "Dry-to-the-Bone Breast"
     description: ["&#D77F00Chicken is chicken."]
     effect: "Passive: Hunger doesn't drain; Strength I while sated | On hit vs ruptured target: extend Rupture by 2 stacks"
   dueling_manual_book_3:
     name: "Dueling Manual, Book 3"
-    effect: "On hit: 30% chance to block 50% of the damage"
+    effect: "Passive: Gain Power 2·2 every 5s | When hurt: 25% chance to gain Haste 2·3"
   dust_to_dust:
     name: "Dust to Dust"
     description: ["&#9A9A9AThat wasn't fog."]
     effect: "On hit: Inflict Burn 3·2 | On kill: Spread Burn 3·2 to enemies within 3 blocks"
   e_type_dimensional_dagger:
     name: "E-type Dimensional Dagger"
-    effect: "On attack: 25% chance to teleport behind target and deal bonus damage"
+    effect: "On hit: Gain Charge 2·2 | 25% chance to teleport behind target for bonus damage and Charge 4·2 instead"
   ebony_brooch:
     name: "Ebony Brooch"
     description: ["&#5B1365The Queen's apple."]
@@ -193,7 +193,7 @@ gift:
   hardship:
     name: "Hardship"
     description: ["&#9E9E41In this unholy place, one cannot even be sure this counts as prayer."]
-    effect: "Passive: Resistance I"
+    effect: "On hit at SAN ≥ 40: Gain Power 2·1 | On kill: Gain 2 SAN"
   harestride:
     name: "Harestride"
     description: ["&#AAD179A revelation of the parting clouds."]
@@ -209,7 +209,7 @@ gift:
   illusory_hunt:
     name: "Illusory Hunt"
     description: ["&#C6CDEFYou are special."]
-    effect: "On attack: 20% chance to inflict Blindness for 3s"
+    effect: "On hit: 20% chance to gain Power 2·2"
   jin_gang_bolus:
     name: "Jin Gang Bolus"
     description: ["&#9F8B07A pill of admirable color."]
@@ -227,7 +227,7 @@ gift:
     effect: "Passive: Speed I | On hit vs bleeding target: gain Poise 1·1"
   late_bloomers_tattoo:
     name: "Late Bloomer's Tattoo"
-    effect: "The lower your HP, the higher your attack and defense"
+    effect: "On hit below 50% HP: Gain Power 2·2 and Protection 2·2"
   lithograph:
     name: "Lithograph"
     description: ["&#169876Judgement… Condemnation… Chastisement…"]
@@ -265,7 +265,7 @@ gift:
     description:
       - "&#656565He tried to grasp the outstretched hand,"
       - "&#656565but failed."
-    effect: "On hit: 25% chance to reduce damage by 70%"
+    effect: "On hit: +15% damage"
   piece_of_a_torn_summer:
     name: "Piece of a Torn Summer"
     description: ["&#5FE2C5\"Trying to understand fickle weather seems meaningless to me.\""]
@@ -281,7 +281,7 @@ gift:
   plume_of_proof:
     name: "Plume of Proof"
     description: ["&#4498DBA salute to you."]
-    effect: "On kill: gain Speed II for 5s"
+    effect: "On hit: Inflict Bind 1·2 and gain Haste 1·2"
   prejudice:
     name: "Prejudice"
     effect: "Deal +50% damage to undead and spider-type mobs"
@@ -320,13 +320,13 @@ gift:
     effect: "On hit: Inflict Tremor 3·2 | 30% chance to chain-strike nearby enemies (50% damage) and add Tremor 2·1"
   special_contract:
     name: "Special Contract"
-    effect: "Passive: Strength II but Slowness II"
+    effect: "On hit: Inflict Fragile 2·2"
   spicebush_branch:
     name: "Spicebush Branch"
     description:
       - "&#FFF29BI can't see the flowers, but I smell them."
       - "&#FFF29BThe scent blooms; there I begin to dig a grave."
-    effect: "Passive: Converts Poison ticks into healing"
+    effect: "Passive: Converts Poison ticks into healing | Gain Haste 2·3 every 5s"
   strange_glyph_inscriptions:
     name: "Strange Glyph Inscriptions"
     effect: "On hit vs ruptured target: +20% damage and extend Rupture by 1 stack"
@@ -344,11 +344,11 @@ gift:
   tenacity_bolus:
     name: "Tenacity Bolus"
     description: ["&#0C440CThe day the Kong family was slaughtered."]
-    effect: "Passive: Resistance I, Health Boost I"
+    effect: "When hurt: Gain Protection 2·2"
   the_book_of_vengeance:
     name: "The Book of Vengeance"
     description: ["&#B900FFPaid back twofold!"]
-    effect: "Passive: Regeneration I; every 30s applies Slowness I for 1s"
+    effect: "When hurt: Gain Power 2·2 and Protection 1·2"
   thunderbranch:
     name: "Thunderbranch"
     effect: "On hit: Inflict Rupture 2·2; 10% chance to summon lightning and add Rupture 2·1"
@@ -359,7 +359,7 @@ gift:
   trauma_shield:
     name: "Trauma Shield"
     description: ["&#CBCBCBAn anti-psychic force field shield."]
-    effect: "On hit: absorbs one instance of damage every 60s"
+    effect: "When hurt: Absorbs one instance of damage every 60s and gain 2 SAN"
   trial_plan_guide:
     name: "Trial Plan Guide"
     effect: "On kill: gain +50% extra experience"

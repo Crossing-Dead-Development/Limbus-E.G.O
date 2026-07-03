@@ -157,7 +157,7 @@ gift:
     effect: "Passive: Slow Falling | On hit while sprinting: Gain Poise 3·2"
   endless_hunger:
     name: "Endless Hunger"
-    effect: "No weakness when starving; attack scales with hunger bar"
+    effect: "Passive: starvation cannot weaken you | On hit while well-fed: gain Power 2·1"
   faint_vestige:
     name: "Faint Vestige"
     effect: "Upgrade material for a Tier II accessory"
@@ -172,7 +172,7 @@ gift:
     description:
       - "&#F1B1B1Today I bury the flowers; who knows when I shall be buried?"
       - "&#F1B1B1They laugh at me for burying petals; who will bury me one day?"
-    effect: "Passive: Regeneration I"
+    effect: "Passive: Regeneration I | On kill: inflict Sinking 2·2 on nearby enemies"
   frozen_cries:
     name: "Frozen Cries"
     description: ["&#4498DBUnwilling to be ordinary."]
@@ -213,7 +213,7 @@ gift:
   jin_gang_bolus:
     name: "Jin Gang Bolus"
     description: ["&#9F8B07A pill of admirable color."]
-    effect: "Passive: Absorption I"
+    effect: "Passive: Absorption I and gain Protection 2·3"
   keenbranch:
     name: "Keenbranch"
     effect: "On hit: 20% chance for +30% damage and Poise 1·1"
@@ -269,7 +269,7 @@ gift:
   piece_of_a_torn_summer:
     name: "Piece of a Torn Summer"
     description: ["&#5FE2C5\"Trying to understand fickle weather seems meaningless to me.\""]
-    effect: "On fire/lava damage: gain Strength I for 5s"
+    effect: "On fire/lava damage: gain Power 2·2"
   piece_of_crumbled_egg:
     name: "Piece of a Crumbled Egg"
     description: ["&#33CF4FThe blooming Council of Nine."]
@@ -355,7 +355,7 @@ gift:
   tranquil_lotus_bolus:
     name: "Tranquil Lotus Bolus"
     description: ["&#E07F9AA vain sigh."]
-    effect: "Passive: Resistance I, Slowness I"
+    effect: "Passive: gain Protection 2·2 and restore 1 SAN every 10s"
   trauma_shield:
     name: "Trauma Shield"
     description: ["&#CBCBCBAn anti-psychic force field shield."]

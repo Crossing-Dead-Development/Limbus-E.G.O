@@ -107,7 +107,7 @@ public class LangManager {
                 try {
                     plugin.saveResource("lang/gifts/" + lang + ".yml", false);
                 } catch (IllegalArgumentException e) {
-                    plugin.getLogger().warning("[Lang] Missing bundled resource lang/" + lang + ".yml");
+                    plugin.getLogger().warning("[Lang] Missing bundled resource lang/gifts/" + lang + ".yml");
                 }
             }
         }

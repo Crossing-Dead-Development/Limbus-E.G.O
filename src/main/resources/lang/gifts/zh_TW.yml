@@ -67,7 +67,7 @@ gui:
 
 cmd:
   no_permission: "&#FF5555你沒有權限使用此指令。"
-  usage_getgift_give: "用法：/getgift give <玩家> <飾品ID|menu>"
+  usage_getgift_give: "用法：/limbusego gift give <玩家> <飾品ID|menu>"
   player_not_found: "找不到玩家：{0}"
   language_current: "&#FFD700目前語言：&f{0}"
   language_usage: "用法：/egogift language <代碼>"

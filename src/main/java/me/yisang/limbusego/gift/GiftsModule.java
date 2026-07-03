@@ -605,9 +605,9 @@ public class GiftsModule implements Listener, TabCompleter {
 
         if (args[0].equalsIgnoreCase("give")) {
             if (!sender.hasPermission("limbus.admin") && !(sender instanceof org.bukkit.command.ConsoleCommandSender)) return true;
-            if (args.length < 3) { sender.sendMessage("用法：/getgift give <玩家> <飾品ID|menu>"); return true; }
+            if (args.length < 3) { sender.sendMessage(msg("cmd.usage_getgift_give")); return true; }
             Player target = Bukkit.getPlayerExact(args[1]);
-            if (target == null) { sender.sendMessage("找不到玩家：" + args[1]); return true; }
+            if (target == null) { sender.sendMessage(msg("cmd.player_not_found", args[1])); return true; }
             if (args[2].equalsIgnoreCase("menu")) {
                 target.getInventory().addItem(createMenuOpener());
                 return true;

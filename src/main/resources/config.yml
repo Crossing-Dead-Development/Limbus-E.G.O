@@ -1,10 +1,11 @@
-# Limbus E.G.O Weapons configuration
+# Limbus E.G.O configuration
 # 語言設定 / Language setting
 # Built-in: zh_TW, en_US
-# You can also drop custom lang/<code>.yml files into the plugin data folder.
+# You can also drop custom lang/weapons/<code>.yml and lang/gifts/<code>.yml
+# files into the plugin data folder.
 language: zh_TW
 
-# 飾品提取箱（/gachachest）設定
+# 飾品提取箱（/limbusego chest gacha）設定
 gacha:
   # 每次抽取消耗的狂氣數量
   lunacy-cost: 32

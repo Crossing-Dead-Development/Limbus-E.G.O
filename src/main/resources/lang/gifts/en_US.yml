@@ -63,7 +63,7 @@ gui:
 
 cmd:
   no_permission: "&#FF5555You do not have permission to use this command."
-  usage_getgift_give: "Usage: /getgift give <player> <accessoryId|menu>"
+  usage_getgift_give: "Usage: /limbusego gift give <player> <accessoryId|menu>"
   player_not_found: "Player not found: {0}"
   language_current: "&#FFD700Current language: &f{0}"
   language_usage: "Usage: /egogift language <code>"

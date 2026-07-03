@@ -19,7 +19,7 @@ public class CommandRouter implements TabExecutor {
 
     private static final List<String> ROOT = List.of("weapon", "gift", "chest", "reload", "language");
     private static final List<String> WEAPON_SUB = List.of("give", "catalog", "admin");
-    private static final List<String> GIFT_SUB = List.of("menu", "give", "category");
+    private static final List<String> GIFT_SUB = List.of("menu", "give", "category", "admin");
     private static final List<String> CHEST_SUB = List.of("gacha", "thread", "shop");
     private static final List<String> SET_REMOVE = List.of("set", "remove");
     private static final List<String> CURRENCIES = List.of("thread", "lunacy");
@@ -57,6 +57,10 @@ public class CommandRouter implements TabExecutor {
                         if (!handled) sender.sendMessage(plugin.msg("cmd.usage_root"));
                     }
                     case "category" -> { if (sender instanceof Player p) gifts.openCatalog(p); }
+                    case "admin" -> {
+                        // 與 weapon admin 對齊的正式入口（舊 gift give admin 路徑仍相容）
+                        if (sender instanceof Player p && hasGiftGivePermission(sender)) gifts.openAdminGUI(p);
+                    }
                     default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
                 }
             }
@@ -118,6 +122,7 @@ public class CommandRouter implements TabExecutor {
             case "gift" -> {
                 // C1：gift give 需要 limbus.admin，無權限者的補完不應洩漏候選清單
                 if (args.length == 2) {
+                    // admin/give 只對有權限者補完
                     List<String> opts = hasGiftGivePermission(sender)
                             ? GIFT_SUB : List.of("menu", "category");
                     return filter(opts, args[1]);

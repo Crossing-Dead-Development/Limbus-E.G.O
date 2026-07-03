@@ -51,8 +51,9 @@ public class GiftCatalogGUI implements InventoryHolder {
         build();
     }
 
+    /** 首次建立 Inventory；之後切分頁/切模式都原地重繪，不重開視窗（避免關窗重開的卡頓與閃爍）。 */
     private void build() {
-        inventory = Bukkit.createInventory(this, 54, plugin.msg("gui.catalog_title"));
+        if (inventory == null) inventory = Bukkit.createInventory(this, 54, plugin.msg("gui.catalog_title"));
 
         ItemStack border = makeItem(Material.BLACK_STAINED_GLASS_PANE, " ");
         for (int i = 0; i < 9; i++) inventory.setItem(i, border);
@@ -111,20 +112,17 @@ public class GiftCatalogGUI implements InventoryHolder {
 
     public void switchTier(Player player, int tier) {
         currentTier = tier;
-        build();
-        player.openInventory(inventory);
+        build(); // 同一個 Inventory 原地重繪，玩家視窗即時更新
     }
 
     public void switchGroup(Player player, int group) {
         currentGroup = group;
         build();
-        player.openInventory(inventory);
     }
 
     public void toggleSortMode(Player player) {
         byGroup = !byGroup;
         build();
-        player.openInventory(inventory);
     }
 
     public int getTierForSlot(int slot) {

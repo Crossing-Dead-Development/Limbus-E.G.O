@@ -745,6 +745,11 @@ public class GiftsModule implements Listener {
         player.openInventory(new GiftCatalogGUI(this, 1).getInventory());
     }
 
+    /** 開啟飾品管理 GUI（/limbusego gift admin；權限由 CommandRouter 檢查）。 */
+    public void openAdminGUI(Player player) {
+        player.openInventory(new GiftAdminGUI(this, 0).getInventory());
+    }
+
     public boolean onGachaChest(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player player)) return true;
         if (!player.hasPermission("limbus.admin") && !player.isOp()) {

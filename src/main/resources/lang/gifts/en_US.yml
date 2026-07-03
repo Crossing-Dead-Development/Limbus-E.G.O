@@ -186,10 +186,10 @@ gift:
     effect: "On kill: drop an extra gold nugget"
   green_spirit:
     name: "Green Spirit"
-    effect: "Right-click: Speed II + Strength I for 5s, then dizziness (30s CD)"
+    effect: "On hit: Inflict Tremor 2·2"
   handheld_mirror:
     name: "Handheld Mirror"
-    effect: "Reflects 30% of incoming melee damage back to the attacker"
+    effect: "When hurt: Inflict Bind 2·2 and Fragile 1·2 on attacker"
   hardship:
     name: "Hardship"
     description: ["&#9E9E41In this unholy place, one cannot even be sure this counts as prayer."]
@@ -251,7 +251,7 @@ gift:
     effect: "Passive: Continuously poisons enemies within 4 blocks"
   nixie_divergence:
     name: "Nixie Divergence"
-    effect: "On attack: 15% chance to gain a random potion effect"
+    effect: "On hit: Inflict Tremor 2·2"
   oracle:
     name: "Oracle"
     description: ["&#B3F2F9Laughing at the blade, crying at the waterfall like the scent of falling leaves."]
@@ -273,7 +273,7 @@ gift:
   piece_of_crumbled_egg:
     name: "Piece of a Crumbled Egg"
     description: ["&#33CF4FThe blooming Council of Nine."]
-    effect: "On death: strike the killer with lightning"
+    effect: "On death: strike the killer with lightning and inflict Tremor 5·3"
   piece_of_relationship:
     name: "Piece of Relationship"
     description: ["&#444444Three lives of fate, three thousand worlds, three-life karma."]
@@ -314,10 +314,10 @@ gift:
   sour_liquor_aroma:
     name: "Sour Liquor Aroma"
     description: ["&#00BC6B\"So it wasn't a customer, but an unwelcome one.\""]
-    effect: "Passive: Enemies within 5 blocks continuously receive Weakness I"
+    effect: "On hit: Inflict Tremor 2·1 | On hit vs target with Tremor ≥ 3: +20% damage"
   sownpour:
     name: "Sownpour"
-    effect: "On attack: 30% chance to chain-strike nearby enemies (50% damage)"
+    effect: "On hit: Inflict Tremor 3·2 | 30% chance to chain-strike nearby enemies (50% damage) and add Tremor 2·1"
   special_contract:
     name: "Special Contract"
     effect: "Passive: Strength II but Slowness II"

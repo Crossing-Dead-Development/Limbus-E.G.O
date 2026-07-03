@@ -1,20 +1,19 @@
 package me.yisang.limbusego.gift.gifts;
 import me.yisang.limbusego.gift.BaseAccessory;
 import me.yisang.limbusego.gift.GiftsModule;
-import org.bukkit.entity.Entity;
+import me.yisang.limbusego.status.StatusEffect;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class SmokingGunpowder extends BaseAccessory {
     public SmokingGunpowder(GiftsModule plugin) {
         super(plugin, "smoking_gunpowder", "有煙火藥",
-                "&7觸發（死亡）：對周圍 4 格敵人造成 8 傷害");
+                "&7攻擊：施加破裂 2·2，並獲得迅捷 1·2");
     }
-    @Override public void onDeath(PlayerDeathEvent event, Player deceased) {
-        for (Entity e : deceased.getNearbyEntities(4, 4, 4)) {
-            if (e instanceof LivingEntity living && !(e instanceof Player)) {
-                living.damage(8.0);
-            }
-        }
+    @Override public void onAttack(EntityDamageByEntityEvent event, Player attacker) {
+        LivingEntity target = victimOf(event);
+        if (target == null) return;
+        applyScaled(target, StatusEffect.RUPTURE, 2, 2, attacker);
+        apply(attacker, StatusEffect.HASTE, 1, 2, attacker);
     }
 }

@@ -106,7 +106,7 @@ gift:
     effect: "On hit: Strength II for 3s"
   chief_butlers_secret_arts:
     name: "Chief Butler's Secret Arts"
-    effect: "Passive: Resistance I, Slow Falling"
+    effect: "On hit: Inflict Bind 2·2 | On kill: Restore 2 HP"
   child_within_a_flask:
     name: "Child Within a Flask"
     effect: "Once per 2 minutes, survives a lethal blow"
@@ -136,7 +136,7 @@ gift:
   dry_to_the_bone_breast:
     name: "Dry-to-the-Bone Breast"
     description: ["&#D77F00Chicken is chicken."]
-    effect: "Passive: Hunger doesn't drain; Strength I while sated"
+    effect: "Passive: Hunger doesn't drain; Strength I while sated | On hit vs ruptured target: extend Rupture by 2 stacks"
   dueling_manual_book_3:
     name: "Dueling Manual, Book 3"
     effect: "On hit: 30% chance to block 50% of the damage"
@@ -150,7 +150,7 @@ gift:
   ebony_brooch:
     name: "Ebony Brooch"
     description: ["&#5B1365The Queen's apple."]
-    effect: "Passive: Night Vision; Speed I at night"
+    effect: "Passive: Night Vision | On hit: Inflict Rupture 2·2; 15% chance to add Bind 1·2"
   emerald_elytra:
     name: "Emerald Elytra"
     description: ["&#16B569Under the umbrella, waiting out the rain."]
@@ -166,7 +166,7 @@ gift:
     effect: "On hit: below 30% HP grants Speed II for 5s"
   flower_in_the_mirror:
     name: "Flower in the Mirror"
-    effect: "On lethal hit: 40% chance to survive and gain Invisibility + Speed"
+    effect: "On hit: Inflict Rupture 2·2 | Passive: Every 5s, inflict Rupture 2·1 on enemies within 5 blocks"
   flower_mound:
     name: "Flower Mound"
     description:
@@ -197,7 +197,7 @@ gift:
   harestride:
     name: "Harestride"
     description: ["&#AAD179A revelation of the parting clouds."]
-    effect: "Passive: Speed II, Jump Boost I"
+    effect: "Passive: Speed II, Jump Boost I | On hit while under Speed: Inflict Rupture 2·2"
   homeward:
     name: "Homeward"
     description: ["&#8EC58E\"Take it with you before I take your home away. Quickly.\""]
@@ -245,7 +245,7 @@ gift:
   moon_in_the_water:
     name: "Moon in the Water"
     description: ["&#8EC5F0Frowning in vain."]
-    effect: "Passive: Night Vision"
+    effect: "Passive: Night Vision | On hit vs target with Rupture ≥ 3: gain Poise 2·1"
   nebulizer:
     name: "Nebulizer"
     effect: "Passive: Continuously poisons enemies within 4 blocks"
@@ -298,7 +298,7 @@ gift:
     effect: "Passive: nearby bees do not attack | When hurt: -15% damage from burning attacker | When hurt: Inflict Burn 2·2 on attacker"
   ruin:
     name: "Ruin"
-    effect: "On attack: deal +4 damage but lose 1 HP"
+    effect: "On hit: Inflict Rupture 3·2 | Vs already-ruptured target: add Fragile 1·1 but lose 0.5 HP"
   rusty_commemorative_coin:
     name: "Rusty Commemorative Coin"
     effect: "On kill: 35% chance to drop an extra gold nugget"
@@ -307,7 +307,7 @@ gift:
     effect: "Regenerate HP slowly while out of combat | On hit: Inflict Bleed 2·2"
   smoking_gunpowder:
     name: "Smoking Gunpowder"
-    effect: "On death: deal 8 damage to enemies within 4 blocks"
+    effect: "On hit: Inflict Rupture 2·2 and gain Haste 1·2"
   someones_device:
     name: "Someone's Device"
     effect: "Passive: shows nearby mob count on the ActionBar"
@@ -329,11 +329,11 @@ gift:
     effect: "Passive: Converts Poison ticks into healing"
   strange_glyph_inscriptions:
     name: "Strange Glyph Inscriptions"
-    effect: "On attack: 20% chance to trigger a random positive or negative effect"
+    effect: "On hit vs ruptured target: +20% damage and extend Rupture by 1 stack"
   strange_glyph_talisman:
     name: "Strange Glyph Talisman"
     description: ["&#8E5608Tian Jiu Xing — the Unrestrained."]
-    effect: "Passive: All incoming damage reduced by 15%"
+    effect: "On kill: Spread Rupture 3·2 to enemies within 5 blocks"
   sunshower:
     name: "Sunshower"
     effect: "Heal in the rain; Speed boost when clear"
@@ -351,7 +351,7 @@ gift:
     effect: "Passive: Regeneration I; every 30s applies Slowness I for 1s"
   thunderbranch:
     name: "Thunderbranch"
-    effect: "On attack: 10% chance to summon a lightning bolt"
+    effect: "On hit: Inflict Rupture 2·2; 10% chance to summon lightning and add Rupture 2·1"
   tranquil_lotus_bolus:
     name: "Tranquil Lotus Bolus"
     description: ["&#E07F9AA vain sigh."]

@@ -44,14 +44,17 @@ public class CommandRouter implements TabExecutor {
                         if (!hasGiftGivePermission(sender)) return true;
                         // 相容舊 /getgift 兩種語法：/gift give <玩家> <id|menu|thread|lunacy> [n]（給人，需 args[0]=="give"）
                         // 與 /gift give <id>（自給）。用 rest2[0] 是否為線上玩家名判斷要不要補回 "give" 前綴。
+                        boolean handled;
                         if (rest2.length >= 2 && Bukkit.getPlayerExact(rest2[0]) != null) {
                             String[] giveArgs = new String[rest2.length + 1];
                             giveArgs[0] = "give";
                             System.arraycopy(rest2, 0, giveArgs, 1, rest2.length);
-                            gifts.onGetGift(sender, cmd, label, giveArgs);
+                            handled = gifts.onGetGift(sender, cmd, label, giveArgs);
                         } else {
-                            gifts.onGetGift(sender, cmd, label, rest2);
+                            handled = gifts.onGetGift(sender, cmd, label, rest2);
                         }
+                        // handler 回 false = 參數不足/未知子指令，不能靜默吞掉
+                        if (!handled) sender.sendMessage(plugin.msg("cmd.usage_root"));
                     }
                     case "category" -> { if (sender instanceof Player p) gifts.openCatalog(p); }
                     default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
@@ -60,12 +63,14 @@ public class CommandRouter implements TabExecutor {
             case "chest" -> {
                 if (rest.length == 0) { sender.sendMessage(plugin.msg("cmd.usage_root")); return true; }
                 String[] rest2 = Arrays.copyOfRange(rest, 1, rest.length);
-                switch (rest[0].toLowerCase()) {
+                // handler 回 false = 參數不足/未知子指令，統一回 usage 而非靜默
+                boolean handled = switch (rest[0].toLowerCase()) {
                     case "gacha" -> gifts.onGachaChest(sender, cmd, label, rest2);
                     case "thread" -> gifts.onThreadChest(sender, cmd, label, rest2);
                     case "shop" -> gifts.onShopChest(sender, cmd, label, rest2);
-                    default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
-                }
+                    default -> false;
+                };
+                if (!handled) sender.sendMessage(plugin.msg("cmd.usage_root"));
             }
             case "reload" -> {
                 if (!sender.hasPermission("limbus.admin") && !(sender instanceof ConsoleCommandSender)) return true;

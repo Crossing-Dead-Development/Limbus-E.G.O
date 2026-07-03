@@ -2,15 +2,21 @@ package me.yisang.limbusego.gift;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
+import me.yisang.limbusego.status.StatusEffect;
+import me.yisang.limbusego.status.StatusManager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public abstract class BaseAccessory implements Accessory {
 
@@ -109,6 +115,9 @@ public abstract class BaseAccessory implements Accessory {
     private final String defaultDescription; // nullable, split by \n
     private final String defaultEffect;
 
+    // ── 12 屬性體系共用 helper（Phase 2）─────────────────────────────────
+    private final Map<UUID, Long> gateMap = new HashMap<>();
+
     // 無描述（舊格式向下相容）
     protected BaseAccessory(GiftsModule plugin, String id, String name, String effect) {
         this.plugin = plugin;
@@ -186,4 +195,41 @@ public abstract class BaseAccessory implements Accessory {
     public void give(Player player) {
         player.getInventory().addItem(createItem());
     }
+
+    protected StatusManager status() { return plugin.status(); }
+
+    /** 施加屬性，potency 依升級倍率取整放大（設計表升級標注 P 用這個）。 */
+    protected void applyScaled(LivingEntity target, StatusEffect eff, int p, int c, Player src) {
+        double m = plugin.getUpgradeMultiplier(src, getId());
+        status().apply(target, eff, (int) Math.round(p * m), c, src);
+    }
+
+    /** 施加屬性，不做升級放大（升級作用在別處時用這個）。 */
+    protected void apply(LivingEntity target, StatusEffect eff, int p, int c, Player src) {
+        status().apply(target, eff, p, c, src);
+    }
+
+    protected boolean has(LivingEntity e, StatusEffect eff) { return pot(e, eff) > 0; }
+
+    protected int pot(LivingEntity e, StatusEffect eff) {
+        var s = status().get(e);
+        return s == null ? 0 : s.potency(eff);
+    }
+
+    /** 每玩家冷卻閘：距上次觸發超過 ms 才回 true 並記錄本次。5 秒脈衝、內建 CD 都用它。 */
+    protected boolean gate(Player p, long ms) {
+        long now = System.currentTimeMillis();
+        Long last = gateMap.get(p.getUniqueId());
+        if (last != null && now - last < ms) return false;
+        gateMap.put(p.getUniqueId(), now);
+        return true;
+    }
+
+    /** 取受擊者（非 LivingEntity 回 null）。 */
+    protected LivingEntity victimOf(EntityDamageByEntityEvent ev) {
+        return ev.getEntity() instanceof LivingEntity le ? le : null;
+    }
+
+    @Override
+    public void onQuit(Player player) { gateMap.remove(player.getUniqueId()); }
 }

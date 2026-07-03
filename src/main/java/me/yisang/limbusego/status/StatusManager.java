@@ -305,6 +305,12 @@ public class StatusManager implements Listener {
 
     // ── 傷害施加（避免遞迴） ────────────────────────────────────────
 
+    /** 對外真傷 API：供飾品引爆/斬殺/擴散等效果使用（帶屬性標籤顯示、防遞迴）。 */
+    public void hurtTrue(LivingEntity target, Player source, double amount, StatusEffect label) {
+        if (amount <= 0) return;
+        scheduleTrueDamage(target, source, amount, label);
+    }
+
     private void scheduleTrueDamage(LivingEntity target, Player source, double amount, StatusEffect labelOrNullForDepression) {
         Bukkit.getScheduler().runTask(plugin, () -> dealTrueDamage(target, source, amount, labelOrNullForDepression));
     }

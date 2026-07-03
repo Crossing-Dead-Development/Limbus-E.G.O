@@ -64,6 +64,10 @@ public class GiftsModule implements Listener {
     private GachaListener gachaListener;
     private me.yisang.limbusego.gift.lang.LangManager lang;
 
+    // ── 屬性系統委派（合併後直接取用武器側管理器；僅限事件鉤子內呼叫）──────
+    public me.yisang.limbusego.status.StatusManager status() { return plugin.getStatusManager(); }
+    public me.yisang.limbusego.status.SanityManager sanity() { return plugin.getSanityManager(); }
+
     // ── 語言 ────────────────────────────────────────────────────────────────
     public me.yisang.limbusego.gift.lang.LangManager getLang() { return lang; }
 

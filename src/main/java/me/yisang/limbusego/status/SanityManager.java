@@ -181,6 +181,12 @@ public class SanityManager {
         lastCombat.put(p.getUniqueId(), System.currentTimeMillis());
     }
 
+    /** 回復 SAN（飾品回復理智用），上限由 setSan 自動夾住。 */
+    public void gainSan(Player p, int amount) {
+        if (amount <= 0) return;
+        setSan(p, getSan(p) + amount);
+    }
+
     /** 是否處於憂鬱狀態（SAN 觸底）。 */
     public boolean isDepressed(LivingEntity e) {
         if (!(e instanceof Player p)) return false;

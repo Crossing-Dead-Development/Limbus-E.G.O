@@ -11,13 +11,13 @@ import org.bukkit.potion.PotionEffectType;
 public class Sunshower extends BaseAccessory {
     public Sunshower(GiftsModule plugin) {
         super(plugin, "sunshower", "狐雨",
-                "&7被動：晴天獲得迅捷，雨天再生｜雨天攻擊：獲得強壯 2·1");
+                "&7被動：晴天每 5 秒獲得迅捷 2·2，雨天再生｜雨天攻擊：獲得強壯 2·1");
     }
     @Override public void onPassiveTick(Player player) {
         boolean raining = player.getWorld().hasStorm() || player.getWorld().isThundering();
         if (raining) {
             player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 120, 1, true, false));
-        } else {
+        } else if (gate(player, 5000)) {
             applyScaled(player, StatusEffect.HASTE, 2, 2, player);
         }
     }

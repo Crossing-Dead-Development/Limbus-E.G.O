@@ -11,10 +11,10 @@ public class TranquilLotusBolus extends BaseAccessory {
     public TranquilLotusBolus(GiftsModule plugin) {
         super(plugin, "tranquil_lotus_bolus", "靜蓮丸",
                 "&#E07F9A", "枉自嗟。",
-                "被動：獲得守護 2·2，並每 10 秒回復 1 SAN");
+                "被動：每 5 秒獲得守護 2·2，每 10 秒回復 1 SAN");
     }
     @Override public void onPassiveTick(Player player) {
-        applyScaled(player, StatusEffect.PROTECTION, 2, 2, player);
+        if (gate(player, 5000)) applyScaled(player, StatusEffect.PROTECTION, 2, 2, player);
         long now = System.currentTimeMillis();
         Long last = sanTicks.get(player.getUniqueId());
         if (last == null || now - last >= 10_000) {

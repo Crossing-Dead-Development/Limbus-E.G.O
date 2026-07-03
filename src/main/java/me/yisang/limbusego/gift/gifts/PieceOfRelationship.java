@@ -2,7 +2,6 @@ package me.yisang.limbusego.gift.gifts;
 import me.yisang.limbusego.gift.BaseAccessory;
 import me.yisang.limbusego.gift.GiftsModule;
 import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.potion.PotionEffect;

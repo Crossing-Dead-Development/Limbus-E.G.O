@@ -213,7 +213,7 @@ gift:
   jin_gang_bolus:
     name: "Jin Gang Bolus"
     description: ["&#9F8B07A pill of admirable color."]
-    effect: "Passive: Absorption I and gain Protection 2·3"
+    effect: "Passive: Absorption I | Gain Protection 2·3 every 5s"
   keenbranch:
     name: "Keenbranch"
     effect: "On hit: 20% chance for +30% damage and Poise 1·1"
@@ -336,7 +336,7 @@ gift:
     effect: "On kill: Spread Rupture 3·2 to enemies within 5 blocks"
   sunshower:
     name: "Sunshower"
-    effect: "Passive: gain Haste in clear weather; Regeneration in rain; immune to lightning in thunderstorms | On hit in rain: gain Power 2·1"
+    effect: "Passive: gain Haste 2·2 every 5s in clear weather; Regeneration in rain; immune to lightning in thunderstorms | On hit in rain: gain Power 2·1"
   tangled_bones:
     name: "Tangled Bones"
     description: ["&#969696The fragments are a jumbled mess; the original form is unrecognizable."]
@@ -355,7 +355,7 @@ gift:
   tranquil_lotus_bolus:
     name: "Tranquil Lotus Bolus"
     description: ["&#E07F9AA vain sigh."]
-    effect: "Passive: gain Protection 2·2 and restore 1 SAN every 10s"
+    effect: "Passive: gain Protection 2·2 every 5s and restore 1 SAN every 10s"
   trauma_shield:
     name: "Trauma Shield"
     description: ["&#CBCBCBAn anti-psychic force field shield."]

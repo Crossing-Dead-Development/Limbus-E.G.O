@@ -53,7 +53,7 @@ public class CommandRouter implements TabExecutor {
                             gifts.onGetGift(sender, cmd, label, rest2);
                         }
                     }
-                    case "category" -> gifts.onEgoGift(sender, cmd, label, new String[]{"category"});
+                    case "category" -> { if (sender instanceof Player p) gifts.openCatalog(p); }
                     default -> sender.sendMessage(plugin.msg("cmd.usage_root"));
                 }
             }

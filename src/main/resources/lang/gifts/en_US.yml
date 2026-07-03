@@ -41,12 +41,6 @@ msg:
     remove_success: "&#9BE1FFRemoved this chest's shop status."
     remove_missing: "&#AAAAAAThis chest is not a shop."
 
-  reload:
-    starting: "&#FFD700[GiftsModule] &#AAAAAAFull reload starting…"
-    done: "&#FFD700[GiftsModule] &#AAAAAAReload done."
-    failed: "&#FF5555[GiftsModule] Reload failed: {0}"
-    lang_done: "&#FFD700[GiftsModule] &#AAAAAALanguage files reloaded."
-
 currency:
   thread: "Thread"
   lunacy: "Lunacy"
@@ -65,10 +59,6 @@ cmd:
   no_permission: "&#FF5555You do not have permission to use this command."
   usage_getgift_give: "Usage: /limbusego gift give <player> <accessoryId|menu>"
   player_not_found: "Player not found: {0}"
-  language_current: "&#FFD700Current language: &f{0}"
-  language_usage: "Usage: /egogift language <code>"
-  language_set: "&#FFD700Language switched to &f{0}"
-  language_invalid: "&#FF5555Unknown language: {0}. Available: {1}"
 
 # ── Gifts / 飾品 ──────────────────────────────────────────────────────────────
 gift:

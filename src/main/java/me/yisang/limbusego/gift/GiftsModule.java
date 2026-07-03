@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GiftsModule implements Listener, TabCompleter {
+public class GiftsModule implements Listener {
 
     private static final Pattern HEX_PATTERN = Pattern.compile("&#([A-Fa-f0-9]{6})");
 
@@ -658,44 +658,10 @@ public class GiftsModule implements Listener, TabCompleter {
         return true;
     }
 
-    public boolean onEgoGift(CommandSender sender, Command cmd, String label, String[] args) {
-        if (args.length == 0) return false;
-        switch (args[0].toLowerCase()) {
-            case "category" -> {
-                if (!(sender instanceof Player player)) return true;
-                GiftCatalogGUI gui = new GiftCatalogGUI(this, 1);
-                player.openInventory(gui.getInventory());
-            }
-            case "reload" -> {
-                if (sender instanceof Player p && !p.hasPermission("limbus.admin") && !p.isOp()) {
-                    sender.sendMessage(msg("cmd.no_permission"));
-                    return true;
-                }
-                lang.reload();
-                sender.sendMessage(msg("msg.reload.done"));
-            }
-            case "language", "lang" -> {
-                if (sender instanceof Player p && !p.hasPermission("limbus.admin") && !p.isOp()) {
-                    sender.sendMessage(msg("cmd.no_permission"));
-                    return true;
-                }
-                if (args.length < 2) {
-                    sender.sendMessage(msg("cmd.language_current", lang.getCurrentLang()));
-                    sender.sendMessage(msg("cmd.language_usage"));
-                    return true;
-                }
-                String code = args[1];
-                if (!lang.hasLang(code)) {
-                    sender.sendMessage(msg("cmd.language_invalid", code, String.join(", ", lang.getAvailableLangs())));
-                    return true;
-                }
-                lang.setLanguage(code);
-                sender.sendMessage(msg("cmd.language_set", code));
-                sender.sendMessage(msg("msg.reload.lang_done"));
-            }
-            default -> { return false; }
-        }
-        return true;
+    /** 開啟飾品圖鑑（/limbusego gift category）。舊 /egogift 的 reload/language 分支
+     *  已由 /limbusego reload、/limbusego language 統一取代，不再保留。 */
+    public void openCatalog(Player player) {
+        player.openInventory(new GiftCatalogGUI(this, 1).getInventory());
     }
 
     public boolean onGachaChest(CommandSender sender, Command cmd, String label, String[] args) {
@@ -858,50 +824,6 @@ public class GiftsModule implements Listener, TabCompleter {
             default -> { return false; }
         }
         return true;
-    }
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (command.getName().equals("shopchest")) {
-            if (args.length == 1) return List.of("set", "remove").stream()
-                .filter(s -> s.startsWith(args[0].toLowerCase())).toList();
-            if (args.length == 3 && args[0].equalsIgnoreCase("set")) {
-                return List.of("thread", "lunacy").stream()
-                    .filter(s -> s.startsWith(args[2].toLowerCase())).toList();
-            }
-            return Collections.emptyList();
-        }
-        if (command.getName().equals("egogift")) {
-            if (args.length == 1) return List.of("category", "reload", "language").stream()
-                .filter(s -> s.startsWith(args[0].toLowerCase())).toList();
-            if (args.length == 2 && ("language".equalsIgnoreCase(args[0]) || "lang".equalsIgnoreCase(args[0]))) {
-                String prefix = args[1].toLowerCase();
-                return lang.getAvailableLangs().stream()
-                    .filter(s -> s.toLowerCase().startsWith(prefix)).toList();
-            }
-            return Collections.emptyList();
-        }
-        if (command.getName().equals("gachachest")) {
-            if (args.length == 1) return List.of("set", "remove").stream()
-                .filter(s -> s.startsWith(args[0].toLowerCase())).toList();
-            return Collections.emptyList();
-        }
-        if (command.getName().equals("threadchest")) {
-            if (args.length == 1) return List.of("set", "remove").stream()
-                .filter(s -> s.startsWith(args[0].toLowerCase())).toList();
-            // /threadchest set <cost> [thread|lunacy] <name...>
-            if (args.length == 3 && args[0].equalsIgnoreCase("set")) {
-                return List.of("thread", "lunacy").stream()
-                    .filter(s -> s.startsWith(args[2].toLowerCase())).toList();
-            }
-            return Collections.emptyList();
-        }
-        if (args.length == 1) {
-            List<String> ids = new ArrayList<>(List.of("admin", "menu", "lunacy", "thread"));
-            ids.addAll(accessories.keySet());
-            return ids.stream().filter(s -> s.startsWith(args[0].toLowerCase())).toList();
-        }
-        return Collections.emptyList();
     }
 
     // ── 顏色代碼工具 ─────────────────────────────────────────────────────────

@@ -45,12 +45,6 @@ msg:
     remove_success: "&#9BE1FF已移除此箱子的商店狀態。"
     remove_missing: "&#AAAAAA此箱子不是商店。"
 
-  reload:
-    starting: "&#FFD700[GiftsModule] &#AAAAAA完整重新載入中…"
-    done: "&#FFD700[GiftsModule] &#AAAAAA重新載入完成。"
-    failed: "&#FF5555[GiftsModule] 重新載入失敗:{0}"
-    lang_done: "&#FFD700[GiftsModule] &#AAAAAA語言檔已重新載入。"
-
 currency:
   thread: "紡錘"
   lunacy: "狂氣"
@@ -69,7 +63,3 @@ cmd:
   no_permission: "&#FF5555你沒有權限使用此指令。"
   usage_getgift_give: "用法：/limbusego gift give <玩家> <飾品ID|menu>"
   player_not_found: "找不到玩家：{0}"
-  language_current: "&#FFD700目前語言：&f{0}"
-  language_usage: "用法：/egogift language <代碼>"
-  language_set: "&#FFD700語言已切換為 &f{0}"
-  language_invalid: "&#FF5555未知語言：{0}。可用：{1}"

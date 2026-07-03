@@ -68,7 +68,7 @@ gift:
     effect: "Passive: Immune to fire damage | On hit: Inflict Burn 2·2 | On hit vs burning target below 30% HP: +30% damage"
   artistic_sense:
     name: "Artistic Sense"
-    effect: "Emits a sense prompt when players or named creatures are nearby"
+    effect: "On hit: Inflict Sinking 2·2 | On hit vs sinking or depressed target: +25% damage"
   ashes_to_ashes:
     name: "Ashes to Ashes"
     description: ["&#9A9A9AInto the mist we go."]
@@ -76,7 +76,7 @@ gift:
   black_sheet_music:
     name: "Black Sheet Music"
     description: ["&#FFFFFFThis movement shall pierce your very soul."]
-    effect: "Passive: Haste I"
+    effect: "On hit: Inflict Sinking 3·3 | On hit vs depressed target or Sinking ≥ 4: +25% damage"
   bloodflame_sword:
     name: "Bloodflame Sword"
     effect: "On hit: Inflict Burn 3·2 | Gain 1 SAN"
@@ -93,7 +93,7 @@ gift:
   broken_compass:
     name: "Broken Compass"
     description: ["&#0772ABThe cries of the disoriented do not cease."]
-    effect: "On attack: 10% chance to inflict Nausea for 3s"
+    effect: "On hit: 25% chance to inflict Sinking 2·3"
   cqc_manual:
     name: "CQC Manual"
     effect: "Passive: Strength I"
@@ -117,7 +117,7 @@ gift:
   cold_illusion:
     name: "Cold Illusion"
     description: ["&#33CF4FThe blooming Council of Nine."]
-    effect: "On attack: apply Slowness II for 3s"
+    effect: "On hit: Inflict Sinking 2·2 and Bind 1·2"
   crystallized_blood:
     name: "Crystallized Blood"
     description: ["&#FF0000An endless parade."]
@@ -128,7 +128,7 @@ gift:
   distant_star:
     name: "Distant Star"
     description: ["&#00DAFFFollowing the stars."]
-    effect: "Passive: Luck I"
+    effect: "On hit vs sinking target: Gain 1 SAN and extend Sinking by 1 stack"
   dreaming_electric_sheep:
     name: "Dreaming Electric Sheep"
     description: ["&#9863E7What color is yours?"]
@@ -176,7 +176,7 @@ gift:
   frozen_cries:
     name: "Frozen Cries"
     description: ["&#4498DBUnwilling to be ordinary."]
-    effect: "On attack: apply Slowness III for 2s"
+    effect: "When hurt: Inflict Sinking 3·2 on attacker"
   glimpse_of_flames:
     name: "Glimpse of Flames"
     effect: "On hit vs burning target: Detonate Burn for true damage and inflict Fragile 1·2"
@@ -238,7 +238,7 @@ gift:
     effect: "Passive: Continuous Invisibility while sneaking | On hit: Inflict Bleed 3·3 | On kill: Spread Bleed 2·2 to enemies within 5 blocks"
   mental_corruption_boosting_gas:
     name: "Mental Corruption Boosting Gas"
-    effect: "On attack: 30% chance to inflict Nausea on target and nearby players"
+    effect: "On hit: Inflict Sinking 2·2; player targets also lose 1 SAN"
   millarca:
     name: "Millarca"
     effect: "On hit: Inflict Bleed 2·2 | On hit vs already-bleeding target: steal 1 HP (scales with upgrade)"
@@ -288,11 +288,11 @@ gift:
   rags:
     name: "Rags"
     description: ["&#755E42They can no longer keep out the falling rain."]
-    effect: "On hit: reflect 30% of the damage back to the attacker"
+    effect: "On hit vs sinking target: +7.5% damage and gain 1 SAN"
   rest:
     name: "Rest"
     description: ["&#FFFFFF\"A single coffin lies here alone.\""]
-    effect: "Passive: Regeneration I while standing still"
+    effect: "Passive: Regeneration I while standing still | On hit vs sinking target: +15% damage"
   royal_jelly_perfume:
     name: "Royal Jelly Perfume"
     effect: "Passive: nearby bees do not attack | When hurt: -15% damage from burning attacker | When hurt: Inflict Burn 2·2 on attacker"
@@ -340,7 +340,7 @@ gift:
   tangled_bones:
     name: "Tangled Bones"
     description: ["&#969696The fragments are a jumbled mess; the original form is unrecognizable."]
-    effect: "On attack: double damage to skeletons; 20% chance to ignite"
+    effect: "On hit: Inflict Sinking 2·2 | On hit vs depressed target: +15% damage"
   tenacity_bolus:
     name: "Tenacity Bolus"
     description: ["&#0C440CThe day the Kong family was slaughtered."]

@@ -1,20 +1,28 @@
 package me.yisang.limbusego.gift.gifts;
 import me.yisang.limbusego.gift.BaseAccessory;
 import me.yisang.limbusego.gift.GiftsModule;
-import org.bukkit.Material;
+import me.yisang.limbusego.status.StatusEffect;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
-import java.util.Random;
 public class RustyCommemorativeCoin extends BaseAccessory {
-    private final Random rng = new Random();
     public RustyCommemorativeCoin(GiftsModule plugin) {
-        super(plugin, "rusty_commemorative_coin", "生鏽的紀念幣", "&7擊殺時 35% 機率掉落額外金粒");
+        super(plugin, "rusty_commemorative_coin", "生鏽的紀念幣",
+                "&7攻擊低血量目標：每 8 秒處決一次｜擊殺時：獲得強壯 2·2");
+    }
+    @Override public void onAttack(EntityDamageByEntityEvent event, Player attacker) {
+        LivingEntity target = victimOf(event);
+        if (target == null) return;
+        double max = target.getAttribute(Attribute.MAX_HEALTH).getValue();
+        if (max <= 0) return;
+        double m = plugin.getUpgradeMultiplier(attacker, getId());
+        if (target.getHealth() / max >= Math.min(0.30, 0.15 * m)) return;
+        if (!gate(attacker, 8000)) return;
+        status().hurtTrue(target, attacker, target.getHealth() + 10, StatusEffect.RUPTURE);
     }
     @Override public void onKill(EntityDeathEvent event, Player killer) {
-        double m = plugin.getUpgradeMultiplier(killer, getId());
-        if (rng.nextDouble() < 0.35 * m)
-            event.getEntity().getWorld().dropItemNaturally(
-                event.getEntity().getLocation(), new ItemStack(Material.GOLD_NUGGET, 1 + (int)(m - 1)));
+        applyScaled(killer, StatusEffect.POWER, 2, 2, killer);
     }
 }

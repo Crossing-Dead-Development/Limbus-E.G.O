@@ -86,7 +86,7 @@ gift:
   blue_zippo_lighter:
     name: "Blue Zippo Lighter"
     description: ["&#44D8DBA supply issued to employees by Wings."]
-    effect: "On attack: 25% chance to ignite the target for 3s"
+    effect: "On hit: 20% chance to inflict Burn 2·2 | Right-click: ignite a target or block every 8s"
   brilliant_vestige:
     name: "Brilliant Vestige"
     effect: "Upgrade material for a Tier IV accessory"
@@ -109,7 +109,7 @@ gift:
     effect: "On hit: Inflict Bind 2·2 | On kill: Restore 2 HP"
   child_within_a_flask:
     name: "Child Within a Flask"
-    effect: "Once per 2 minutes, survives a lethal blow"
+    effect: "On lethal damage: survive once every 2 minutes, heal to 4 HP, and knock nearby enemies back"
   clear_mirror_calm_water:
     name: "Clear Mirror, Calm Water"
     description: ["&#56BBDBOne reflects not in flowing water, but in still."]
@@ -183,7 +183,7 @@ gift:
   golden_urn:
     name: "Golden Urn"
     description: ["&#DA8F24To embrace is itself to accept another."]
-    effect: "On kill: drop an extra gold nugget"
+    effect: "On kill: 15% chance to duplicate the target's drops"
   green_spirit:
     name: "Green Spirit"
     effect: "On hit: Inflict Tremor 2·2"
@@ -201,7 +201,7 @@ gift:
   homeward:
     name: "Homeward"
     description: ["&#8EC58E\"Take it with you before I take your home away. Quickly.\""]
-    effect: "Passive: Regeneration II while above 80% HP"
+    effect: "After 5s out of combat: heal up to 50% max HP once per combat"
   hot_n_juicy_drumstick:
     name: "Hot 'n' Juicy Drumstick"
     description: ["&#D77F00Chicken is chicken."]
@@ -231,7 +231,7 @@ gift:
   lithograph:
     name: "Lithograph"
     description: ["&#169876Judgement… Condemnation… Chastisement…"]
-    effect: "Passive: All incoming damage reduced by 10%"
+    effect: "On kill: recover HP and hunger"
   mask_of_the_parade:
     name: "Mask of the Parade"
     description: ["&#9928BB\"For a mere drop of blood, this moment can be preserved forever!\""]
@@ -255,7 +255,7 @@ gift:
   oracle:
     name: "Oracle"
     description: ["&#B3F2F9Laughing at the blade, crying at the waterfall like the scent of falling leaves."]
-    effect: "Passive: Below 40% HP, reveals mobs within 10 blocks"
+    effect: "While sneaking: reveal nearby mobs for 3s every 10s"
   pain_of_stifled_rage:
     name: "Pain of Stifled Rage"
     description: ["&#DA3D24The bull roars in despair…"]
@@ -277,14 +277,14 @@ gift:
   piece_of_relationship:
     name: "Piece of Relationship"
     description: ["&#444444Three lives of fate, three thousand worlds, three-life karma."]
-    effect: "Passive: Grants Regeneration I to players within 5 blocks"
+    effect: "Passive: pull experience orbs and grant Regeneration I to allies within 5 blocks | On kill: +50% experience"
   plume_of_proof:
     name: "Plume of Proof"
     description: ["&#4498DBA salute to you."]
     effect: "On hit: Inflict Bind 1·2 and gain Haste 1·2"
   prejudice:
     name: "Prejudice"
-    effect: "Deal +50% damage to undead and spider-type mobs"
+    effect: "On hit vs targets with lower HP ratio than you: up to +30% damage"
   rags:
     name: "Rags"
     description: ["&#755E42They can no longer keep out the falling rain."]
@@ -301,7 +301,7 @@ gift:
     effect: "On hit: Inflict Rupture 3·2 | Vs already-ruptured target: add Fragile 1·1 but lose 0.5 HP"
   rusty_commemorative_coin:
     name: "Rusty Commemorative Coin"
-    effect: "On kill: 35% chance to drop an extra gold nugget"
+    effect: "On hit vs low-HP targets: execute once every 8s | On kill: gain Power 2·2"
   sanguine_blossom_bolus:
     name: "Sanguine Blossom Bolus"
     effect: "Regenerate HP slowly while out of combat | On hit: Inflict Bleed 2·2"
@@ -310,7 +310,7 @@ gift:
     effect: "On hit: Inflict Rupture 2·2 and gain Haste 1·2"
   someones_device:
     name: "Someone's Device"
-    effect: "Passive: shows nearby mob count on the ActionBar"
+    effect: "Passive: pull nearby items and experience orbs"
   sour_liquor_aroma:
     name: "Sour Liquor Aroma"
     description: ["&#00BC6B\"So it wasn't a customer, but an unwelcome one.\""]
@@ -336,7 +336,7 @@ gift:
     effect: "On kill: Spread Rupture 3·2 to enemies within 5 blocks"
   sunshower:
     name: "Sunshower"
-    effect: "Heal in the rain; Speed boost when clear"
+    effect: "Passive: gain Haste in clear weather; Regeneration in rain; immune to lightning in thunderstorms | On hit in rain: gain Power 2·1"
   tangled_bones:
     name: "Tangled Bones"
     description: ["&#969696The fragments are a jumbled mess; the original form is unrecognizable."]
@@ -362,7 +362,7 @@ gift:
     effect: "When hurt: Absorbs one instance of damage every 60s and gain 2 SAN"
   trial_plan_guide:
     name: "Trial Plan Guide"
-    effect: "On kill: gain +50% extra experience"
+    effect: "On kill: +50% experience | Passive: Hero of the Village I"
   twinkling_vestige:
     name: "Twinkling Vestige"
     effect: "Upgrade material for a Tier III accessory"

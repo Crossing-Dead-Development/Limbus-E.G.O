@@ -2,7 +2,7 @@
 
 將邊獄公司（Limbus Company）的 E.G.O 武器與 E.G.O 飾品一併帶進 Minecraft 的單一 Paper 插件。
 
-- **版本**：1.0.0
+- **版本**：1.0.1
 - **Minecraft 版本**：1.21.4
 - **平台**：Paper
 - **Java**：21
@@ -10,7 +10,7 @@
 
 ## 這是什麼
 
-`LimbusEGO-1.0.0.jar` 是由兩個舊插件合併而成的單一插件，行為與舊版完全一致（Phase 1：合併不改遊戲行為）：
+`LimbusEGO-1.0.1.jar` 是由兩個舊插件合併而成的單一插件，行為與舊版完全一致（Phase 1：合併不改遊戲行為）：
 
 - **Limbus E.G.O Weapons v3.2.0** → 12 屬性體系、理智值（SAN）系統、8 種 E.G.O 武器
 - **Limbus E.G.O Gifts v2.5.0** → 80 件 E.G.O 飾品＋4 種殘影升級材料、抽取箱／紡錘抽獎箱／購買商店箱
@@ -87,7 +87,7 @@
 ## 安裝與資料遷移（從舊兩插件升級）
 
 1. **移除舊插件**：從 `plugins/` 移出 `LimbusEGOWeapons-*.jar` 與 `LimbusEGOGift-*.jar`（建議備份而非直接刪除）。
-2. **放入新插件**：把 `LimbusEGO-1.0.0.jar` 放進 `plugins/`。
+2. **放入新插件**：把 `LimbusEGO-1.0.1.jar` 放進 `plugins/`。
 3. **資料遷移**：把舊 `plugins/LimbusEGOGift/` 資料夾內的 `gacha_chests.yml`、`thread_chests.yml`、`shop_chests.yml`、`config.yml` 複製到新的 `plugins/LimbusEGO/`（若舊 `plugins/LimbusEGOWeapons/config.yml` 有自訂語言設定，注意合併 `language` 欄位，避免被覆蓋）。
 4. **啟動伺服器**——舊物品與玩家升級資料自動相容：武器側 PDC 固定落在 `limbusegoweapons:` namespace、飾品側固定落在 `limbusegogift:` namespace（與舊兩插件產生的資料完全一致），玩家背包裡的舊武器／舊飾品、飾品欄位裡已升級的等級都無需任何轉檔即可繼續使用。
 
@@ -103,6 +103,21 @@ Phase 1（本版本）**仍沿用兩個舊資源包**，插件啟動時分別非
 | [Limbus_E.G.O_Gifts_plugin_ResourcePack](https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack) | 飾品外觀 | v2.6 | `resourcepack-gifts.zip` |
 
 **Phase 3 計畫**：兩個資源包將合併為單一新 repo `Limbus-E.G.O-ResourcePack`，屆時插件會改為單一 `PACK_URL` / `PACK_HASH`，本節會隨之更新。
+
+---
+
+## 更新紀錄
+
+### 1.0.1（2026-07-03）— 合併後清理
+
+- `/limbusego gift give`（缺參數）與 `/limbusego chest gacha|thread|shop`（缺 `set`/`remove`）不再靜默無回應，改回覆用法提示
+- `gift give` 的「用法／找不到玩家」訊息改走語言檔，隨 `/limbusego language` 切換雙語
+- 移除合併殘留死碼：`GiftsModule` 中已無指令對應的舊 `/egogift`、`/gachachest` 等 Tab 補完與 reload/language 分支（功能已由 `/limbusego reload`、`/limbusego language` 統一承接），並清除無主語言鍵
+- `config.yml` 註解與缺語言檔警告訊息的路徑修正
+
+### 1.0.0（2026-07-02）— Phase 1 插件合併
+
+- Weapons v3.2.0 + Gifts v2.5.0 合併為單一插件，行為不變；統一指令樹 `/limbusego`
 
 ---
 

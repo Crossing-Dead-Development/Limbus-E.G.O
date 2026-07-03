@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 group = "me.yisang"
-version = "1.0.1"
+version = "1.1.0"
 
 repositories {
     mavenCentral()

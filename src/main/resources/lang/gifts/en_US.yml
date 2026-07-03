@@ -121,7 +121,7 @@ gift:
   crystallized_blood:
     name: "Crystallized Blood"
     description: ["&#FF0000An endless parade."]
-    effect: "On hit: gain Strength I for 3s"
+    effect: "Passive: Every 5s, consume all Bleed stacks to restore HP (half of stack count, capped at 4, cap scales with upgrade)"
   dark_vestige:
     name: "Dark Vestige"
     effect: "Upgrade material for a Tier I accessory"
@@ -220,11 +220,11 @@ gift:
   la_manchaland_all_day_pass:
     name: "La Manchaland All-Day Pass"
     description: ["&#FCD05CIn my stead, chase the dream alongside that child."]
-    effect: "Passive: Speed I, Jump Boost I"
+    effect: "Passive: Speed I, Jump Boost I | On hit vs bleeding target: gain Poise 2·2"
   la_manchaland_standard_pass:
     name: "La Manchaland Standard Pass"
     description: ["&#FCD05CA great fixer's tale of chasing dreams."]
-    effect: "Passive: Speed I"
+    effect: "Passive: Speed I | On hit vs bleeding target: gain Poise 1·1"
   late_bloomers_tattoo:
     name: "Late Bloomer's Tattoo"
     effect: "The lower your HP, the higher your attack and defense"
@@ -235,13 +235,13 @@ gift:
   mask_of_the_parade:
     name: "Mask of the Parade"
     description: ["&#9928BB\"For a mere drop of blood, this moment can be preserved forever!\""]
-    effect: "Passive: Continuous Invisibility while sneaking"
+    effect: "Passive: Continuous Invisibility while sneaking | On hit: Inflict Bleed 3·3 | On kill: Spread Bleed 2·2 to enemies within 5 blocks"
   mental_corruption_boosting_gas:
     name: "Mental Corruption Boosting Gas"
     effect: "On attack: 30% chance to inflict Nausea on target and nearby players"
   millarca:
     name: "Millarca"
-    effect: "On attack: steal 3 HP (potent lifesteal)"
+    effect: "On hit: Inflict Bleed 2·2 | On hit vs already-bleeding target: steal 1 HP (scales with upgrade)"
   moon_in_the_water:
     name: "Moon in the Water"
     description: ["&#8EC5F0Frowning in vain."]
@@ -304,7 +304,7 @@ gift:
     effect: "On kill: 35% chance to drop an extra gold nugget"
   sanguine_blossom_bolus:
     name: "Sanguine Blossom Bolus"
-    effect: "Regenerate HP slowly while out of combat"
+    effect: "Regenerate HP slowly while out of combat | On hit: Inflict Bleed 2·2"
   smoking_gunpowder:
     name: "Smoking Gunpowder"
     effect: "On death: deal 8 damage to enemies within 4 blocks"

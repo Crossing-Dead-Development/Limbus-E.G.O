@@ -46,18 +46,21 @@ public class LimbusEGO extends JavaPlugin implements Listener {
     private me.yisang.limbusego.lang.LangManager lang;
     private me.yisang.limbusego.gift.GiftsModule gifts;
 
-    private static final String PACK_URL_WEAPONS  = "https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack/releases/download/v.2.17/Limbus_E.G.O_Weapons_plugin_ResourcePack.v.2.17.zip";
-    private static final String PACK_HASH_WEAPONS = "060302e85c12d23127b7c4eb3b7050c82615e20d";
-    private static final String PACK_URL_GIFTS    = "https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack/releases/download/v2.6/Limbus_E.G.O_Gifts_plugin_ResourcePack.v2.6.zip";
-    private static final String PACK_HASH_GIFTS   = "91576ab33630f5f2869c3e30516824a4bf992999";
+    // Phase 3：合併後單一資源包（repo：Crossing-Dead-Development/Limbus-E.G.O-ResourcePack）
+    private static final String PACK_URL  = "https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack/releases/download/v1.0/Limbus-E.G.O-ResourcePack.v1.0.zip";
+    private static final String PACK_HASH = "6791febbc3b8f96a6f27dde230d980155437f889";
 
     /**
-     * 同步兩份資源包（武器＋飾品）到本插件 data folder。
+     * 同步合併後的單一資源包到本插件 data folder（resourcepack.zip，供 ResourcePackManager 讀取）。
      * 不主動推送給玩家——交由外部 ResourcePackManager 合併分發。
      */
     private void syncResourcePacks() {
-        syncPack(PACK_URL_WEAPONS, PACK_HASH_WEAPONS, "resourcepack-weapons.zip");
-        syncPack(PACK_URL_GIFTS,   PACK_HASH_GIFTS,   "resourcepack-gifts.zip");
+        syncPack(PACK_URL, PACK_HASH, "resourcepack.zip");
+        // Phase 1/2 的兩個舊分包不再使用，清掉避免殘留混淆
+        for (String stale : new String[]{"resourcepack-weapons.zip", "resourcepack-gifts.zip"}) {
+            java.io.File f = new java.io.File(getDataFolder(), stale);
+            if (f.isFile() && f.delete()) getLogger().info("[ResourcePack] 已移除舊分包 " + stale);
+        }
     }
 
     /**

@@ -4,7 +4,7 @@
 
 將邊獄公司（Limbus Company）的 E.G.O 武器與 E.G.O 飾品一併帶進 Minecraft 的單一 Paper 插件。
 
-- **版本**：1.2.2
+- **版本**：1.3.0
 - **Minecraft 版本**：1.21.4
 - **平台**：Paper
 - **Java**：21
@@ -12,7 +12,7 @@
 
 ## 這是什麼
 
-`LimbusEGO-1.2.2.jar` 是由兩個舊插件合併而成的單一插件：
+`LimbusEGO-1.3.0.jar` 是由兩個舊插件合併而成的單一插件：
 
 - **Limbus E.G.O Weapons v3.2.0** → 12 屬性體系、理智值（SAN）系統、8 種 E.G.O 武器
 - **Limbus E.G.O Gifts v2.5.0** → 80 件 E.G.O 飾品＋4 種殘影升級材料、抽取箱／紡錘抽獎箱／購買商店箱
@@ -21,7 +21,9 @@
 
 **Phase 2 已完成（v1.1.0）**：80 件飾品效果全面重構，攻擊／受擊／擊殺／被動等鉤子直接串接武器側 12 屬性體系與理智值（SAN），效果強度隨飾品升級等級（殘影）放大。
 
-> 資源包合併為單一資源包為 **Phase 3** 計畫。本專案取代下方兩個舊 repo，屬於它們的延續與整合。
+**Phase 3 已完成（v1.3.0）**：兩個資源包合併為單一 [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack)，插件改用單一 `PACK_URL` / `PACK_HASH`。
+
+> 本專案取代下方兩個舊 repo，屬於它們的延續與整合。
 
 ---
 
@@ -92,7 +94,7 @@
 ## 安裝與資料遷移（從舊兩插件升級）
 
 1. **移除舊插件**：從 `plugins/` 移出 `LimbusEGOWeapons-*.jar` 與 `LimbusEGOGift-*.jar`（建議備份而非直接刪除）。
-2. **放入新插件**：把 `LimbusEGO-1.2.2.jar` 放進 `plugins/`。
+2. **放入新插件**：把 `LimbusEGO-1.3.0.jar` 放進 `plugins/`。
 3. **資料遷移**：把舊 `plugins/LimbusEGOGift/` 資料夾內的 `gacha_chests.yml`、`thread_chests.yml`、`shop_chests.yml`、`config.yml` 複製到新的 `plugins/LimbusEGO/`（若舊 `plugins/LimbusEGOWeapons/config.yml` 有自訂語言設定，注意合併 `language` 欄位，避免被覆蓋）。
 4. **啟動伺服器**——舊物品與玩家升級資料自動相容：武器側 PDC 固定落在 `limbusegoweapons:` namespace、飾品側固定落在 `limbusegogift:` namespace（與舊兩插件產生的資料完全一致），玩家背包裡的舊武器／舊飾品、飾品欄位裡已升級的等級都無需任何轉檔即可繼續使用。
 
@@ -100,18 +102,22 @@
 
 ## 資源包
 
-Phase 1（本版本）**仍沿用兩個舊資源包**，插件啟動時分別非同步下載並校驗到 data folder，交由外部 ResourcePackManager 合併分發（本插件不主動推送、不踢人）：
+Phase 3（v1.3.0 起）改用**單一合併資源包**，插件啟動時自動下載並以 SHA-1 校驗到 `plugins/LimbusEGO/resourcepack.zip`，交由外部 ResourcePackManager 合併分發（本插件不主動推送、不踢人）；舊的兩個分包檔會在啟動時自動清除。
 
 | 資源包 | 用途 | 目前版本 | data folder 檔名 |
 |---|---|---|---|
-| [Limbus-E.G.O-weapon-plugin-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack) | 武器外觀 | v.2.17 | `resourcepack-weapons.zip` |
-| [Limbus_E.G.O_Gifts_plugin_ResourcePack](https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack) | 飾品外觀 | v2.6 | `resourcepack-gifts.zip` |
+| [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack) | 武器＋飾品外觀與音效 | v1.0 | `resourcepack.zip` |
 
-**Phase 3 計畫**：兩個資源包將合併為單一新 repo `Limbus-E.G.O-ResourcePack`，屆時插件會改為單一 `PACK_URL` / `PACK_HASH`，本節會隨之更新。
+> v1.0 = 舊武器包 v.2.17 ＋ 舊飾品包 v2.6 的內容完整合併，無任何變更。兩個舊資源包 repo 已由上述新 repo 取代。
 
 ---
 
 ## 更新紀錄
+
+### 1.3.0（2026-07-03）— Phase 3：資源包合併
+
+- 武器（v.2.17）與飾品（v2.6）兩資源包合併為單一 [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack) v1.0（內容不變；`assets/minecraft/atlases` 兩包原本即相同）
+- 插件改用單一 `PACK_URL` / `PACK_HASH`，下載到 `plugins/LimbusEGO/resourcepack.zip`；啟動時自動清除舊的 `resourcepack-weapons.zip` / `resourcepack-gifts.zip`
 
 ### 1.2.2（2026-07-03）— 圖鑑流暢度與飾品管理入口
 
@@ -165,7 +171,10 @@ Phase 1（本版本）**仍沿用兩個舊資源包**，插件啟動時分別非
 - 舊武器插件：<https://github.com/Crossing-Dead-Development/Limbus-E.G.O-Weapons>
 - 舊飾品插件：<https://github.com/Crossing-Dead-Development/Limbus-E.G.O-Gifts>
 
-（兩個資源包 repo 目前仍在使用中，尚未棄用，詳見上方「資源包」一節；待 Phase 3 資源包合併完成後，上述舊 repo 會一併封存。）
+兩個舊資源包 repo 也已由 [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack) 取代（Phase 3），不再更新：
+
+- 舊武器資源包：<https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack>
+- 舊飾品資源包：<https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack>
 
 ---
 

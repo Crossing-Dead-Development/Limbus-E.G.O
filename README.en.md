@@ -4,7 +4,7 @@
 
 A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (accessories) of Limbus Company into Minecraft.
 
-- **Version**: 1.2.2
+- **Version**: 1.3.0
 - **Minecraft version**: 1.21.4
 - **Platform**: Paper
 - **Java**: 21
@@ -12,7 +12,7 @@ A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (access
 
 ## What is this
 
-`LimbusEGO-1.2.2.jar` is a single plugin merged from two legacy plugins:
+`LimbusEGO-1.3.0.jar` is a single plugin merged from two legacy plugins:
 
 - **Limbus E.G.O Weapons v3.2.0** → the 12-status system, the Sanity (SAN) system, and 8 E.G.O weapons
 - **Limbus E.G.O Gifts v2.5.0** → 80 E.G.O gifts + 4 vestige upgrade materials, plus gacha / thread lottery / shop chests
@@ -21,7 +21,9 @@ The main class is renamed to `me.yisang.limbusego.LimbusEGO`; the old gift plugi
 
 **Phase 2 is complete (v1.1.0)**: all 80 gift effects have been reworked. Their on-hit / when-hurt / on-kill / passive hooks now plug directly into the weapon-side 12-status system and Sanity (SAN), and effect strength scales with the gift's upgrade tier (vestiges).
 
-> Merging the two resource packs into a single pack is the **Phase 3** plan. This project supersedes the two legacy repos below and is their continuation and integration.
+**Phase 3 is complete (v1.3.0)**: the two resource packs are merged into a single [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack), and the plugin now uses a single `PACK_URL` / `PACK_HASH`.
+
+> This project supersedes the two legacy repos below and is their continuation and integration.
 
 ---
 
@@ -92,7 +94,7 @@ Each entity carries `(potency, count)` two-axis statuses: potency is strength, c
 ## Installation & data migration (upgrading from the two legacy plugins)
 
 1. **Remove the old plugins**: move `LimbusEGOWeapons-*.jar` and `LimbusEGOGift-*.jar` out of `plugins/` (back them up rather than deleting).
-2. **Drop in the new plugin**: put `LimbusEGO-1.2.2.jar` into `plugins/`.
+2. **Drop in the new plugin**: put `LimbusEGO-1.3.0.jar` into `plugins/`.
 3. **Migrate data**: copy `gacha_chests.yml`, `thread_chests.yml`, `shop_chests.yml`, and `config.yml` from the old `plugins/LimbusEGOGift/` folder into the new `plugins/LimbusEGO/` (if the old `plugins/LimbusEGOWeapons/config.yml` had a custom language setting, merge the `language` field carefully so it isn't overwritten).
 4. **Start the server** — legacy items and player upgrade data are automatically compatible: weapon-side PDC stays in the `limbusegoweapons:` namespace and gift-side PDC in the `limbusegogift:` namespace (identical to what the old plugins produced), so old weapons / gifts in inventories and upgraded gift levels keep working without any conversion.
 
@@ -100,18 +102,22 @@ Each entity carries `(potency, count)` two-axis statuses: potency is strength, c
 
 ## Resource packs
 
-Phase 1 (still true for this version) **keeps using the two legacy resource packs**. The plugin downloads and verifies both asynchronously into its data folder on startup, then leaves merging and distribution to an external ResourcePackManager (this plugin never force-pushes packs or kicks players):
+Since Phase 3 (v1.3.0) the plugin uses a **single merged resource pack**, downloaded and SHA-1-verified into `plugins/LimbusEGO/resourcepack.zip` on startup, with merging and distribution left to an external ResourcePackManager (this plugin never force-pushes packs or kicks players). The two legacy split-pack files are cleaned up automatically on startup.
 
 | Resource pack | Purpose | Current version | data folder filename |
 |---|---|---|---|
-| [Limbus-E.G.O-weapon-plugin-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack) | Weapon visuals | v.2.17 | `resourcepack-weapons.zip` |
-| [Limbus_E.G.O_Gifts_plugin_ResourcePack](https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack) | Gift visuals | v2.6 | `resourcepack-gifts.zip` |
+| [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack) | Weapon + gift visuals and sounds | v1.0 | `resourcepack.zip` |
 
-**Phase 3 plan**: the two packs will be merged into a single new repo `Limbus-E.G.O-ResourcePack`; the plugin will then switch to a single `PACK_URL` / `PACK_HASH`, and this section will be updated accordingly.
+> v1.0 is a content-identical merge of the legacy weapons pack v.2.17 and gifts pack v2.6. The two legacy pack repos are superseded by the new repo above.
 
 ---
 
 ## Changelog
+
+### 1.3.0 (2026-07-03) — Phase 3: resource pack merge
+
+- The weapons (v.2.17) and gifts (v2.6) packs are merged into a single [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack) v1.0 (content unchanged; `assets/minecraft/atlases` was already identical in both)
+- The plugin now uses a single `PACK_URL` / `PACK_HASH`, downloading to `plugins/LimbusEGO/resourcepack.zip`; the legacy `resourcepack-weapons.zip` / `resourcepack-gifts.zip` files are removed automatically on startup
 
 ### 1.2.2 (2026-07-03) — Catalog smoothness & gift admin entry point
 
@@ -165,7 +171,10 @@ This project (`Limbus-E.G.O`) supersedes and integrates the following two legacy
 - Legacy weapons plugin: <https://github.com/Crossing-Dead-Development/Limbus-E.G.O-Weapons>
 - Legacy gifts plugin: <https://github.com/Crossing-Dead-Development/Limbus-E.G.O-Gifts>
 
-(The two resource pack repos are still in use and not yet deprecated — see "Resource packs" above; they will be archived together once the Phase 3 resource pack merge is complete.)
+The two legacy resource pack repos are likewise superseded by [Limbus-E.G.O-ResourcePack](https://github.com/Crossing-Dead-Development/Limbus-E.G.O-ResourcePack) (Phase 3) and will no longer be updated:
+
+- Legacy weapons pack: <https://github.com/Crossing-Dead-Development/Limbus-E.G.O-weapon-plugin-ResourcePack>
+- Legacy gifts pack: <https://github.com/Crossing-Dead-Development/Limbus_E.G.O_Gifts_plugin_ResourcePack>
 
 ---
 

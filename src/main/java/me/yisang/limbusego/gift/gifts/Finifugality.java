@@ -1,20 +1,18 @@
 package me.yisang.limbusego.gift.gifts;
 import me.yisang.limbusego.gift.BaseAccessory;
 import me.yisang.limbusego.gift.GiftsModule;
-import org.bukkit.attribute.Attribute;
+import me.yisang.limbusego.status.StatusEffect;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import java.util.Objects;
 public class Finifugality extends BaseAccessory {
     public Finifugality(GiftsModule plugin) {
-        super(plugin, "finifugality", "留戀", "&7受傷時：血量低於 30% 觸發速度 II 5 秒");
+        super(plugin, "finifugality", "留戀",
+                "&7攻擊：獲得呼吸法 2·2｜呼吸法達 5 時額外獲得強壯 2·1");
     }
-    @Override public void onDamaged(EntityDamageByEntityEvent event, Player victim) {
-        double max = Objects.requireNonNull(victim.getAttribute(Attribute.MAX_HEALTH)).getValue();
-        if (victim.getHealth() < max * 0.3) {
-            victim.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, 100, 1, true, true));
+    @Override public void onAttack(EntityDamageByEntityEvent event, Player attacker) {
+        applyScaled(attacker, StatusEffect.POISE, 2, 2, attacker);
+        if (pot(attacker, StatusEffect.POISE) >= 5) {
+            applyScaled(attacker, StatusEffect.POWER, 2, 1, attacker);
         }
     }
 }

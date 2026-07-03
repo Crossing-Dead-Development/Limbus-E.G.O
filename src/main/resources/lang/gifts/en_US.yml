@@ -96,14 +96,14 @@ gift:
     effect: "On hit: 25% chance to inflict Sinking 2·3"
   cqc_manual:
     name: "CQC Manual"
-    effect: "Passive: Strength I"
+    effect: "On melee hit: Gain Poise 2·2"
   carmilla:
     name: "Carmilla"
     effect: "On attack: steal 3 HP; loses 1 HP/s in sunlight"
   cask_spirits:
     name: "Cask of Spirits"
     description: ["&#A8BE78I never imagined life without a drink."]
-    effect: "On hit: Strength II for 3s"
+    effect: "On hit: Gain Poise 2·2 | While own Poise ≥ 4, hits also grant 1 SAN"
   chief_butlers_secret_arts:
     name: "Chief Butler's Secret Arts"
     effect: "On hit: Inflict Bind 2·2 | On kill: Restore 2 HP"
@@ -113,7 +113,7 @@ gift:
   clear_mirror_calm_water:
     name: "Clear Mirror, Calm Water"
     description: ["&#56BBDBOne reflects not in flowing water, but in still."]
-    effect: "On hit: 20% chance to reduce damage by 50%"
+    effect: "On hit: Gain Poise 3·2 | On kill: Gain Power 3·2"
   cold_illusion:
     name: "Cold Illusion"
     description: ["&#33CF4FThe blooming Council of Nine."]
@@ -154,7 +154,7 @@ gift:
   emerald_elytra:
     name: "Emerald Elytra"
     description: ["&#16B569Under the umbrella, waiting out the rain."]
-    effect: "Passive: Slow Falling, Jump Boost I"
+    effect: "Passive: Slow Falling | On hit while sprinting: Gain Poise 3·2"
   endless_hunger:
     name: "Endless Hunger"
     effect: "No weakness when starving; attack scales with hunger bar"
@@ -163,7 +163,7 @@ gift:
     effect: "Upgrade material for a Tier II accessory"
   finifugality:
     name: "Finifugality"
-    effect: "On hit: below 30% HP grants Speed II for 5s"
+    effect: "On hit: Gain Poise 2·2 | At Poise ≥ 5: also gain Power 2·1"
   flower_in_the_mirror:
     name: "Flower in the Mirror"
     effect: "On hit: Inflict Rupture 2·2 | Passive: Every 5s, inflict Rupture 2·1 on enemies within 5 blocks"
@@ -216,7 +216,7 @@ gift:
     effect: "Passive: Absorption I"
   keenbranch:
     name: "Keenbranch"
-    effect: "On attack: 15% chance to increase damage by 50%"
+    effect: "On hit: 20% chance for +30% damage and Poise 1·1"
   la_manchaland_all_day_pass:
     name: "La Manchaland All-Day Pass"
     description: ["&#FCD05CIn my stead, chase the dream alongside that child."]
@@ -248,7 +248,7 @@ gift:
     effect: "Passive: Night Vision | On hit vs target with Rupture ≥ 3: gain Poise 2·1"
   nebulizer:
     name: "Nebulizer"
-    effect: "Passive: Continuously poisons enemies within 4 blocks"
+    effect: "Passive: Every 5s, self and players within 5 blocks gain Poise 2·2"
   nixie_divergence:
     name: "Nixie Divergence"
     effect: "On hit: Inflict Tremor 2·2"

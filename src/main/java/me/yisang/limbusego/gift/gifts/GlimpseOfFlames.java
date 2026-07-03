@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 public class GlimpseOfFlames extends BaseAccessory {
     public GlimpseOfFlames(GiftsModule plugin) {
         super(plugin, "glimpse_of_flames", "炎鱗",
-                "&7攻擊燒傷中目標：引爆燒傷造成真傷並施加脆弱 1·2");
+                "&7攻擊燒傷中目標：引爆燒傷造成真傷並施加易損 1·2");
     }
     @Override public void onAttack(EntityDamageByEntityEvent event, Player attacker) {
         LivingEntity target = victimOf(event);

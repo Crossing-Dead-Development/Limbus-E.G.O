@@ -32,7 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * 鴻璐·脛骨 Tibia — Callisto 用自身軀體鍛造的巨劍。
+ * 提比婭 Tibia — Callisto 用自身軀體鍛造的巨劍。
  *
  * 忠於原作三大機制：
  *  1. 命中疊層 Bleed（用 POISON 模擬，每擊 +2 層，上限 10 層 / 8 秒）。

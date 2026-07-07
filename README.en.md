@@ -4,7 +4,7 @@
 
 A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (accessories) of Limbus Company into Minecraft.
 
-- **Version**: 1.3.0
+- **Version**: 1.4.0
 - **Minecraft version**: 1.21.4
 - **Platform**: Paper
 - **Java**: 21
@@ -12,7 +12,7 @@ A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (access
 
 ## What is this
 
-`LimbusEGO-1.3.0.jar` is a single plugin merged from two legacy plugins:
+`LimbusEGO-1.4.0.jar` is a single plugin merged from two legacy plugins:
 
 - **Limbus E.G.O Weapons v3.2.0** → the 12-status system, the Sanity (SAN) system, and 8 E.G.O weapons
 - **Limbus E.G.O Gifts v2.5.0** → 80 E.G.O gifts + 4 vestige upgrade materials, plus gacha / thread lottery / shop chests
@@ -94,7 +94,7 @@ Each entity carries `(potency, count)` two-axis statuses: potency is strength, c
 ## Installation & data migration (upgrading from the two legacy plugins)
 
 1. **Remove the old plugins**: move `LimbusEGOWeapons-*.jar` and `LimbusEGOGift-*.jar` out of `plugins/` (back them up rather than deleting).
-2. **Drop in the new plugin**: put `LimbusEGO-1.3.0.jar` into `plugins/`.
+2. **Drop in the new plugin**: put `LimbusEGO-1.4.0.jar` into `plugins/`.
 3. **Migrate data**: copy `gacha_chests.yml`, `thread_chests.yml`, `shop_chests.yml`, and `config.yml` from the old `plugins/LimbusEGOGift/` folder into the new `plugins/LimbusEGO/` (if the old `plugins/LimbusEGOWeapons/config.yml` had a custom language setting, merge the `language` field carefully so it isn't overwritten).
 4. **Start the server** — legacy items and player upgrade data are automatically compatible: weapon-side PDC stays in the `limbusegoweapons:` namespace and gift-side PDC in the `limbusegogift:` namespace (identical to what the old plugins produced), so old weapons / gifts in inventories and upgraded gift levels keep working without any conversion.
 
@@ -113,6 +113,17 @@ Since Phase 3 (v1.3.0) the plugin uses a **single merged resource pack**, downlo
 ---
 
 ## Changelog
+
+### 1.4.0 (2026-07-07) — Status system rework: vanilla damage pipeline, caps & rebalance
+
+- **Status damage now goes through the vanilla damage pipeline**: armor, enchantments, resistance potions and region/PvP protection all apply automatically; DoT kills are correctly attributed to the caster. Fixes the exploit where DoT could be stacked on players inside no-PvP regions (damage listeners now use `ignoreCancelled` plus a zero-damage gate)
+- **Stack caps**: potency/count are clamped on apply (config `status-caps`, default 10/20); PROTECTION and FRAGILE now consume a count when hit, capping damage reduction at 40% and eliminating AFK invincibility
+- **20HP-based rebalance**: status coefficients retuned around "moderate lethality vs an unarmored player" (Burn/Bleed/Sinking ×0.5, Rupture ×0.75, Tremor burst ×1.5, Power/Fragile 5%, Protection 4%, Charge 3%, Poise crit 5%/50% cap/×1.5)
+- **Status application cooldown**: minimum interval per effect per target (config `status-cooldowns`, default 1000ms)
+- **PlaceholderAPI support**: `%limbusego_san%`, `%limbusego_effects%`, `%limbusego_<effect>_potency|count%` (soft dependency)
+- **New `/limbusego status apply|get` admin command**: apply/inspect statuses from console or in-game with selector support and tab completion
+- Fix: unsourced DoT used the armor-bypassing `generic` damage type; switched to `MOB_ATTACK` so armor applies correctly (verified against the vanilla armor formula on a throwaway test server)
+- Docs: status rebalance design doc and Sin-affinity resistance system proposal (`docs/plans/`)
 
 ### 1.3.0 (2026-07-03) — Phase 3: resource pack merge
 

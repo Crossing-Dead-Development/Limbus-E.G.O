@@ -630,8 +630,16 @@ public class GiftsModule implements Listener {
 
     // ── 攻擊 / 受傷 / 受任何傷害 / 擊殺事件，分發給裝備中的飾品 ──────────────
 
-    @EventHandler
+    /**
+     * ignoreCancelled：領地/保護插件（WorldGuard、Residence…）取消的 PvP 攻擊不再觸發飾品
+     * （否則禁 PvP 領地內可免費疊 DoT 掛人——交接文件 Bug A）。
+     * finalDamage > 0 閘：零傷攻擊（空手戳護甲）不觸發 on-hit 施加狀態。
+     * isStatusDamage 閘：本插件狀態傷害結算不再觸發 on-hit，避免 DoT 觸發飾品再疊 DoT 的無限鏈。
+     */
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
+        if (me.yisang.limbusego.status.StatusManager.isStatusDamage(event)) return;
+        if (event.getFinalDamage() <= 0) return;
         if (event.getDamager() instanceof Player attacker) {
             for (Accessory acc : getEquippedAccessories(attacker)) {
                 acc.onAttack(event, attacker);
@@ -644,7 +652,7 @@ public class GiftsModule implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event instanceof EntityDamageByEntityEvent) return; // 已由 onEntityDamageByEntity 處理
         if (event.getEntity() instanceof Player victim) {

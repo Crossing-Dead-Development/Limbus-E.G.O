@@ -211,6 +211,11 @@ public class LimbusEGO extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(statusManager, this);
         getServer().getPluginManager().registerEvents(new me.yisang.limbusego.status.SanityListener(sanityManager), this);
 
+        if (getServer().getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new me.yisang.limbusego.status.LimbusPlaceholderExpansion(this).register();
+            getLogger().info("已啟用 PlaceholderAPI 變數支援。");
+        }
+
         getServer().getPluginManager().registerEvents(this, this);
 
         // 同步資源包到本插件 data folder，供 ResourcePackManager 合併分發

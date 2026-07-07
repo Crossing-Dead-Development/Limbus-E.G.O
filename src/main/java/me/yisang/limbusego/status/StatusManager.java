@@ -32,22 +32,25 @@ import java.util.concurrent.ConcurrentHashMap;
  * 資料完全 in-memory（ConcurrentHashMap），mob unload / 死亡 / 進入 chunk unload 就丟掉；
  * 屬性本來就不用跨 session 保留。
  *
- * 觸發規則：
- *   BLEED     — 帶血者攻擊時消耗 1 count → 對自己造 potency × 0.5 真傷
- *   BURN      — 每 40 tick 週期消耗 1 count → 對自己造 potency 真傷
- *   FRAGILE   — 承傷乘 (1 + potency × 15%) 乘區
- *   POWER     — 出手乘 (1 + potency × 10%) 乘區
- *   SINKING — 受擊消耗 1 count → potency 真傷 + 玩家 SAN -1（SAN 觸底轉憂鬱 ×1.5）
- *   RUPTURE   — 受擊消耗 1 count → potency × 2 真傷（速殺 boss 用高倍率）
+ * 觸發規則（v1.3.0 重平衡：以「未穿甲 20HP」為基準的中等致命度；
+ * 狀態傷害改走原版傷害管線 damage(amount, source)，護甲/附魔/抗性藥水/領地保護自動生效）：
+ *   BLEED     — 帶血者攻擊時消耗 1 count → 對自己造 potency × 0.5 傷害
+ *   BURN      — 每 40 tick 週期消耗 1 count → potency × 0.5 傷害
+ *   FRAGILE   — 承傷乘 (1 + potency × 5%) 乘區，受擊 -1 count（不再永久留存）
+ *   POWER     — 出手乘 (1 + potency × 5%) 乘區，每次出手 -1 count
+ *   SINKING — 受擊消耗 1 count → potency × 0.5 傷害 + 玩家 SAN -1（憂鬱 ×1.5）
+ *   RUPTURE   — 受擊消耗 1 count → potency × 0.75 傷害
  *   TREMOR    — 累積 potency；受擊且 potency ≥ 閾值時「爆發」→ 消耗全部 potency
- *               造 potency × 3 真傷 + 派生灼熱（追加 BURN 5p/3c）
- *   PROTECTION— 承傷乘 (1 - potency × 5%) 乘區（在 FRAGILE 之前套）
+ *               造 potency × 1.5 傷害 + 派生灼熱（追加 BURN 5p/3c）
+ *   PROTECTION— 承傷乘 (1 - potency × 4%) 乘區（在 FRAGILE 之前套），受擊 -1 count；
+ *               potency cap 10 → 減傷數學上限 40%，永不無敵
  *   HASTE/BIND— potion wrapper：直接轉 Speed / Slowness，不進 states map
  *               amplifier = potency-1，duration = count 秒
  *   CHARGE    — 出手乘 (1 + potency × 3%)，每次出手 -1 count
- *   POISE — 出手 min(60%, potency × 5%) 機率爆擊，×1.75 傷害，每次出手 -1 count
- *   POWER 也改為每次出手 -1 count（原本永久留存不合理，同 Limbus 語意調整）
+ *   POISE — 出手 min(50%, potency × 5%) 機率爆擊，×1.5 傷害，每次出手 -1 count
  *
+ * potency/count 各有上限（config status-caps，預設 10/20），add() 時夾住。
+ * 施加冷卻（config status-cooldowns，預設 1000ms）限制同效果重複施加頻率。
  * DoT 分 4 桶輪流結算，每 10 tick 處理 1/4，攤平負載。
  */
 public class StatusManager implements Listener {
@@ -55,26 +58,31 @@ public class StatusManager implements Listener {
     private static final int BUCKET_COUNT = 4;
     private static final int BUCKET_INTERVAL_TICKS = 10; // 40 tick 一輪
     private static final double BLEED_COEF = 0.5;
-    private static final double FRAGILE_PER_POTENCY = 0.15;
-    private static final double POWER_PER_POTENCY = 0.10;
+    private static final double BURN_COEF = 0.5;
+    private static final double SINKING_COEF = 0.5;
+    private static final double FRAGILE_PER_POTENCY = 0.05;
+    private static final double POWER_PER_POTENCY = 0.05;
     private static final double DEPRESSION_MULT = 1.5;
-    private static final double RUPTURE_MULT = 2.0;
-    private static final double TREMOR_MULT = 3.0;
+    private static final double RUPTURE_MULT = 0.75;
+    private static final double TREMOR_MULT = 1.5;
     private static final int TREMOR_BURST_THRESHOLD = 5;
     private static final int TREMOR_DERIV_BURN_POTENCY = 5;
     private static final int TREMOR_DERIV_BURN_COUNT = 3;
-    private static final double PROTECTION_PER_POTENCY = 0.05;
+    private static final double PROTECTION_PER_POTENCY = 0.04;      // cap 10 → 減傷上限 40%
     private static final double SINKING_SPEED_PER_POTENCY = 0.02;
     private static final double SINKING_SPEED_MAX = 0.5;
     private static final String SINKING_SPEED_MOD_KEY = "sinking_speed";
-    private static final double CHARGE_PER_POTENCY = 0.03;              // +3% 攻擊 / potency
+    private static final double CHARGE_PER_POTENCY = 0.03;          // +3% 攻擊 / potency
     private static final double POISE_CRIT_PER_POTENCY = 0.05;      // +5% 爆擊率 / potency
-    private static final double POISE_CRIT_MAX = 0.60;              // 上限 60% 爆擊率
-    private static final double POISE_CRIT_MULT = 1.75;             // 爆擊 ×1.75
+    private static final double POISE_CRIT_MAX = 0.50;              // 上限 50% 爆擊率
+    private static final double POISE_CRIT_MULT = 1.5;              // 爆擊 ×1.5
+    private static final int DEFAULT_POTENCY_CAP = 10;
+    private static final int DEFAULT_COUNT_CAP = 20;
 
     private final LimbusEGO plugin;
     private final SanityManager sanity;
     private final ConcurrentHashMap<UUID, StatusState> states = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<UUID, Map<StatusEffect, Long>> applyCooldowns = new ConcurrentHashMap<>();
     private final NamespacedKey sinkingSpeedKey;
     private int tickBucket = 0;
 
@@ -97,6 +105,16 @@ public class StatusManager implements Listener {
     public void apply(LivingEntity target, StatusEffect effect, int potency, int count, Player source) {
         if (target == null || !target.isValid() || potency <= 0 || count <= 0) return;
 
+        // Check application cooldown
+        long now = System.currentTimeMillis();
+        var entityCD = applyCooldowns.computeIfAbsent(target.getUniqueId(), k -> new ConcurrentHashMap<>());
+        Long last = entityCD.get(effect);
+        long cdMs = getCooldownMs(effect);
+        if (last != null && (now - last) < cdMs) {
+            return;
+        }
+        entityCD.put(effect, now);
+
         // HASTE / BIND 是 potion wrapper，不進 states map
         if (effect == StatusEffect.HASTE || effect == StatusEffect.BIND) {
             applyPotionWrapper(target, effect, potency, count);
@@ -105,7 +123,7 @@ public class StatusManager implements Listener {
         }
 
         StatusState s = states.computeIfAbsent(target.getUniqueId(), k -> new StatusState());
-        s.add(effect, potency, count);
+        s.add(effect, potency, count, getPotencyCap(effect), getCountCap(effect));
         if (effect == StatusEffect.SINKING) syncSinkingSpeed(target, s);
         showEffectApplied(target, effect, potency, count, source);
     }
@@ -129,7 +147,7 @@ public class StatusManager implements Listener {
         if (target == null || addCount <= 0) return;
         StatusState s = states.get(target.getUniqueId());
         if (s == null || s.potency(effect) <= 0) return;
-        s.add(effect, 0, addCount);
+        s.add(effect, 0, addCount, getPotencyCap(effect), getCountCap(effect));
     }
 
     /**
@@ -169,11 +187,14 @@ public class StatusManager implements Listener {
             StatusState s = en.getValue();
             int potency = s.potency(StatusEffect.BURN);
             if (potency > 0 && s.consume(StatusEffect.BURN, 1) > 0) {
-                dealTrueDamage(le, null, potency, StatusEffect.BURN);
+                dealTrueDamage(le, null, potency * BURN_COEF, StatusEffect.BURN);
             }
             if (s.isEmpty()) toRemove.add(en.getKey());
         }
-        for (UUID id : toRemove) states.remove(id);
+        for (UUID id : toRemove) {
+            states.remove(id);
+            applyCooldowns.remove(id);
+        }
     }
 
     // ── 傷害事件中央處理 ────────────────────────────────────────────
@@ -184,8 +205,9 @@ public class StatusManager implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDamage(EntityDamageByEntityEvent event) {
-        // 忽略本系統自己造成的真傷，避免遞迴
-        if (event.getDamager().hasMetadata(CUSTOM_DAMAGE_META)) return;
+        // 忽略本系統自己結算的狀態傷害，避免遞迴／重複吃乘區
+        // （狀態傷害帶 source 時 damager 是玩家本人，故兩端都要檢查標記）
+        if (isStatusDamage(event)) return;
 
         LivingEntity attacker = event.getDamager() instanceof LivingEntity la ? la : null;
         LivingEntity victim = event.getEntity() instanceof LivingEntity lv ? lv : null;
@@ -219,16 +241,23 @@ public class StatusManager implements Listener {
             if (poise > 0) atkS.consume(StatusEffect.POISE, 1);
         }
 
-        // PROTECTION：受害者減傷乘區（先於 FRAGILE，讓易損不會被完全抵消）
+        // PROTECTION：受害者減傷乘區（先於 FRAGILE，讓易損不會被完全抵消）。
+        // 受擊 -1 count：不再永久留存，杜絕金剛丸掛機無敵。
         if (victim != null && vicS != null) {
             int prot = vicS.potency(StatusEffect.PROTECTION);
-            if (prot > 0) event.setDamage(event.getDamage() * Math.max(0.0, 1.0 - prot * PROTECTION_PER_POTENCY));
+            if (prot > 0) {
+                event.setDamage(event.getDamage() * Math.max(0.0, 1.0 - prot * PROTECTION_PER_POTENCY));
+                vicS.consume(StatusEffect.PROTECTION, 1);
+            }
         }
 
-        // FRAGILE：受害者承傷乘區
+        // FRAGILE：受害者承傷乘區，受擊 -1 count
         if (victim != null && vicS != null) {
             int f = vicS.potency(StatusEffect.FRAGILE);
-            if (f > 0) event.setDamage(event.getDamage() * (1.0 + f * FRAGILE_PER_POTENCY));
+            if (f > 0) {
+                event.setDamage(event.getDamage() * (1.0 + f * FRAGILE_PER_POTENCY));
+                vicS.consume(StatusEffect.FRAGILE, 1);
+            }
         }
 
         // SAN 計數（僅玩家）
@@ -249,7 +278,7 @@ public class StatusManager implements Listener {
             int sedPotency = vicS.potency(StatusEffect.SINKING);
             if (sedPotency > 0 && vicS.consume(StatusEffect.SINKING, 1) > 0) {
                 boolean depressed = sanity.isDepressed(victim);
-                double dmg = sedPotency * (depressed ? DEPRESSION_MULT : 1.0);
+                double dmg = sedPotency * SINKING_COEF * (depressed ? DEPRESSION_MULT : 1.0);
                 scheduleTrueDamage(victim,
                         attacker instanceof Player ? (Player) attacker : null,
                         dmg,
@@ -259,7 +288,7 @@ public class StatusManager implements Listener {
             }
         }
 
-        // RUPTURE：受擊消耗 1 count → potency × 2 真傷
+        // RUPTURE：受擊消耗 1 count → potency × 0.75 傷害
         if (victim != null && vicS != null) {
             int rupPotency = vicS.potency(StatusEffect.RUPTURE);
             if (rupPotency > 0 && vicS.consume(StatusEffect.RUPTURE, 1) > 0) {
@@ -300,6 +329,7 @@ public class StatusManager implements Listener {
         // 清 SINKING 移速 modifier（玩家 attribute 會跨復活保留，要顯式移除）
         syncSinkingSpeed(le, null);
         states.remove(le.getUniqueId());
+        applyCooldowns.remove(le.getUniqueId());
     }
     // 非死亡的 despawn / chunk unload 由 burnTick 掃描時 isValid 檢查順帶清掉。
 
@@ -315,14 +345,52 @@ public class StatusManager implements Listener {
         Bukkit.getScheduler().runTask(plugin, () -> dealTrueDamage(target, source, amount, labelOrNullForDepression));
     }
 
-    /** null label = 憂鬱傷害。 */
+    private long getCooldownMs(StatusEffect effect) {
+        String path = "status-cooldowns." + effect.name().toLowerCase();
+        return plugin.getConfig().getLong(path, plugin.getConfig().getLong("status-cooldowns.default", 1000L));
+    }
+
+    private int getPotencyCap(StatusEffect effect) {
+        String path = "status-caps." + effect.name().toLowerCase() + ".potency";
+        return plugin.getConfig().getInt(path, plugin.getConfig().getInt("status-caps.default.potency", DEFAULT_POTENCY_CAP));
+    }
+
+    private int getCountCap(StatusEffect effect) {
+        String path = "status-caps." + effect.name().toLowerCase() + ".count";
+        return plugin.getConfig().getInt(path, plugin.getConfig().getInt("status-caps.default.count", DEFAULT_COUNT_CAP));
+    }
+
+    /** 此傷害事件是否為本系統結算的狀態傷害（兩端任一帶標記即是）。供 GiftsModule 等監聽跳過用。 */
+    public static boolean isStatusDamage(EntityDamageByEntityEvent event) {
+        return event.getDamager().hasMetadata(CUSTOM_DAMAGE_META)
+                || event.getEntity().hasMetadata(CUSTOM_DAMAGE_META);
+    }
+
+    /**
+     * 狀態傷害結算：走原版傷害管線 damage(amount, source)。
+     * 原版護甲、附魔、抗性藥水、領地/PvP 保護全部自動生效（交接文件 Bug B 的正解）；
+     * DoT 擊殺正確歸屬給施術者（掉落物/擊殺訊息）。
+     * 結算前後以 CUSTOM_DAMAGE_META 標記兩端防遞迴；
+     * 暫時清零 noDamageTicks 讓每一跳實打實生效（proc 常落在近戰無敵幀內），結算後還原。
+     */
     private void dealTrueDamage(LivingEntity target, Player source, double amount, StatusEffect label) {
-        if (target == null || !target.isValid() || target.isDead()) return;
+        if (target == null || !target.isValid() || target.isDead() || amount <= 0) return;
+
+        boolean sourced = source != null && source.isOnline();
         target.setMetadata(CUSTOM_DAMAGE_META, new FixedMetadataValue(plugin, true));
+        if (sourced) source.setMetadata(CUSTOM_DAMAGE_META, new FixedMetadataValue(plugin, true));
+        int savedNoDamageTicks = target.getNoDamageTicks();
+        target.setNoDamageTicks(0);
         try {
-            target.damage(amount);
+            if (sourced) {
+                target.damage(amount, source);
+            } else {
+                target.damage(amount);
+            }
         } finally {
+            target.setNoDamageTicks(savedNoDamageTicks);
             target.removeMetadata(CUSTOM_DAMAGE_META, plugin);
+            if (sourced) source.removeMetadata(CUSTOM_DAMAGE_META, plugin);
         }
         showDamage(target, source, amount, label);
     }

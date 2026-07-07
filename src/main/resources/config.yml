@@ -11,3 +11,21 @@ gacha:
   lunacy-cost: 32
   # 抽中 Tier IV 的機率（0.0 ~ 1.0），其餘機率由 Tier I~III 均分
   tier4-chance: 0.10
+
+# 狀態效果施加冷卻時間（毫秒）：同一效果對同一目標的最短重複施加間隔
+# Cooldown for applying status effects (ms): min interval per effect per target
+status-cooldowns:
+  default: 1000
+  # 可逐效果覆寫 / per-effect override, e.g.:
+  # burn: 2000
+
+# 狀態層數上限：potency（級數/威力）與 count（層數/觸發次數）疊加時的天花板
+# Status stack caps: potency (power) and count (remaining triggers) are clamped on apply
+status-caps:
+  default:
+    potency: 10
+    count: 20
+  # 可逐效果覆寫 / per-effect override, e.g.:
+  # protection:
+  #   potency: 8
+  #   count: 10

@@ -13,10 +13,14 @@ import java.util.Map;
 public class StatusState {
     private final EnumMap<StatusEffect, int[]> stacks = new EnumMap<>(StatusEffect.class);
 
-    public synchronized void add(StatusEffect e, int potency, int count) {
+    /**
+     * 疊加 potency/count，並各自夾在 cap 之下（cap 由 StatusManager 讀 config 傳入）。
+     * 上限是「無敵/秒殺漏洞」的根治：potency 從此有數學天花板，不再只增不減地爆表。
+     */
+    public synchronized void add(StatusEffect e, int potency, int count, int potencyCap, int countCap) {
         int[] c = stacks.computeIfAbsent(e, k -> new int[]{0, 0});
-        c[0] += potency;
-        c[1] += count;
+        c[0] = Math.min(potencyCap, c[0] + potency);
+        c[1] = Math.min(countCap, c[1] + count);
     }
 
     public synchronized int potency(StatusEffect e) {

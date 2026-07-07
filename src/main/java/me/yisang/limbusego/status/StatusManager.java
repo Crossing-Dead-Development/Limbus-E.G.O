@@ -385,7 +385,9 @@ public class StatusManager implements Listener {
             if (sourced) {
                 target.damage(amount, source);
             } else {
-                target.damage(amount);
+                // damage(double) 是 minecraft:generic，在原版 bypasses_armor 標籤裡會穿甲；
+                // 改用 MOB_ATTACK 型別讓無來源 DoT（burnTick 等）一樣吃護甲（實測驗證）。
+                target.damage(amount, org.bukkit.damage.DamageSource.builder(org.bukkit.damage.DamageType.MOB_ATTACK).build());
             }
         } finally {
             target.setNoDamageTicks(savedNoDamageTicks);

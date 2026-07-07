@@ -4,7 +4,7 @@
 
 A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (accessories) of Limbus Company into Minecraft.
 
-- **Version**: 1.4.0
+- **Version**: 1.4.1
 - **Minecraft version**: 1.21.4
 - **Platform**: Paper
 - **Java**: 21
@@ -12,7 +12,7 @@ A single Paper plugin that brings both the E.G.O weapons and E.G.O gifts (access
 
 ## What is this
 
-`LimbusEGO-1.4.0.jar` is a single plugin merged from two legacy plugins:
+`LimbusEGO-1.4.1.jar` is a single plugin merged from two legacy plugins:
 
 - **Limbus E.G.O Weapons v3.2.0** → the 12-status system, the Sanity (SAN) system, and 8 E.G.O weapons
 - **Limbus E.G.O Gifts v2.5.0** → 80 E.G.O gifts + 4 vestige upgrade materials, plus gacha / thread lottery / shop chests
@@ -94,7 +94,7 @@ Each entity carries `(potency, count)` two-axis statuses: potency is strength, c
 ## Installation & data migration (upgrading from the two legacy plugins)
 
 1. **Remove the old plugins**: move `LimbusEGOWeapons-*.jar` and `LimbusEGOGift-*.jar` out of `plugins/` (back them up rather than deleting).
-2. **Drop in the new plugin**: put `LimbusEGO-1.4.0.jar` into `plugins/`.
+2. **Drop in the new plugin**: put `LimbusEGO-1.4.1.jar` into `plugins/`.
 3. **Migrate data**: copy `gacha_chests.yml`, `thread_chests.yml`, `shop_chests.yml`, and `config.yml` from the old `plugins/LimbusEGOGift/` folder into the new `plugins/LimbusEGO/` (if the old `plugins/LimbusEGOWeapons/config.yml` had a custom language setting, merge the `language` field carefully so it isn't overwritten).
 4. **Start the server** — legacy items and player upgrade data are automatically compatible: weapon-side PDC stays in the `limbusegoweapons:` namespace and gift-side PDC in the `limbusegogift:` namespace (identical to what the old plugins produced), so old weapons / gifts in inventories and upgraded gift levels keep working without any conversion.
 
@@ -113,6 +113,13 @@ Since Phase 3 (v1.3.0) the plugin uses a **single merged resource pack**, downlo
 ---
 
 ## Changelog
+
+### 1.4.1 (2026-07-07) — Accessory upgrades now bound to the item itself
+
+- **Item-bound upgrades**: upgrade level is stored in the accessory ItemStack's PDC (`item_upgrade_level`) — dragging it out of the menu, giving it away or chesting it keeps the level with the item; un-upgraded copies of the same ID do not inherit it
+- **Lore reflects upgrades**: accessories with level > 0 show a "▲ Upgrade Lv.N (Effect ×M)" line (new lang key `msg.upgrade_lore_mult`, with bundled-jar fallback for outdated lang files)
+- **Equipped-slot persistence**: new player PDC keys `slot_<i>_level`; saved from the item on menu close, baked back into the rebuilt item on open. Effect multipliers now read equipped slot levels (max across slots for duplicate IDs) — zero changes across the 40+ gift effect classes
+- **One-time migration**: on join, legacy player PDC `upgrade_<id>` entries are transferred to currently equipped slots and removed; levels for upgraded-but-unequipped IDs are discarded
 
 ### 1.4.0 (2026-07-07) — Status system rework: vanilla damage pipeline, caps & rebalance
 

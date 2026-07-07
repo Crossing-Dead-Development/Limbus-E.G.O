@@ -49,14 +49,16 @@ public class GiftsModule implements Listener {
 
     private NamespacedKey ITEM_ID_KEY;
     private NamespacedKey MENU_OPENER_KEY;
+    private NamespacedKey ITEM_LEVEL_KEY;
     private NamespacedKey[] SLOT_KEYS;
+    private NamespacedKey[] SLOT_LEVEL_KEYS;
 
     private final Map<String, Accessory> accessories = new LinkedHashMap<>();
     // 裝備中的飾品快取：每次傷害/互動事件與被動 tick 都會查，
     // 只在選單關閉（saveEquipped）與玩家退出時失效，避免反覆讀 5 個 PDC key。
     private final Map<UUID, List<Accessory>> equippedCache = new HashMap<>();
-    // 升級等級的 PDC key 快取（NamespacedKey 建構含字串驗證，攻擊事件熱路徑會頻繁用到）
-    private final Map<String, NamespacedKey> upgradeKeys = new HashMap<>();
+    // 裝備中飾品的升級等級快取（id→level），失效時機同 equippedCache
+    private final Map<UUID, Map<String, Integer>> equippedLevelCache = new HashMap<>();
 
     private GachaChestManager gachaChestManager;
     private ThreadChestManager threadChestManager;
@@ -212,8 +214,13 @@ public class GiftsModule implements Listener {
 
         ITEM_ID_KEY          = new NamespacedKey("limbusegogift", "accessory_id");
         MENU_OPENER_KEY      = new NamespacedKey("limbusegogift", "menu_opener");
+        ITEM_LEVEL_KEY       = new NamespacedKey("limbusegogift", "item_upgrade_level");
         SLOT_KEYS = new NamespacedKey[5];
-        for (int i = 0; i < 5; i++) SLOT_KEYS[i] = new NamespacedKey("limbusegogift", "slot_" + i);
+        SLOT_LEVEL_KEYS = new NamespacedKey[5];
+        for (int i = 0; i < 5; i++) {
+            SLOT_KEYS[i] = new NamespacedKey("limbusegogift", "slot_" + i);
+            SLOT_LEVEL_KEYS[i] = new NamespacedKey("limbusegogift", "slot_" + i + "_level");
+        }
 
         // ── 現有飾品 ─────────────────────────────────────────────────────
         registerAccessory(new ArdentFlower(this));
@@ -329,9 +336,10 @@ public class GiftsModule implements Listener {
 
     // ── 公開工具方法 ────────────────────────────────────────────────────────
 
-    public NamespacedKey getItemIdKey()      { return ITEM_ID_KEY; }
-    public NamespacedKey getMenuOpenerKey()  { return MENU_OPENER_KEY; }
-    public NamespacedKey getSlotKey(int i)   { return SLOT_KEYS[i]; }
+    public NamespacedKey getItemIdKey()       { return ITEM_ID_KEY; }
+    public NamespacedKey getMenuOpenerKey()   { return MENU_OPENER_KEY; }
+    public NamespacedKey getSlotKey(int i)    { return SLOT_KEYS[i]; }
+    public NamespacedKey getSlotLevelKey(int i) { return SLOT_LEVEL_KEYS[i]; }
 
     public String getAccessoryId(ItemStack item) {
         if (item == null || !item.hasItemMeta()) return null;
@@ -359,6 +367,7 @@ public class GiftsModule implements Listener {
     /** 裝備欄變動（選單關閉存檔）時呼叫，讓快取重讀 PDC。 */
     public void invalidateEquippedCache(Player player) {
         equippedCache.remove(player.getUniqueId());
+        equippedLevelCache.remove(player.getUniqueId());
     }
 
     public int getTier(String id) {
@@ -369,29 +378,67 @@ public class GiftsModule implements Listener {
         return VESTIGE_IDS.contains(id);
     }
 
-    // ── 升級系統 ────────────────────────────────────────────────────────────
+    // ── 升級系統（等級綁定於飾品物品；裝備格另存 slot_<i>_level 供效果讀取）──
 
-    private NamespacedKey upgradeKey(String accessoryId) {
-        return upgradeKeys.computeIfAbsent(accessoryId, id -> new NamespacedKey("limbusegogift", "upgrade_" + id));
+    /** 讀取飾品物品自身的升級等級（0–3）。 */
+    public int getItemUpgradeLevel(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return 0;
+        return item.getItemMeta().getPersistentDataContainer()
+                .getOrDefault(ITEM_LEVEL_KEY, PersistentDataType.INTEGER, 0);
     }
 
-    public int getUpgradeLevel(Player player, String accessoryId) {
-        return player.getPersistentDataContainer()
-                .getOrDefault(upgradeKey(accessoryId), PersistentDataType.INTEGER, 0);
+    /** 依 ID 與等級重造飾品物品：等級寫入物品 PDC 並附加 lore 等級行。 */
+    public ItemStack buildLeveledItem(String id, int level) {
+        Accessory acc = accessories.get(id);
+        if (acc == null) return null;
+        ItemStack item = acc.createItem();
+        int lvl = Math.min(3, Math.max(0, level));
+        if (lvl <= 0) return item;
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(ITEM_LEVEL_KEY, PersistentDataType.INTEGER, lvl);
+        List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
+        lore.add(msg("msg.upgrade_lore_mult", lvl, multiplierText(lvl)));
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+        return item;
     }
 
-    public void setUpgradeLevel(Player player, String accessoryId, int level) {
-        player.getPersistentDataContainer()
-                .set(upgradeKey(accessoryId), PersistentDataType.INTEGER, Math.min(3, Math.max(0, level)));
-    }
-
-    public double getUpgradeMultiplier(Player player, String accessoryId) {
-        return switch (getUpgradeLevel(player, accessoryId)) {
+    /** 等級 → 效果倍率。 */
+    public static double levelMultiplier(int level) {
+        return switch (level) {
             case 1 -> 1.25;
             case 2 -> 1.50;
             case 3 -> 2.00;
             default -> 1.0;
         };
+    }
+
+    /** 倍率顯示字串（2.0 顯示為 2，1.5/1.25 保留小數）。 */
+    private static String multiplierText(int level) {
+        double m = levelMultiplier(level);
+        return m == Math.floor(m) ? String.valueOf((int) m) : String.valueOf(m);
+    }
+
+    /** 玩家目前裝備中該飾品的升級等級（同 ID 裝多格時取最大；經快取）。 */
+    public int getUpgradeLevel(Player player, String accessoryId) {
+        return equippedLevelCache.computeIfAbsent(player.getUniqueId(), k -> readSlotLevels(player))
+                .getOrDefault(accessoryId, 0);
+    }
+
+    private Map<String, Integer> readSlotLevels(Player player) {
+        Map<String, Integer> levels = new HashMap<>();
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        for (int i = 0; i < SLOT_KEYS.length; i++) {
+            String id = pdc.get(SLOT_KEYS[i], PersistentDataType.STRING);
+            if (id == null) continue;
+            int lvl = pdc.getOrDefault(SLOT_LEVEL_KEYS[i], PersistentDataType.INTEGER, 0);
+            levels.merge(id, lvl, Math::max);
+        }
+        return levels;
+    }
+
+    public double getUpgradeMultiplier(Player player, String accessoryId) {
+        return levelMultiplier(getUpgradeLevel(player, accessoryId));
     }
 
     // 殘影 ID → 可升級的目標飾品等級
@@ -512,16 +559,17 @@ public class GiftsModule implements Listener {
                         int vTier = vestigeTier(cursorId);
                         int aTier = getTier(currentId);
                         if (vTier == aTier) {
-                            int curLevel = getUpgradeLevel(player, currentId);
+                            int curLevel = getItemUpgradeLevel(current);
                             if (curLevel < 3) {
                                 event.setCancelled(true);
-                                setUpgradeLevel(player, currentId, curLevel + 1);
+                                int newLevel = curLevel + 1;
+                                // 等級寫在物品本身：重造帶新等級的物品放回格子
+                                event.setCurrentItem(buildLeveledItem(currentId, newLevel));
                                 // 消耗一個殘影
                                 if (cursor.getAmount() > 1) cursor.setAmount(cursor.getAmount() - 1);
                                 else event.getView().setCursor(null);
-                                int newLevel = curLevel + 1;
                                 player.sendMessage(msg("msg.upgrade_success", newLevel));
-                                // 刷新選單
+                                // 存檔（slot_<i>_level）並刷新選單
                                 Bukkit.getScheduler().runTaskLater(getPlugin(), () -> {
                                     menu.saveEquipped();
                                     menu.refresh();
@@ -575,7 +623,37 @@ public class GiftsModule implements Listener {
     @EventHandler
     public void onPlayerQuit(org.bukkit.event.player.PlayerQuitEvent event) {
         equippedCache.remove(event.getPlayer().getUniqueId());
+        equippedLevelCache.remove(event.getPlayer().getUniqueId());
         for (Accessory acc : accessories.values()) acc.onQuit(event.getPlayer());
+    }
+
+    // ── 舊版升級資料一次性遷移（玩家 PDC upgrade_<id> → 裝備格 slot_<i>_level）──
+
+    @EventHandler
+    public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent event) {
+        migrateLegacyUpgrades(event.getPlayer());
+    }
+
+    private void migrateLegacyUpgrades(Player player) {
+        PersistentDataContainer pdc = player.getPersistentDataContainer();
+        List<NamespacedKey> legacy = new ArrayList<>();
+        for (NamespacedKey key : pdc.getKeys()) {
+            if (key.getNamespace().equals("limbusegogift") && key.getKey().startsWith("upgrade_")) {
+                legacy.add(key);
+            }
+        }
+        if (legacy.isEmpty()) return;
+        for (int i = 0; i < SLOT_KEYS.length; i++) {
+            String id = pdc.get(SLOT_KEYS[i], PersistentDataType.STRING);
+            if (id == null) continue;
+            Integer lvl = pdc.get(new NamespacedKey("limbusegogift", "upgrade_" + id), PersistentDataType.INTEGER);
+            if (lvl != null && lvl > 0) {
+                pdc.set(SLOT_LEVEL_KEYS[i], PersistentDataType.INTEGER, Math.min(3, lvl));
+            }
+        }
+        for (NamespacedKey key : legacy) pdc.remove(key);
+        invalidateEquippedCache(player);
+        getLogger().info("[Gift] Migrated " + legacy.size() + " legacy upgrade entries for " + player.getName());
     }
 
     @EventHandler

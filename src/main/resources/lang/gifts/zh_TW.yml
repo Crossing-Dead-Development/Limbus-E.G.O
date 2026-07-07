@@ -13,6 +13,7 @@ msg:
   upgrade_success: "&#FFD700飾品升級成功！&#AAAAAA等級：&#FFFFFF▲ Lv.{0}"
   upgrade_maxed: "&#FF5555此飾品已達最高等級（Lv.3）。"
   upgrade_lore: "&#FFD700▲ 升級 Lv.{0}"
+  upgrade_lore_mult: "&#FFD700▲ 升級 Lv.{0} &#AAAAAA(效果 ×{1})"
 
   gacha:
     look_at_chest: "&#FF5555請看向一個箱子（10格內）。"

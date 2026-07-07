@@ -57,33 +57,36 @@ public class AccessoryMenu implements InventoryHolder {
 
     public void open() { player.openInventory(inventory); }
 
-    // 關閉時將飾品欄內容寫入 PDC
+    // 關閉時將飾品欄內容寫入 PDC（ID + 物品自身的升級等級）
     public void saveEquipped() {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         for (int i = 0; i < ACCESSORY_SLOTS.length; i++) {
             NamespacedKey key = plugin.getSlotKey(i);
+            NamespacedKey levelKey = plugin.getSlotLevelKey(i);
             ItemStack item = inventory.getItem(ACCESSORY_SLOTS[i]);
             String id = plugin.getAccessoryId(item);
             if (id != null) {
                 pdc.set(key, PersistentDataType.STRING, id);
+                int level = plugin.getItemUpgradeLevel(item);
+                if (level > 0) pdc.set(levelKey, PersistentDataType.INTEGER, level);
+                else pdc.remove(levelKey);
             } else {
                 pdc.remove(key);
+                pdc.remove(levelKey);
             }
         }
         plugin.invalidateEquippedCache(player);
     }
 
-    // 開啟時從 PDC 還原已裝備的飾品
+    // 開啟時從 PDC 還原已裝備的飾品（等級烙回物品 PDC 與 lore，拖出選單即帶走）
     private void loadEquipped() {
         PersistentDataContainer pdc = player.getPersistentDataContainer();
         for (int i = 0; i < ACCESSORY_SLOTS.length; i++) {
-            NamespacedKey key = plugin.getSlotKey(i);
-            String id = pdc.get(key, PersistentDataType.STRING);
+            String id = pdc.get(plugin.getSlotKey(i), PersistentDataType.STRING);
             if (id != null) {
-                Accessory acc = plugin.getAccessory(id);
-                if (acc != null) {
-                    inventory.setItem(ACCESSORY_SLOTS[i], withUpgradeLore(acc, player));
-                }
+                int level = pdc.getOrDefault(plugin.getSlotLevelKey(i), PersistentDataType.INTEGER, 0);
+                ItemStack item = plugin.buildLeveledItem(id, level);
+                if (item != null) inventory.setItem(ACCESSORY_SLOTS[i], item);
             }
         }
     }
@@ -91,19 +94,6 @@ public class AccessoryMenu implements InventoryHolder {
     // 重新整理顯示（升級後呼叫）
     public void refresh() {
         loadEquipped();
-    }
-
-    // 若飾品有升級，附加升級等級到 Lore
-    private ItemStack withUpgradeLore(Accessory acc, Player player) {
-        ItemStack item = acc.createItem();
-        int level = plugin.getUpgradeLevel(player, acc.getId());
-        if (level <= 0) return item;
-        ItemMeta meta = item.getItemMeta();
-        List<String> lore = meta.hasLore() ? new ArrayList<>(meta.getLore()) : new ArrayList<>();
-        lore.add(plugin.msg("msg.upgrade_lore", level));
-        meta.setLore(lore);
-        item.setItemMeta(meta);
-        return item;
     }
 
     // 供被動 Tick / 事件讀取目前裝備（直接讀 PDC，不依賴介面是否開啟）

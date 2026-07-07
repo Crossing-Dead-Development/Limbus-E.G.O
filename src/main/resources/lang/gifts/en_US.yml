@@ -9,6 +9,7 @@ msg:
   upgrade_success: "&#FFD700Accessory upgraded! &#AAAAAALevel: &#FFFFFF▲ Lv.{0}"
   upgrade_maxed: "&#FF5555This accessory is already at max level (Lv.3)."
   upgrade_lore: "&#FFD700▲ Upgrade Lv.{0}"
+  upgrade_lore_mult: "&#FFD700▲ Upgrade Lv.{0} &#AAAAAA(Effect ×{1})"
 
   gacha:
     look_at_chest: "&#FF5555Look at a chest (within 10 blocks)."
